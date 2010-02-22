@@ -15,8 +15,8 @@ INSTALL = install -s
 
 # --- You shouldn't need to edit below this line ---
 
-VERSION = 1.7.6
-MAINTAINER = arb@comp.lancs.ac.uk
+VERSION = 1.7.8b1
+MAINTAINER = james_woodcock@yahoo.co.uk
 BACKUPFILE = $${HOME}/tmp/nspark.zip
 
 CDEFINES = -I. -O
