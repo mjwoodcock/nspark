@@ -1,0 +1,101 @@
+.TH SPARK(5)
+.SH NAME
+spark \- Archive file format for RISC OS version of the PC archiver Arc
+.SH CONVENTIONS
+Strings are given in ASCII with C-style escapes. No terminating \0 is
+present if not explicitily included.
+
+Words are 32 bit little-endian numbers.
+
+Half words are 16 bit little-endian numbers.
+
+.SH FORMAT
+An archive file consists of a sequence of archive marker, archive header and file data, ie. marker1, header1, data1, marker2, header2, data2, etc.
+The archive marker is a single byte of value 0x1a (26).
+The archive finishes with an archive marker followed by a zero byte.
+
+.I Header version number
+.br
+This tells you how the file data is stored 
+and how many bytes there are in the header. The header version 
+numbers for the PC, are detailed below. An Archimedes header 
+version number is identical to the corresponding PC number except 
+it has bit 7 set.
+.nf
+	1	Old style, no compression
+	2	New style, no compression
+	3	Compression of repeated characters only (RLE)
+	4	As 3 plus Huffman Squeezing
+	5	Lempel-Ziv packing of repeated strings (old style)
+	6	Lempel-Ziv packing of repeated strings (new style)
+	7	Lempel-Ziv Welch packing with improved hash function
+	8	Dynamic Lempel-Ziv packing with adaptive reset
+	9	PKARC style squashing
+	127	Un*x compression
+.fi
+
+.I Filename
+.br
+14 bytes of name, zero terminated.
+
+.I Compressed length
+.br
+Compressed data length, one word.
+
+.I Date
+.br
+One half-word, date.
+.nf
+	year = (date >> 9) & 0x7f;
+	month = (date >> 5) & 0x0f;
+	day = date & 0x1f;
+.fi
+
+.I Time
+.br
+One half-word, time.
+.nf
+	hour = (time >> 11) & 0x1f;
+	minute = (time >> 5)  & 0x3f;
+	second = (time & 0x1f) * 2;
+.fi
+
+The time and date fields are always filled in. If the file has a load and exec 
+address, these are the time and date when the file was added to the archive 
+otherwise, they are derived from the Archimedes datestamp. In all extract 
+operations on Archimedes format archives, the contents of the load and exec 
+fields take precedence.
+
+.I CRC
+.br
+One half-word, Cyclic Redundancy Check.
+
+.I Original file length
+.br
+Original file length, one word, only present if header type greater than 1.
+
+.I Load address
+.br
+Load address of the file, one word, only present if bit-7 of the header
+version number is set.
+
+.I Exec address
+.br
+Exec address of the file, one word, only present if bit-7 of the header
+version number is set.
+
+.I Attributes
+.br
+Attributes of the file, one word, only present if bit-7 of the header
+version number is set.
+
+.I Compressed data...
+.br
+Directories are stored as non-compressed archives within archives,
+ie. their load address & 0xffffff00=0xfffddc.
+
+.SH COMPATIBILITY
+PC and Archimedes formats may be mixed in one archive for use on the Archimedes.
+
+.SH SEE ALSO
+arcfs(5), nspark(1)

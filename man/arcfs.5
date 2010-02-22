@@ -1,0 +1,151 @@
+.TH ARCFS 5
+.SH NAME
+ArcFS \- Archive file format for the RISC OS ArcFS filesystem
+.SH CONVENTIONS
+Strings are given in ASCII with C-style escapes. No terminating \0 is
+present if not explicitly included.
+
+Words are 32 bit little-endian numbers.
+
+Half words are 16 bit little-endian numbers.
+
+This document describes format version 0, for ArcFS minimum versions 0.40
+and 1.00, and version 0a, for ArcFS minimum versions 0.58 and 2.17.
+
+.SH FORMAT
+The file consists of a file header, a sequence of archive headers, then
+a sequence of compressed files.
+
+.SH FILE HEADER
+.I File string signature
+.br
+The string "Archive" followed by a zero byte.
+
+.I Header length
+.br
+Length of header info in bytes, one word, multiple of 36.
+
+.I Data offset
+.br
+Offset, in bytes, into archive at which data starts, one word.
+
+.I Read-only version
+.br
+Minimum read-only version required, multiplied by 100, one word.
+
+.I Read-write version
+.br
+Minimum read--write version required, multiplied by 100, one word.
+
+.I Reserved
+.br
+Reserved for future use, 68 bytes.
+
+.SH ARCHIVE HEADER
+The last header starts at 60+length of headers and ends at 96+length of
+headers. The format of each header is as follows.
+
+.I Info byte
+.br
+Object information byte, show compression method used:
+.nf
+	0x00	end of directory marker
+	0x01	object has been deleted
+	0x82	stored
+	0x83	packed
+	0x88	crunched
+	0xFF	compressed
+.fi
+
+.I File name
+.br
+File name, 11 bytes.
+
+.I Full length
+.br
+Original file length, or 0xFFFFFFFF for a directory), one word.
+
+.I Load address
+.br
+Load address of the file, or 0xFFFFFFdd for a directory), one word.
+
+.I Exec address
+.br
+Exec address of the file, or 0xdddddddd for a directory), one word.
+
+File load and execution address may contain a filetype and datestamp as
+normal.
+
+Directories can be date-stamped, the number of centiseconds since the 1st
+January 1900 when the directory was created are given by &dddddddddd
+contained in the directory's load and execution addresses as shown above.
+
+Archives converted from spark(5) format using ArcConv will have the same
+full length, compressed length, load address and execute address as they
+had in the Spark archive.
+
+.I Attributes
+.br
+Attributes of the file, one word.
+Contains the number of bits compression for crunch and compress
+format files and the least significant bytes contains the standard
+RISC OS information on file access.
+
+.I Compressed length
+.br
+Length of compressed data, or 0xFFFFFFFF for a directory, one word.
+
+.I Information word
+.br
+The top bit (definitively) indicates whether the object is a file or
+a directory, 0 for a file, 1 for a directory.
+
+In the case of a file, the least significant 31 bits show the offset from
+the start of data at which the file data can be found.
+
+In the case of a directory, the least significant 31 bits show the offset
+from the start of headers (96) at which the next object in this directory
+can be found, the following object being the first in the sub-directory.
+
+.SH FORMAT VERSION 0a
+This archive format is backwards compatible with versions 0.40 and 1.00, the
+only difference being that there is a block of catalogue information
+immediately prior to the start of each file's data as described below.
+
+Note that this information is there to aid the recovery of most files in the
+event of archive corruption and is not used by ArcFS.
+
+Note, also that Compact and Autocompact in release versions 1.09, 2.02 and
+2.11 will compact out the catalogue information blocks, so try to avoid
+writing to new archives with old versions of ArcFS.
+
+.nf
+.I Marker
+A marker to indicate the start of a file, the string "FileData", not terminated.
+
+.I Info byte
+.br
+One byte, as above.
+
+.I Leaf name
+.br
+The file name, 11 bytes.
+
+.I Full length
+.br
+One word, as above.
+
+.I Load address
+.br
+One word, as above.
+
+.I Exec address
+.br
+One word, as above.
+
+.I Attributes
+.br
+One word, as above.
+
+.SH SEE ALSO
+spark(5), nspark(1)

@@ -1,0 +1,7 @@
+nspark is an executable and should be set to type `Absolute' (&ff8) using
+the `Set Type' menu in the filer or by typing `settype nspark Absolute'
+from the command line.
+
+ren is an Obey/Command file for renaming the source code files into
+directories suitable for compilation on RISC OS.  First you should
+create directories c, h and o.

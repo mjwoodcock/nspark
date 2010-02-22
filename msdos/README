@@ -1,0 +1,202 @@
+nspark 1.7.6 dos-beta
+=====================
+
+The DOS port of nspark.
+
+Read the README file in the nspark directory first.
+
+Requirements:
+  DOS 2.0 or higher, 3.31 or higher recommended
+  450k of free memory.
+
+Changes with respect to the other versions:
+  The DOS version of nspark recognizes / as a command switch
+  as well as the unix/RISC OS -. (In fact -x/v is a valid
+  sequence of switches, as is /x -v though /x-v is not.)
+
+  Filenames for extraction are made case insensitive, but there
+  is no conversion to the DOS 8.3 characters convention. I.e.
+    nspark -x archive.spk SomeFiles/Text
+  is the same as
+    nspark /x archive.spk somefiles/text
+  but not as:
+    nspark /x archive.spk somefile/text
+  (though files would end up in the same directory `somefile').
+
+Contents of this directory:
+  README          : this text
+  nspark.exe      : the DOS executable
+  makefile        : generic makefile, derived from the general
+                    makefile with provisions for use of PKLITE or
+                    LZEXE to compress the generated executable.
+  makefile.bor    : makefile for Borland C/C++ derived from nspark.prj
+                    (Preferably use this version in stead of makefile
+                    and optionally apply PKLITE or LZEXE by hand.)
+  nspark.prj      : Borland 3.1 project file
+  nspark.ide      : Borland 4 project file
+  alt/compress.c  : alternative version of compress.c (see below)
+  alt/haspragm.c  : test whether #pragma startup is supported
+                    (called by makefile).
+  alt/makefile.bor: makefile for alternative version
+  alt/nspark.prj  : Borland 3.1 project file for alternative version
+  alt/nspark.ide  : Borland 4 project file for alternative version
+
+Compilation/porting:
+  The current version has been compiled with Borland C/C++
+  versions 1, 3.1 and 4.02. I do not have access to a
+  Microsoft C/C++ compiler, so I cannot test whether it will
+  compile with that compiler too. Some changes will probably
+  be necessary.
+
+  All changes for DOS are enclosed by the preprocessor macro
+  __MSDOS__ (predefined by the Borland preprocessor). This
+  makes things more transparent than when it was enclosed by
+  #if defined(__BORLANDC__) || defined(__TURBOC__)/#endif pairs.
+  So compile with -D__MSDOS__ if your compiler does not predefine
+  this macro.
+  These changes only apply for 16 bits compilers. See below
+  for 32 bits/protected mode compilers. (Hardly any changes
+  are necessary in that case.)
+
+  Note that the paths in the makefiles are likely to be wrong
+  for other computers than my own. So change those before
+  compiling. Or change the configuration files into response files
+  and use separate turboc.cfg and tlink.cfg files. (The disadvantage
+  of the latter is that there may be more options specified in the
+  .cfg files that are not needed/unwanted for nspark.)
+
+  Things to look for when compiling:
+    Names of header files:
+      io.h is a header file under Borland C/C++. And it is needed
+      for this application because it contains the read() function.
+      The original nspark also had a header file io.h. This would
+      not be a problem (#include "io.h" and #include <io.h> can
+      happily coexist) but for the fact that both headers define
+      the macro __IO_H to indicate that they have been `seen'.
+      So I changed the name to nsparkio.h.
+      The same problem may occur for os.h with other compilers.
+
+    Memory model:
+      The supplied version is compiled under the compact memory
+      model. It is recommended to use either the compact or the
+      large memory model, because of the amount of dynamic data.
+      (There is not so much code, therefore the compact model
+      is most suited.)
+      Because farcalloc() is used to allocate the large arrays for
+      the tables needed in uncompress(), the program could be
+      compiled using the small and medium memory model, but this
+      restricts the space for filenames and pathnames.
+      Though the manual states that farcalloc() cannot not be
+      used with the tiny memory model, it IS possible to compile
+      the program in .COM format. And though it saves a few kbytes
+      on the size of the executable, it restricts the available
+      space for dynamic data even more.
+
+    16 bit vs. 32 bit:
+      DOS integers are 16 bit! That means that
+      32768 == 65536 == (1 << 16) == 0. The result of a constant
+      being considered 0 can be hard to spot. So use long or
+      unsigned long constants when appropriate:
+      32768L != 0 != 65536UL etc.
+
+      ...printf() and ...scanf() format specifiers should also be
+      long when appropriate.
+        long l; /* ... */ printf("%d",l);
+      will only print the value of the lower two bytes of l and
+      the other two will appear in the next %d. I.e.:
+        long l,m; /* ... */ printf("%d %d\n",l,m);
+      and:
+        printf("%d %d\n", (int) l, *(int*) ((char *)&l + 2) );
+      produce the same output. (m is never used.) Use %ld or %lu.
+      Again, the effect in e.g. a ...scanf() can be very hard to spot.
+
+      Characters are passed to functions as integers. This produced
+      quite a lot of warnings (`conversion may loose significant
+      digits') in the uncompress() routines where code_ints (longs) are
+      used to represent character data. A cast solves this, but these
+      warnings may point to bigger problems.
+
+    Segmented pointers and pointer arithmetic:
+      DOS pointers consist of two parts: a segment and an offset.
+      (The absolute address is obtained by segment * 16 + offset.)
+      Both parts are 16 bit quantities.
+      Under `normal' operations, pointer arithmetic is restricted
+      to the offset part. This means that a pointer (or an array
+      for that matter) can only accommodate 64k of memory. I.e.:
+        double * dp ; /* ... */ dp == &dp[8192];
+      and &dp[1] == &dp[8193]; etc. (Large numbers? uncompress()
+      uses unsigned long htab[65536L]; or 256k of memory for one
+      array!)
+      This can be overcome by using normalized or `huge' pointers.
+      With these pointers, the segment part gets updated every time
+      the offset becomes greater than 16 (or less than 0). The
+      drawback obviously is some loss in speed.
+      Also, when comparing or subtracting two pointers, both should
+      either come from the same array or be normalized, otherwise
+      the results of pointer arithmetic are undefined.
+
+    Static arrays:
+      Under the Borland compiler, static arrays are REALLY static.
+      That is, they are part of the executable. The function
+      uncompress() in nspark uses two large static arrays for the
+      uncompression process. Were these static (as in the unix
+      versions), the executable would contain 384k of `empty space'.
+      So I changed that to dynamically allocated arrays.
+      If you DO want these static arrays, compile with the macro
+      BB_HUGE_STATIC_ARRAYS defined. (See compress.c). Compression
+      afterwards with e.g. PKLITE or LZEXE is highly recommended in
+      this case.
+
+      To correspond more to the unix way of dynamically allocating
+      static arrays, there is an alternative form of compress.c
+      in the directory alt. In that version the memory is allocated
+      by a function that is called before main() itself by using
+      #pragma startup. I do not expect that all compilers support
+      this pragma, so I added it as an alternative. The program
+      haspragm.c is compiled and called in the accompanying makefile
+      to verify that this pragma really is present.
+      The advantage of this approach is that a lack of memory is
+      spotted before anything else happens. Otherwise the program
+      may already have produced some output before it spots
+      the lack of memory. This can be confusing for the user.
+
+      The executable supplied is compiled with this alternative
+      form.
+
+    32 bits & protected mode.
+      The present version is a 16 bit version. It should run on
+      all DOS machines with sufficient memory.
+
+      When compiling a protected mode version with a 32 bits compiler
+      (like djgpp, the DOS port of the gnu compiler), hardly any
+      porting is needed. But you end up with a version that will
+      only run on 386 systems or better.
+
+Bugs/problems/improvements:
+  Bugs:
+    None that I know of at the moment.
+
+  Problems:
+    DOS does not allow easy time/date stamping of directories.
+    (To do so would mean editing the directory `file' itself,
+    i.e. emulating the action of a disc editor.) Since no
+    other archivers I know of do time/date stamp newly created
+    directories and utilities like Norton FD or DR-DOS's TOUCH
+    cannot do so either, I did not bother to implement this.
+    ``It is left as an exercise for the interested reader.''
+    NB: If you DO want to implement this, do not forget to
+    stamp the . entry inside the directory itself and the ..
+    entry in any subdirectories as well! Unlike unix, these
+    are no (pseudo) links but separate entries.
+
+  Improvements:
+    Use of XMS/EMS for the code tables used by uncompress(). This
+    would allow the program to run when there is less conventional
+    memory present. But I think it is more useful to compile a 32
+    bits protected mode version right away. (You do not need the
+    changes made to accommodate 16 bits `oddities' in that case.)
+
+Bob Brand
+bob@wop.wtb.tue.nl or B.A.Brand@wtb.tue.nl
+(addresses valid until at least Oct. 1st, 1996)
+

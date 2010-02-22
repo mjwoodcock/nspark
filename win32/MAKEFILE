@@ -1,0 +1,69 @@
+#
+# nspark makefile (Windows NT, Microsoft V8.0 C Compiler)
+#
+# SYSTYPE:	WINNT
+#
+SYSTYPE= WINNT
+INSTALLDIR= c:\msvc\bin
+CC=	cl
+
+# --- You shouldn't need to edit below this line ---
+
+VERSION= 1.7.4
+MAINTAINER= arb@comp.lancs.ac.uk
+
+CDEFINES= -I. -DDEBUGGING # -Ox -Gs
+CMISC=	-DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
+CFLAGS=	$(CDEFINES) $(CMISC) /O2
+LDFLAGS= 
+PROG=	nspark.exe
+SRCS=	main.c arc.c unarc.c store.c pack.c compress.c crc.c \
+	io.c error.c misc.c date.c arcfs.c
+HDRS=	main.h arc.h unarc.h store.h pack.h compress.h crc.h \
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h
+OBJS=	main.obj arc.obj unarc.obj store.obj pack.obj compress.obj crc.obj \
+	io.obj error.obj misc.obj date.obj arcfs.obj winnt.obj
+LIBS=	
+
+all:	$(PROG)
+
+$(PROG): $(OBJS)
+	$(CC) -o $(PROG) $(OBJS)
+
+install: $(PROG)
+	cp $(PROG) $(INSTALLDIR)
+
+clean:
+	rm $(PROG)
+	rm *.obj 
+	rm *.bak
+	rm *.map
+	rm mklog
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+main.obj: spark.h nsparkio.h cproto.h
+main.obj: error.h misc.h arc.h unarc.h
+arc.obj: spark.h error.h cproto.h 
+unarc.obj: spark.h store.h cproto.h
+unarc.obj: pack.h compress.h main.h nsparkio.h misc.h os.h error.h
+store.obj: spark.h main.h crc.h cproto.h nsparkio.h
+pack.obj: spark.h main.h crc.h cproto.h nsparkio.h
+compress.obj: spark.h pack.h cproto.h main.h crc.h nsparkio.h
+crc.obj: spark.h main.h
+io.obj: spark.h main.h nsparkio.h cproto.h error.h arcfs.h
+error.obj: error.h cproto.h 
+misc.obj: spark.h cproto.h main.h 
+misc.obj: date.h misc.h
+date.obj: spark.h
+arc.obj: cproto.h
+unarc.obj: cproto.h
+store.obj: cproto.h
+pack.obj: cproto.h
+compress.obj: cproto.h
+crc.obj: cproto.h
+io.obj: cproto.h
+error.obj: cproto.h 
+misc.obj: cproto.h
+date.obj: cproto.h
+os.obj: cproto.h

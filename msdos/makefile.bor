@@ -1,0 +1,115 @@
+.AUTODEPEND
+
+#		*Translator Definitions*
+CC = bcc +NSPARK.CFG
+TASM = TASM
+TLIB = tlib
+TLINK = tlink
+LIBPATH = H:\BC402\LIB
+INCLUDEPATH = H:\BC402\INCLUDE
+
+
+#		*Implicit Rules*
+.c.obj:
+  $(CC) -c {$< }
+
+.cpp.obj:
+  $(CC) -c {$< }
+
+#		*List Macros*
+
+
+EXE_dependencies =  \
+ arc.obj \
+ arcfs.obj \
+ compress.obj \
+ crc.obj \
+ date.obj \
+ error.obj \
+ io.obj \
+ main.obj \
+ misc.obj \
+ msdos.obj \
+ pack.obj \
+ store.obj \
+ unarc.obj
+
+#		*Explicit Rules*
+nspark.exe: nspark.cfg $(EXE_dependencies)
+  $(TLINK) /x/c/P-/L$(LIBPATH) @&&|
+c0c.obj+
+arc.obj+
+arcfs.obj+
+compress.obj+
+crc.obj+
+date.obj+
+error.obj+
+io.obj+
+main.obj+
+misc.obj+
+msdos.obj+
+pack.obj+
+store.obj+
+unarc.obj
+nspark
+		# no map file
+cc.lib
+|
+
+
+#		*Individual File Dependencies*
+arc.obj: nspark.cfg arc.c 
+	$(CC) -UMSDOS -c arc.c
+
+arcfs.obj: nspark.cfg arcfs.c 
+	$(CC) -UMSDOS -c arcfs.c
+
+compress.obj: nspark.cfg compress.c 
+	$(CC) -UMSDOS -c compress.c
+
+crc.obj: nspark.cfg crc.c 
+	$(CC) -UMSDOS -c crc.c
+
+date.obj: nspark.cfg date.c 
+	$(CC) -UMSDOS -c date.c
+
+error.obj: nspark.cfg error.c 
+	$(CC) -UMSDOS -c error.c
+
+io.obj: nspark.cfg io.c 
+	$(CC) -UMSDOS -c io.c
+
+main.obj: nspark.cfg main.c 
+	$(CC) -UMSDOS -c main.c
+
+misc.obj: nspark.cfg misc.c 
+	$(CC) -UMSDOS -c misc.c
+
+msdos.obj: nspark.cfg msdos.c 
+	$(CC) -UMSDOS -c msdos.c
+
+pack.obj: nspark.cfg pack.c 
+	$(CC) -UMSDOS -c pack.c
+
+store.obj: nspark.cfg store.c 
+	$(CC) -UMSDOS -c store.c
+
+unarc.obj: nspark.cfg unarc.c 
+	$(CC) -UMSDOS -c unarc.c
+
+#		*Compiler Configuration File*
+nspark.cfg: nspark.mak
+  copy &&|
+-mc
+-a
+-f-
+-w+
+-O2
+-k-
+-d
+-vi-
+-H=NSPARK.SYM
+-I$(INCLUDEPATH)
+-L$(LIBPATH)
+-DMSDOS3;VERSION="1.7.6_dos-beta";MAINTAINER="bob@wop.wtb.tue.nl_(this_beta_only)"
+| nspark.cfg

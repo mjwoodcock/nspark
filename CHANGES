@@ -1,0 +1,134 @@
+
+1.2.4	7th Oct 92	1st public release.
+
+1.2.5	9th Oct 92	Fixed bug in misc.c::riscos_path() that caused nspark
+			to core dump under SCO UNIX.
+
+1.2.6	19th Oct 92	Added -x option as an alternative to -u.  Changed
+			unix.c::filestamp() so that timelocal(3) is only used
+			for SunOS, and mktime(3) is used for all other
+			flavours of UNIX.
+
+1.2.7	23rd Oct 92	Minor cosmetic changes... I should really leave this
+			thing alone.
+
+1.2.8	6th Nov 92	Fixed function definition for unarc.c::prompt_user()
+			(was defined the ANSI C way).
+
+			Fixed io.c::read_header() so it doesn't read the
+			load/exec/attr fields if the archive isn't an
+			Archimedes archive.
+			
+			Corrected comments in compress.c about what crunch
+			and squash methods were.
+			
+			Slight change to algorithm in crc.c::calccrc(), though
+			no functional changes made.
+
+1.2.9	9th Nov 92	compress.c: Moved offset and size from getcode() into
+			global scope so that uncompress() can re-initialise
+			them each time it is called.
+
+			pack.c/pack.h: Added putc_init() to initialise the
+			static variables used by putc_ncr().
+
+1.2.10	12th Nov 92	Fixed bug with realloc() size in misc.c: uplevel().
+			(reported by arb@comp.lancs.ac.uk).
+
+1.2.11	7th Dec 92	Reformatted all source files using Emacs C-Mode (4-
+			space tabs etc.).  Slight change to unarc.c::unarc()
+			logic when printing file details during unarchiving.
+
+1.3Beta 8th Dec 92	Added -a option to allow filetypes to be appended
+			to filenames as they are unarchived.  This is to allow
+			Acorn <-> UNIX NFS to work correctly.
+			(requested by dhmyrdal@pvv.unit.no)
+
+1.3	9th Dec 92	Changed -a option to -T, made filetypes append in
+			lowercase hex rather than uppercase.
+
+1.3.1	9th Dec 92	Changed ret from int in io.c::check_stream().  #ifdef'd
+			out write_halfword() and write_word() in io.c/io.h .
+
+1.3.2	22nd Dec 92	misc.c: Changed #include <malloc.h> to
+			#include <stdlib.h>
+
+1.4	23rd Dec 92	unarc.c: added total-printing if in verbose mode.
+
+NEW MAINTAINER: Andrew Brooks, arb@comp.lancs.ac.uk.
+
+1.5	5th Mar 93	Added code to compile on RISC OS: mkfiles/acorn,
+			acorn.c, changes to io.c, unarc.c, main.c, io.h to
+			add prototypes needed.
+
+1.6	20th Aug 93     main.c: Add -C option to convert filenames to lowercase
+			io.c: allow top-bit-set characters in RISCOS filenames.
+			compress.c, unarc.c: prevent output if in quiet mode.
+
+1.7	20th Aug 93	Added code to read headers from ArcFS archives.
+			Changes to io.c, unarc.c, mkfiles.  Added arcfs.[ch]
+			WARNING: Code is unfinished: only the list option (-l)
+			can be used (and timestamps will be incorrect).  Trying
+			to test or extract from the archive will fail, and
+			probably dump core.  Please add the necessary
+			code if you can, I don't have time at the moment.
+
+1.7.1   4th Mar 94	Fixed many bugs in ArcFS code: changes to unarc.c,
+			compress.c also.  Still no timestamps, and files
+			extracted are too long by a few null bytes for some
+			reason (complen is too large, but why?), so CRC fails.
+
+1.7.2   26th Oct 94	Fixed date and time conversion for ArcFS archives.
+			Added manual pages supplied by Duncan (?)
+			(m91dps@ecs.oxford.ac.uk).
+
+1.7.2a	9th Nov 94	Altered unix makefile to call ./mkendian not mkendian
+			as suggested by Tom Tromey (tromey@busco.lanl.gov).
+			Added rename scripts for RISC OS/UNIX.
+
+1.7.3	12th Dec 94	Finally fix ArcFS archive extraction, fixes in
+			arcfs.c, unarc.c, io.c and crc.c.  Modifications
+			to manual pages to correct errors and add new details.
+
+1.7.4	6th Jan 95	Added Windows NT and Alpha support by Alun Jones
+			(auj@aber.ac.uk).
+			Restructured directories and added executables for
+			RISC OS, Sun OS 4.1.3 and Solaris 2.3.
+			Added executables for Linux, MIPS and Alpha supplied
+			by Alun Jones.
+			Updated manual pages for new file formats.
+			Added text versions of manual pages for those without
+			nroff.
+
+1.7.5	25th Jan 95	Bug fixes in compress.c, thanks to all who reported
+			the problem.  Included binaries that report version
+			1.7.4 should not be exhibit the bug as it was caused
+			by a last-minute source change (mae culpa!).
+
+1.7.6   01th Aug 95     DOS port. (Beta by Bob Brand, bob@wop.wtb.tue.nl,
+			or B.A.Brand@wtb.tue.nl, addresses valid until
+			at least Oct 1st, 1996), fido: 2:2801/208.2.
+                        Removed floating point operation in
+			arcfs.c::arcfs_read_header().
+			Made htab[] and codetab[] arrays in compress.c
+			dynamically allocated arrays (DOS version only!).
+			Made misc.c::basename() insensitive for null-
+			pointers. (IRIX's strlen() and a few other string-
+			functions coredump on null-pointers. Should not
+			happen under normal execution. But it can happen
+			in the DOS version running under DOS 2.x.)
+			Renamed io.h to sparkio.h (conflict with Borland
+			C/C++ io.h).
+			Removed `Does not support DOS' from BUGS file.
+			Added `Does not time/date stamp directories
+			under DOS or WINNT' to BUGS file.
+			Included executables for SGI IRIX 4.x and 5.x.
+			
+1.7.7   17th March 1999 -I option Mark Usher, marku@magnet.at
+		The -I option has been added to extract the individual
+		files with an extra .inf file that contains the
+		information relevant to that file. This should help
+		people who use BBC emulators to read the files into
+		disc images.
+		The WinNT directory has been changed to Win32.
+

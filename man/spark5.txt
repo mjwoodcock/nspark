@@ -1,0 +1,132 @@
+
+
+
+SPARK(5)()        MISC. REFERENCE MANUAL PAGES         SPARK(5)()
+
+
+
+NAME
+     spark - Archive file format for RISC OS version  of  the  PC
+     archiver Arc
+
+CONVENTIONS
+     Strings are given in ASCII with  C-style  escapes.  No  ter-
+     minating   is present if not explicitily included.
+
+     Words are 32 bit little-endian numbers.
+
+     Half words are 16 bit little-endian numbers.
+
+
+FORMAT
+     An archive file consists of a sequence  of  archive  marker,
+     archive  header  and file data, ie. marker1, header1, data1,
+     marker2, header2, data2, etc.  The archive marker is a  sin-
+     gle  byte  of value 0x1a (26).  The archive finishes with an
+     archive marker followed by a zero byte.
+
+     _H_e_a_d_e_r _v_e_r_s_i_o_n _n_u_m_b_e_r
+     This tells you how the file data  is  stored  and  how  many
+     bytes  there  are  in the header. The header version numbers
+     for the PC, are detailed below. An Archimedes header version
+     number is identical to the corresponding PC number except it
+     has bit 7 set.
+          1    Old style, no compression
+          2    New style, no compression
+          3    Compression of repeated characters only (RLE)
+          4    As 3 plus Huffman Squeezing
+          5    Lempel-Ziv packing of repeated strings (old style)
+          6    Lempel-Ziv packing of repeated strings (new style)
+          7    Lempel-Ziv Welch packing with improved hash function
+          8    Dynamic Lempel-Ziv packing with adaptive reset
+          9    PKARC style squashing
+          127  Un*x compression
+
+     _F_i_l_e_n_a_m_e
+     14 bytes of name, zero terminated.
+
+     _C_o_m_p_r_e_s_s_e_d _l_e_n_g_t_h
+     Compressed data length, one word.
+
+     _D_a_t_e
+     One half-word, date.
+          year = (date >> 9) & 0x7f;
+          month = (date >> 5) & 0x0f;
+          day = date & 0x1f;
+
+     _T_i_m_e
+     One half-word, time.
+          hour = (time >> 11) & 0x1f;
+
+
+
+Sun Release 4.1           Last change:                          1
+
+
+
+
+
+
+SPARK(5)()        MISC. REFERENCE MANUAL PAGES         SPARK(5)()
+
+
+
+          minute = (time >> 5)  & 0x3f;
+          second = (time & 0x1f) * 2;
+
+     The time and date fields are always filled in. If  the  file
+     has  a  load  and  exec address, these are the time and date
+     when the file was added to the archive otherwise,  they  are
+     derived from the Archimedes datestamp. In all extract opera-
+     tions on Archimedes format archives,  the  contents  of  the
+     load and exec fields take precedence.
+
+     _C_R_C
+     One half-word, Cyclic Redundancy Check.
+
+     _O_r_i_g_i_n_a_l _f_i_l_e _l_e_n_g_t_h
+     Original file length, one word, only present if header  type
+     greater than 1.
+
+     _L_o_a_d _a_d_d_r_e_s_s
+     Load address of the file, one word, only present if bit-7 of
+     the header version number is set.
+
+     _E_x_e_c _a_d_d_r_e_s_s
+     Exec address of the file, one word, only present if bit-7 of
+     the header version number is set.
+
+     _A_t_t_r_i_b_u_t_e_s
+     Attributes of the file, one word, only present if  bit-7  of
+     the header version number is set.
+
+     _C_o_m_p_r_e_s_s_e_d _d_a_t_a...
+     Directories are stored  as  non-compressed  archives  within
+     archives, ie. their load address & 0xffffff00=0xfffddc.
+
+
+COMPATIBILITY
+     PC and Archimedes formats may be mixed in  one  archive  for
+     use on the Archimedes.
+
+
+SEE ALSO
+     arcfs(5), nspark(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 4.1           Last change:                          2
+
+
+

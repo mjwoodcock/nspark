@@ -1,0 +1,118 @@
+.TH NSPARK 1 "\*(V)" "USER COMMANDS"
+.SH NAME
+nspark \- unpack Archimedes archives
+.SH SYNOPSIS
+.B nspark
+[
+.B options
+]
+archive
+[
+.B file ...
+]
+.SH DESCRIPTION
+The current version of
+.B nspark
+is 1.7.5
+
+.B Nspark
+can unpack the specified Archimedes-format
+.B archive,
+list its contents or tests its integrity.
+
+Nspark's main features are:
+
+o Supports all archive methods used by !Spark 1 and 2. The old
+version didn't support "Squashing" and used to handle "Compressed"
+archives by using the UNIX uncompress program. The new version
+supports both these and has them built-in, allowing easier
+porting to other OS's.
+
+o Supports ArcFS format archives.
+
+o Supports Cyclic Redundancy Checking (CRC). The integrity of an
+archive can now be checked without having to unarchive it.
+
+o Supports verbose option to allow archive file details to be
+displayed (time/date or exec/load address, size, type).
+
+o Supports selective file unarchiving, so the whole archive needn't
+be unarchived if not all the files are wanted).
+
+o Supports user-prompting before overwriting a file, allowing the
+user to either (1) overwrite the file, (2) overwrite all the
+files, (3) unarchive the file to a different name, or (4) not to
+unarchive the file at all.
+
+o Supports file-stamping so the date and time of the file, when
+unarchived, matches the date and time it was archived (not 4.2BSD
+or SysV.2 as these systems lack vital library functions).
+
+I have not included support for creating !Spark archives, and I am not
+really sure if I need to as: (1) !Spark for RISC OS is cheap (#5.99
+from David Pilling), (2) !SparkPlug can unpack archives created with
+zip (which is available in source form for UNIX, VMS and MSDOS), and
+(3) it's a lot of work. Let me know what you think.
+
+.I Options:
+.IP "-x" 10
+Extract the given
+.B file,
+or all files if none are specified.
+.IP "-u" 10
+Equivalent to -x.
+.IP "-t" 10
+Test archive integrity by simulating extraction and checking the CRCs (Cyclic
+Redundancy Checks).
+.IP "-l" 10
+List archive contents.
+.IP "-q" 10
+Quiet.  Displays less information when listing, testing or extracting.
+.IP "-f" 10
+Force file overwrite if a file already exists with the same name as the one
+being extracted. If not using -f then you are prompted whether you want to
+overwrite the original, skip this file, give it a different name, or overwrite
+this and all others that already exist.
+.IP "-s" 10
+No filestamp. Does not set the timestamp when extracting files.
+.IP "-v" 10
+Verbose.  Gives full details when listing or extracting archives.
+.IP "-R" 10
+Retry if archive is corrupt.  If a bad header is found then nspark will
+search the archive until another header if found, rather than giving up.
+.IP "-L<name>" 10
+Set name of log file to
+.B name.
+.IP "-T" 10
+Append file type to name, in the same way as Tar or NFS.  For example
+Text files (filetype &FFF) have ,fff appended when extracted.
+.IP "-C" 10
+Create lowercase filenames.  Useful on machines where the case of filenames
+is significant (eg. UNIX), this option forces all extracted filenames to be
+lowercase.
+.SH BUGS
+Filestamping is not supported under 4.2BSD or SysV2 (as no mktime(3) or
+timelocal(3) functions exist under these systems).  To correct this I could
+write my own or port the one from 386BSD (save that for a rainy day).
+
+Doesn't support MSDOS yet.  Working on that.
+
+If compiled with GCC (v1.42) it core dumps when trying to test (or
+unarchive ?) a corrupt archive file.  This doesn't happen when compiled with
+the UNIX pcc.
+.SH NOTES
+.B Nspark
+is in the public domain.
+It is currently being maintained by arb (arb@comp.lancs.ac.uk).
+.SH SEE ALSO
+arcfs(5), spark(5).
+.SH AUTHOR
+Andy Duplain, BT Customer Systems, Brighton, UK.  (duplain@btcs.bt.co.uk)
+.SH CONTRIBUTORS
+Improvements from version 1.5, including ArcFS support, by Andrew Brooks (arb@compl.ancs.ac.uk).
+
+Manual pages originally supplied by Duncan (m91dps@ecs.oxford.ac.uk).
+
+Suggestions for improvement by Tom Tromey (tromey@busco.lanl.gov).
+
+Windows NT support by Alun Jones (auj@aber.ac.uk).

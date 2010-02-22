@@ -1,0 +1,75 @@
+		nspark - New Spark unarchiver
+		=============================
+
+THIS PROGRAM IS *FREE* -- YOU MAY DO WHAT YOU LIKE WITH IT AS LONG AS
+THIS FILE REMAINS INTACT, AND YOU DO NOT MAKE ANY MONEY FROM IT!  IF
+YOU MAKE IMPROVEMENTS TO THIS PROGRAM THEN PLEASE SEND A COPY OF THE
+SOURCES TO THE MAINTAINER OF THAT VERSION OF THE PROGRAM.
+
+nspark is a rewritten version of !Spark for UNIX. The original version
+of spark (sometimes known as "cark") was based upon the BASIC program
+"bark", written by David Pilling, and was improved and fixed by the
+following people:
+
+	Philip Colmer (pcolmer@acorn.co.uk),
+	Alun Jones (auj@uk.ac.aber),
+	Andy Duplain (duplain@rtf.bt.co.uk),
+	Martin Percival (martin@thed.uk22.bull.com),
+	Denis Howe (dbh@doc.ic.ac.uk).
+
+I decided to re-write the program to add functionality and make it
+easier to port to other Operating Systems (such as MSDOS and even RISC
+OS :-).  The new version has the following enhancements:
+
+	o Supports all archive methods used by !Spark 1 and 2. The old
+	version didn't support "Squashing" and used to handle "Compressed"
+	archives by using the UNIX uncompress program. The new version
+	supports both these and has them built-in, allowing easier porting
+	to other OS's.
+
+	o Supports Cyclic Redundancy Checking (CRC). The integrity of an
+	archive can now be checked without having to unarchive it.
+
+ 	o Supports verbose option to allow archive file details to be
+ 	displayed (time/date or exec/load address, size, type).
+
+	o Supports selective file unarchiving, so the whole archive needn't
+	be unarchived if not all the files are wanted).
+
+	o Supports user-prompting before overwriting a file, allowing the
+	user to either (1) overwrite the file, (2) overwrite all the
+	files, (3) unarchive the file to a different name, or (4) not to
+	unarchive the file at all.
+
+	o Supports file-stamping so the date and time of the file, when
+	unarchived, matches the date and time it was archived (not 4.2BSD
+	or SysV.2 as these systems lack vital library functions).
+			
+I have not included support for creating !Spark archives, and I am not
+really sure if I need to as: (1) !Spark for RISC OS is cheap (#5.99
+from David Pilling), (2) !SparkPlug can unpack archives created with
+zip (which is available in source form for UNIX, VMS and MSDOS), and
+(3) it's a lot of work. Let me know what you think.
+
+To compile nspark; copy the relevant makefile from the "mkfiles"
+directory, and rename it "Makefile" or "makefile", edit it to suite C
+compiler preference, change the "SYSTYPE" variable setting, etc, then
+simply type "make" (or "nmake" or "amu" or whatever).
+
+There are some problems with nspark if it is compiled with gcc v2 (it
+core dumps).  To fix this try recompiling everything ("make clean"
+first) with "-O" off, and if nspark still won't work try adding
+"-fno-builtin" after "gcc" in the "CC" line, then recompile. I have
+had some strange problems with optimisation in gcc v2, for example
+basename() in misc.c core dumps (looking at the assembler gcc v2
+produced I can see why!).
+			
+Please send bug reports/suggestions etc to the maintainer of the
+particular version of nspark you are using (the maintainer's e-mail
+address can be found using the -V option).
+
+Enjoy.
+
+--
+Andy Duplain, BT Customer Systems, Brighton, UK.  (duplain@btcs.bt.co.uk).
+October 1992.

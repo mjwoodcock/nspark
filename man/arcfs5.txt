@@ -1,0 +1,198 @@
+
+
+
+ARCFS(5)                  FILE FORMATS                   ARCFS(5)
+
+
+
+NAME
+     ArcFS - Archive file format for the RISC OS ArcFS filesystem
+
+CONVENTIONS
+     Strings are given in ASCII with  C-style  escapes.  No  ter-
+     minating   is present if not explicitly included.
+
+     Words are 32 bit little-endian numbers.
+
+     Half words are 16 bit little-endian numbers.
+
+     This document describes format version 0, for ArcFS  minimum
+     versions  0.40  and  1.00, and version 0a, for ArcFS minimum
+     versions 0.58 and 2.17.
+
+
+FORMAT
+     The file consists of a file header, a  sequence  of  archive
+     headers, then a sequence of compressed files.
+
+
+FILE HEADER
+     _F_i_l_e _s_t_r_i_n_g _s_i_g_n_a_t_u_r_e
+     The string "Archive" followed by a zero byte.
+
+     _H_e_a_d_e_r _l_e_n_g_t_h
+     Length of header info in bytes, one word, multiple of 36.
+
+     _D_a_t_a _o_f_f_s_e_t
+     Offset, in bytes, into archive at  which  data  starts,  one
+     word.
+
+     _R_e_a_d-_o_n_l_y _v_e_r_s_i_o_n
+     Minimum read-only version required, multiplied by  100,  one
+     word.
+
+     _R_e_a_d-_w_r_i_t_e _v_e_r_s_i_o_n
+     Minimum read--write version required, multiplied by 100, one
+     word.
+
+     _R_e_s_e_r_v_e_d
+     Reserved for future use, 68 bytes.
+
+
+ARCHIVE HEADER
+     The last header starts at 60+length of headers and  ends  at
+     96+length  of  headers. The format of each header is as fol-
+     lows.
+
+     _I_n_f_o _b_y_t_e
+     Object information byte, show compression method used:
+          0x00 end of directory marker
+
+
+
+Sun Release 4.1           Last change:                          1
+
+
+
+
+
+
+ARCFS(5)                  FILE FORMATS                   ARCFS(5)
+
+
+
+          0x01 object has been deleted
+          0x82 stored
+          0x83 packed
+          0x88 crunched
+          0xFF compressed
+
+     _F_i_l_e _n_a_m_e
+     File name, 11 bytes.
+
+     _F_u_l_l _l_e_n_g_t_h
+     Original file length, or 0xFFFFFFFF for  a  directory),  one
+     word.
+
+     _L_o_a_d _a_d_d_r_e_s_s
+     Load address of the file, or 0xFFFFFFdd  for  a  directory),
+     one word.
+
+     _E_x_e_c _a_d_d_r_e_s_s
+     Exec address of the file, or 0xdddddddd  for  a  directory),
+     one word.
+
+     File load and execution address may contain a  filetype  and
+     datestamp as normal.
+
+     Directories can be date-stamped, the number of  centiseconds
+     since  the  1st  January 1900 when the directory was created
+     are given by &dddddddddd contained in the  directory's  load
+     and execution addresses as shown above.
+
+     Archives converted from spark(5) format using  ArcConv  will
+     have  the  same full length, compressed length, load address
+     and execute address as they had in the Spark archive.
+
+     _A_t_t_r_i_b_u_t_e_s
+     Attributes of the file, one word.  Contains  the  number  of
+     bits  compression  for  crunch and compress format files and
+     the least significant bytes contains the  standard  RISC  OS
+     information on file access.
+
+     _C_o_m_p_r_e_s_s_e_d _l_e_n_g_t_h
+     Length of compressed data, or 0xFFFFFFFF  for  a  directory,
+     one word.
+
+     _I_n_f_o_r_m_a_t_i_o_n _w_o_r_d
+     The top bit (definitively) indicates whether the object is a
+     file or a directory, 0 for a file, 1 for a directory.
+
+     In the case of a file, the least significant  31  bits  show
+     the offset from the start of data at which the file data can
+     be found.
+
+     In the case of a directory, the least  significant  31  bits
+
+
+
+Sun Release 4.1           Last change:                          2
+
+
+
+
+
+
+ARCFS(5)                  FILE FORMATS                   ARCFS(5)
+
+
+
+     show  the offset from the start of headers (96) at which the
+     next object in this directory can be  found,  the  following
+     object being the first in the sub-directory.
+
+
+FORMAT VERSION 0a
+     This archive format is backwards  compatible  with  versions
+     0.40  and  1.00,  the  only difference being that there is a
+     block of catalogue  information  immediately  prior  to  the
+     start of each file's data as described below.
+
+     Note that this information is there to aid the  recovery  of
+     most  files  in  the  event of archive corruption and is not
+     used by ArcFS.
+
+     Note, also that Compact and Autocompact in release  versions
+     1.09,  2.02 and 2.11 will compact out the catalogue informa-
+     tion blocks, so try to avoid writing to  new  archives  with
+     old versions of ArcFS.
+
+     _M_a_r_k_e_r
+     A marker to indicate the start of a file, the string "FileData", not terminated.
+
+     _I_n_f_o _b_y_t_e
+     One byte, as above.
+
+     _L_e_a_f _n_a_m_e
+     The file name, 11 bytes.
+
+     _F_u_l_l _l_e_n_g_t_h
+     One word, as above.
+
+     _L_o_a_d _a_d_d_r_e_s_s
+     One word, as above.
+
+     _E_x_e_c _a_d_d_r_e_s_s
+     One word, as above.
+
+     _A_t_t_r_i_b_u_t_e_s
+     One word, as above.
+
+
+SEE ALSO
+     spark(5), nspark(1)
+
+
+
+
+
+
+
+
+
+
+
+Sun Release 4.1           Last change:                          3
+
+
+

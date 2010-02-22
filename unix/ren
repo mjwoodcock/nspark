@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+#   Utility to rename source files for use on unix
+#
+cd h
+for i in *; do
+  mv $i ../${i}.h
+done
+cd ..
+rmdir h
+cd c
+for i in *; do
+  mv $i ../${i}.c
+done
+cd ..
+rmdir c
