@@ -6,6 +6,7 @@
 #include "../nsparkio.h"
 #include "../pack.h"
 #include "../arcfs.h"
+#include "../garble.h"
 
 char **files = NULL;
 char *archive = NULL;
@@ -23,6 +24,8 @@ main(int argc, char *argv[])
 	int r;
 
 	memset(&header, 0, sizeof(header));
+
+	set_password("james");
 
 	if (argc != 4)
 	{
@@ -52,6 +55,7 @@ main(int argc, char *argv[])
 		crcsize = header.origlen;
 		pack(&header, in, out);
 		fseek(out, 0, SEEK_SET);
+		printf("\n");
 		fwrite(&header, sizeof(header), 1, out);
 		printf("Original size = %d\n", header.origlen);
 		printf("Compressed size = %d\n", header.complen);
@@ -67,6 +71,7 @@ main(int argc, char *argv[])
 		{
 			printf("Failed %d\n", r);
 		}
+		printf("\n");
 	}
 
 	fclose(in);

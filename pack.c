@@ -149,9 +149,9 @@ write_ncr(ofp, byte, bytecount)
 
 	if (bytecount > 1)
 	{
-		fputc((int)byte, ofp);
-		fputc((int)RUNMARK, ofp);
-		fputc((int)bytecount, ofp);
+		fputc((int)garble(byte), ofp);
+		fputc((int)garble(RUNMARK), ofp);
+		fputc((int)garble(bytecount), ofp);
 		complen += 3;
 		for (i = 0; i < bytecount; i++)
 		{
@@ -163,14 +163,14 @@ write_ncr(ofp, byte, bytecount)
 		if (byte == RUNMARK)
 		{
 			calccrc(RUNMARK);
-			fputc((int)RUNMARK, ofp);
-			fputc(0, ofp);
+			fputc((int)garble(RUNMARK), ofp);
+			fputc(garble(0), ofp);
 			complen += 2;
 		}
 		else
 		{
 			calccrc(byte);
-			fputc((int)byte, ofp);
+			fputc((int)garble(byte), ofp);
 			complen += 1;
 		}
 	}

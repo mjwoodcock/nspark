@@ -5,5 +5,6 @@
 void set_password(char *p);
 void init_garble();
 Byte ungarble(Byte byte);
+Byte garble(Byte byte);
 
 #endif

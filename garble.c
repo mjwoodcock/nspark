@@ -27,3 +27,10 @@ ungarble(Byte byte)
 
 	return byte;
 }
+
+Byte
+garble(Byte byte)
+{
+	/* Garble and ungarble are the same thing */
+	return ungarble(byte);
+}
