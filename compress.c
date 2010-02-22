@@ -62,6 +62,7 @@
 #include "pack.h"
 #include "main.h"
 #include "crc.h"
+#include "garble.h"
 
 /* BB changed next line because of conflict with Borland's io.h */
 
@@ -214,6 +215,8 @@ uncompress(header, ifp, ofp, type)
 #endif							/* __MSDOS__ */
 	register code_int code, oldcode, incode;
 	char *message;
+
+	init_garble();
 
 #if defined(__MSDOS__) && !defined(BB_HUGE_STATIC_ARRAYS)
 	if (!htab)
@@ -434,6 +437,7 @@ getcode(ifp)
 	register code_int code;
 	static char_type buf[COMPRESSBITS];
 	register int r_off, bits;
+	int i;
 	/* BB changed next line. We are doing pointer-artithmatics
 	   and that can be dangerous if other than normalized (huge)
 	   pointers are being used. */
@@ -473,6 +477,10 @@ getcode(ifp)
 		size = fread(buf, 1, size, ifp);
 		if (size <= 0)
 			return (-1);		/* end of file */
+		for (i = 0; i < size; i++)
+		{
+			buf[i] = ungarble(buf[i]);
+		}
 		readsize -= size;
 		offset = 0;
 		/* Round size down to integral number of codes */

@@ -25,6 +25,7 @@
 #include "spark.h"
 #include "main.h"
 #include "crc.h"
+#include "garble.h"
 
 /* BB changed next line because of conflict with Borland's io.h */
 
@@ -49,12 +50,15 @@ unstore(header, ifp, ofp)
 #endif							/* __MSDOS__ */
 	register Byte byte;
 
+    init_garble();
+
 	crc = 0;
 	while (len--)
 	{
 		if (check_stream(ifp) != FNOERR)
 			break;
 		byte = read_byte(ifp);
+		byte = ungarble(byte);
 		calccrc(byte);
 		if (!testing)
 			write_byte(ofp, byte);

@@ -25,6 +25,7 @@
 #include "spark.h"
 #include "main.h"
 #include "crc.h"
+#include "garble.h"
 
 /* BB changed next line because of conflict with Borland's io.h */
 
@@ -113,13 +114,15 @@ unpack(header, ifp, ofp)
 	register len = header->complen;
 #endif							/* __MSDOS__ */
 
+    init_garble();
+
 	crc = 0;
 	putc_init();
 	while (len--)
 	{
 		if (check_stream(ifp) != FNOERR)
 			break;
-		putc_ncr(ofp, read_byte(ifp));
+		putc_ncr(ofp, ungarble(read_byte(ifp)));
 	}
 
 	if (check_stream(ifp) == FRWERR)

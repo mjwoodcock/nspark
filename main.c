@@ -56,6 +56,7 @@
 #include "misc.h"
 #include "arc.h"
 #include "unarc.h"
+#include "garble.h"
 
 /* BB changed next line */ 
 
@@ -278,6 +279,16 @@ main(argc, argv)
 					unarc = 1;
 					inffiles = 1;
 					break;
+				case 'p':
+					if (*++arg)
+						logfile = arg;
+					else
+						if (--argc)
+							set_password(*++argv);
+						else
+							usage();
+					donext++;
+					break;
 				default:
 					error("unknown option '%c'", c);
 					exit(1);
@@ -335,6 +346,6 @@ usage()
 			 "       -T append filetype to name   -C create lowercase filenames\n");
 	
 		/* MU added instuctions for the -I option */ 
-	fprintf(stderr, "       -I unarchive with .inf files\n");
+	fprintf(stderr, "       -I unarchive with .inf files -p<password> set password\n");
 	exit(1);
 } 
