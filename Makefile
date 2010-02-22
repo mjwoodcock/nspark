@@ -24,28 +24,40 @@ CMISC = -DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
 # BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
 CFLAGS = $(CDEFINES) $(CMISC)
 PROG = nspark
-SRCS = main.c arc.c unarc.c store.c pack.c compress.c crc.c \
+TESTPACK = testprog/testpack
+SRCS = store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c unix.c arcfs.c garble.c
-HDRS = main.h arc.h unarc.h store.h pack.h compress.h crc.h \
+HDRS = store.h pack.h compress.h crc.h \
 	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
-OBJS = main.o arc.o unarc.o store.o pack.o compress.o crc.o \
+OBJS = store.o pack.o compress.o crc.o \
 	io.o error.o misc.o date.o unix.o arcfs.o garble.o
+
+NSPARKSRCS = main.c arc.c unarc.c
+NSPARKHDRS = main.h arc.h unarc.h
+NSPARKOBJS = main.o arc.o unarc.o
+
+TESTPACKSRCS = testprog/pack.c
+TESTPACKOBJS = testprog/pack.o
+
 # BB: For SGI systems use LIBS -lc_s -s.
 LIBS =
 
 .DEFAULT:
 	cc -c $<
 
-all:	$(PROG)
+all:	$(PROG) $(TESTPACK)
 
-$(PROG): $(OBJS)
-	$(CC) -o $(PROG) $(OBJS) $(LIBS)
+$(TESTPACK): $(OBJS) $(TESTPACKOBJS)
+	$(CC) -o $(TESTPACK) $(OBJS) $(TESTPACKOBJS) $(LIBS)
+
+$(PROG): $(OBJS) $(NSPARKOBJS)
+	$(CC) -o $(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
 
 install: $(PROG)
 	 $(INSTALL) $(PROG) $(INSTALLDIR)
 
-depend: $(SRCS) $(HDRS)
-	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS)
+depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS)
+	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS) $(NSPARKSRCS)
 	mv makefile makefile.old
 	sed -f nosysdep.sed < makefile.old > makefile
 	rm -f makefile.old makefile.bak
@@ -54,7 +66,7 @@ tags:	$(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
 
 clean:
-	rm -f $(PROG) $(OBJS) mkendian endian.h
+	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) mkendian endian.h
 	rm -f a.out core *~
 
 backup:	clean

@@ -42,6 +42,7 @@ static char rcsid[] = "$Header: pack.c 1.5 95/08/01 $";
 #endif							/* UNIX */
 
 static short running;
+static Word complen;
 
 
 void
@@ -135,5 +136,95 @@ unpack(header, ifp, ofp)
 		printf("OK (packed)");
 	else
 		printf("unpacked");
+	return (NOERR);
+}
+
+void
+write_ncr(ofp, byte, bytecount)
+	FILE *ofp;
+	Byte *byte;
+	int bytecount;
+{
+	if (bytecount > 1)
+	{
+		fputc((int)byte, ofp);
+		fputc((int)RUNMARK, ofp);
+		fputc((int)bytecount, ofp);
+		complen += 3;
+	}
+	else
+	{
+		if (byte == RUNMARK)
+		{
+			fputc((int)RUNMARK, ofp);
+			fputc(0, ofp);
+			complen += 2;
+		}
+		else
+		{
+			fputc((int)byte, ofp);
+			complen += 1;
+		}
+	}
+}
+
+Status
+pack(header, ifp, ofp)
+	Header *header;
+	FILE *ifp, *ofp;
+{
+	/* BB changed next line: complen is a long */
+	/* register len = header->complen; */
+#ifdef __MSDOS__
+	register long len = header->origlen;
+#else
+	register len = header->origlen;
+#endif							/* __MSDOS__ */
+	Byte prevbyte = '\0', byte;
+	int bytecount = 0;
+
+    init_garble();
+
+	complen = 0;
+	crc = 0;
+	prevbyte = read_byte(ifp);
+	len--;
+	bytecount = 1;
+	while (len--)
+	{
+		byte = read_byte(ifp);
+		if(prevbyte == RUNMARK)
+		{
+			write_ncr(ofp, prevbyte, 1);
+			bytecount = 1;
+		}
+		else if (byte == prevbyte && bytecount < 254)
+		{
+			bytecount++;
+		}
+		else
+		{
+			write_ncr(ofp, prevbyte, bytecount);
+			bytecount = 1;
+		}
+		prevbyte = byte;
+		if (check_stream(ifp) != FNOERR)
+			break;
+	}
+	write_ncr(ofp, prevbyte, bytecount);
+
+	if (check_stream(ifp) == FRWERR)
+		return (RERR);
+	if (!testing && check_stream(ofp) == FRWERR)
+		return (WERR);
+//	if ((Halfword) crc != header->crc)
+//		return (CRCERR);
+	if (testing)
+		printf("OK (packed)");
+	else
+		printf("packed");
+
+	header->complen = complen;
+
 	return (NOERR);
 }

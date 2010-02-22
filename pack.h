@@ -19,5 +19,6 @@
 void putc_init P__((void));
 void putc_ncr P__((FILE *ofp, Byte byte));
 Status unpack P__((Header *header, FILE *ifp, FILE *ofp));
+Status pack P__((Header *header, FILE *ifp, FILE *ofp));
 
 #endif /* __PACK_H */
