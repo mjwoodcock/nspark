@@ -49,6 +49,7 @@ main(int argc, char *argv[])
 		header.origlen = ftell(in);
 		fseek(in, 0, SEEK_SET);
 		fwrite(&header, sizeof(header), 1, out);
+		crcsize = header.origlen;
 		pack(&header, in, out);
 		fseek(out, 0, SEEK_SET);
 		fwrite(&header, sizeof(header), 1, out);
@@ -60,8 +61,12 @@ main(int argc, char *argv[])
 		fread(&header, sizeof(header), 1, in);
 		printf("Original size = %d\n", header.origlen);
 		printf("Compressed size = %d\n", header.complen);
-		writesize = header.origlen;
-		unpack(&header, in, out);
+		crcsize = writesize = header.origlen;
+		r = unpack(&header, in, out);
+		if (r != NOERR)
+		{
+			printf("Failed %d\n", r);
+		}
 	}
 
 	fclose(in);

@@ -142,26 +142,34 @@ unpack(header, ifp, ofp)
 void
 write_ncr(ofp, byte, bytecount)
 	FILE *ofp;
-	Byte *byte;
+	Byte byte;
 	int bytecount;
 {
+	int i;
+
 	if (bytecount > 1)
 	{
 		fputc((int)byte, ofp);
 		fputc((int)RUNMARK, ofp);
 		fputc((int)bytecount, ofp);
 		complen += 3;
+		for (i = 0; i < bytecount; i++)
+		{
+			calccrc(byte);
+		}
 	}
 	else
 	{
 		if (byte == RUNMARK)
 		{
+			calccrc(RUNMARK);
 			fputc((int)RUNMARK, ofp);
 			fputc(0, ofp);
 			complen += 2;
 		}
 		else
 		{
+			calccrc(byte);
 			fputc((int)byte, ofp);
 			complen += 1;
 		}
@@ -217,13 +225,12 @@ pack(header, ifp, ofp)
 		return (RERR);
 	if (!testing && check_stream(ofp) == FRWERR)
 		return (WERR);
-//	if ((Halfword) crc != header->crc)
-//		return (CRCERR);
 	if (testing)
 		printf("OK (packed)");
 	else
 		printf("packed");
 
+	header->crc = (Halfword) crc;
 	header->complen = complen;
 
 	return (NOERR);
