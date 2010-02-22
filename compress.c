@@ -243,7 +243,10 @@ uncompress(header, ifp, ofp, type)
 	else
 	{
 		if (arcfs)
+		{
 			maxbits = arcfs_maxbits;
+			ungarble('\0'); // Need to consume one byte of password.
+		}
 		else
 		{
 			maxbits = read_byte(ifp);
