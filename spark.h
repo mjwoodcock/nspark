@@ -171,7 +171,7 @@ typedef struct {
 /*
  * compress type (passed to uncompress())
  */
-typedef enum { COMPRESS, SQUASH, CRUNCH } CompType;
+typedef enum { COMPRESS, SQUASH, CRUNCH, UNIX_COMPRESS } CompType;
 
 /*
  * compression types

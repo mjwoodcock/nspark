@@ -240,6 +240,14 @@ uncompress(header, ifp, ofp, type)
 
 	if (type == SQUASH)
 		maxbits = SQUASHBITS;
+	else if (type == UNIX_COMPRESS)
+	{
+		/* Read the unix compress header */
+		read_byte(ifp);
+		read_byte(ifp);
+		maxbits = read_byte(ifp) & 0x1f;
+		readsize -= 3;
+	}
 	else
 	{
 		if (arcfs)
