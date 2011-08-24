@@ -9,20 +9,20 @@ CC=	cl
 
 # --- You shouldn't need to edit below this line ---
 
-VERSION= 1.7.4
-MAINTAINER= arb@comp.lancs.ac.uk
+VERSION= 1.7.8b1
+MAINTAINER= james_woodcock@yahoo.co.uk
 
-CDEFINES= -I. -DDEBUGGING # -Ox -Gs
+CDEFINES= -I. #-DDEBUGGING # -Ox -Gs
 CMISC=	-DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
 CFLAGS=	$(CDEFINES) $(CMISC) /O2
 LDFLAGS= 
 PROG=	nspark.exe
 SRCS=	main.c arc.c unarc.c store.c pack.c compress.c crc.c \
-	io.c error.c misc.c date.c arcfs.c
+	io.c error.c misc.c date.c arcfs.c garble.c
 HDRS=	main.h arc.h unarc.h store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
 OBJS=	main.obj arc.obj unarc.obj store.obj pack.obj compress.obj crc.obj \
-	io.obj error.obj misc.obj date.obj arcfs.obj winnt.obj
+	io.obj error.obj misc.obj date.obj arcfs.obj winnt.obj garble.obj
 LIBS=	
 
 all:	$(PROG)
