@@ -285,7 +285,7 @@ main(argc, argv)
 					break;
 				case 'p':
 					if (*++arg)
-						logfile = arg;
+						set_password(arg);
 					else
 						if (--argc)
 							set_password(*++argv);
