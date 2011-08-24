@@ -344,6 +344,11 @@ uncompress(header, ifp, ofp, type)
 
 		while (code >= 256)
 		{
+			if ((char *)(stackp+1) > (char *)(&htab[0] + HSIZE))
+			{
+				fprintf(stderr, "%s: uncompress: corrupt or garbled archive file\n", ourname);
+				exit(1);
+			}
 			*stackp++ = tab_suffixof(code);
 			code = tab_prefixof(code);
 		}
@@ -353,6 +358,11 @@ uncompress(header, ifp, ofp, type)
 		finchar = tab_suffixof(code);
 		*stackp++ = (char_type) finchar;
 #else
+		if ((char *)(stackp+1) > (char *)(&htab[0] + HSIZE))
+		{
+			fprintf(stderr, "%s: uncompress: corrupt or garbled archive file\n", ourname);
+			exit(1);
+		}
 		*stackp++ = finchar = tab_suffixof(code);
 #endif
 
