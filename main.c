@@ -242,20 +242,24 @@ main(argc, argv)
 					break;
 				case 'T':
 					apptype = 1;
+					logfile = NULL;
 					break;
 				case 'C':
 					singlecase = 1;
 					break;
 				case 'L':
-					if (*++arg)
-						logfile = arg;
+					if (!apptype)
+					{
+						if (*++arg)
+							logfile = arg;
 					
-					else
-					if (--argc)
-						logfile = *++argv;
+						else
+						if (--argc)
+							logfile = *++argv;
 					
-					else
-						usage();
+						else
+							usage();
+					}
 					donext++;
 					break;
 					
