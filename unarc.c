@@ -155,8 +155,8 @@ do_unarc()
 
 	if (!quiet && verbose)
 	{
-		puts("filename                          size load/date exec/time type status");
-		puts("--------                          ---- --------- --------- ---- ------");
+		puts("filename                          size load/date   exec/time type storage");
+		puts("--------                          ---- ----------- --------- ---- -------");
 	}
 
 	/*

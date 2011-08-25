@@ -237,6 +237,29 @@ downlevel(filename)
 	return (pathname);
 }
 
+char *
+get_comp_desc(Byte comptype)
+{
+	switch (comptype & ~ARCHPACK)
+	{
+	case CT_NOTCOMP:
+	case CT_NOTCOMP2:
+		return "Stored";
+	case CT_PACK:
+		return "Packed";
+	case CT_CRUNCH:
+		return "Crunched";
+	case CT_SQUASH:
+		return "Squashed";
+	case CT_COMP:
+		return "Compressed";
+	default:
+		return "Unknown";
+	}
+
+	return "Unknown";
+}
+
 /*
  * print archive file details (size, data and time)
  */
@@ -264,11 +287,12 @@ print_details(header)
 			   monthname(date->month), date->year,
 			   date->hour, date->minute, date->second,
 			   (header->load >> 8) & 0xfff); */
-			printf("%8ld %02d-%s-%02d %02d:%02d:%02d  &%03X",
+			printf("%8ld %02d-%s-%04d %02d:%02d:%02d  &%03X %s",
 				   header->origlen, date->day,
-				   monthname(date->month), date->year,
+				   monthname(date->month), date->year + 1900,
 				   date->hour, date->minute, date->second,
-				   (header->load >> 8) & 0xfff);
+				   (header->load >> 8) & 0xfff,
+				   get_comp_desc(header->comptype));
 
 		}
 		else
@@ -280,22 +304,24 @@ print_details(header)
 #ifdef __MSDOS__
 			/*  MU changed next line to capitilise hex output */
 			/*  printf("%8ld &%08lx &%08lx ----", header->origlen, */
-			printf("%8ld &%08lX &%08lX ----", header->origlen,
+			printf("%8ld &%08lX   &%08lX ---- %s", header->origlen,
 #else
 			/*  MU changed next line to capitilise hex output */
 			/*  printf("%8d &%08lx &%08lx ----", header->origlen, */
-			printf("%8d &%08lX &%08lX ----", header->origlen,
+			printf("%8d &%08lX   &%08lX ---- %s", header->origlen,
 #endif							/* __MSDOS__ */
-				   header->load, header->exec);
+				   header->load, header->exec,
+				   get_comp_desc(header->comptype));
 		}
 	}
 	else
 	{
 		/* PC archive header */
 		date = makedate(header);
-		printf("%8ld %02d-%s-%02d %02d:%02d:%02d  ----",
+		printf("%8ld %02d-%s-%02d %02d:%02d:%02d  ---- %s",
 			   header->origlen, date->day, monthname(date->month),
-			   date->year, date->hour, date->minute, date->second);
+			   date->year + 1900, date->hour, date->minute, date->second,
+			   get_comp_desc(header->comptype));
 	}
 }
 
