@@ -91,6 +91,10 @@
 /* BB added next line */
 #ifdef __MSDOS__
 #include <io.h>					/* for read() */
+#else
+#ifndef RISCOS
+#include <unistd.h>
+#endif
 #endif							/* __MSDOS__ */
 #include "misc.h"
 #include "os.h"
@@ -98,9 +102,6 @@
 #include "crc.h"
 #include "arcfs.h"
 
-/* BB changed next line */
-
-/* #ifdef RISCOS */
 #if defined(RISCOS) || defined(__MSDOS__)
 #include <string.h>				/* for strcpy */
 #endif							/* RISCOS || __MSDOS__ */
