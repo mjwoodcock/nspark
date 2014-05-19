@@ -30,7 +30,7 @@ extern long crcsize;
 /*
  * Read ArcFS header
  */
-Header *arcfs_read_header P__((FILE *ifp));
+Header *arcfs_read_header(FILE *ifp);
 
 
 #endif /* __ARCFS_H */

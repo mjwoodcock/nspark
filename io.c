@@ -84,8 +84,7 @@
  * check for EOF or write/read errors on stream.
  */
 Ferror
-check_stream(fp)
-	FILE *fp;
+check_stream(FILE *fp)
 {
 	Ferror ret = FNOERR;
 
@@ -102,8 +101,7 @@ check_stream(fp)
  * read a byte from the input stream.
  */
 Byte
-read_byte(ifp)
-	FILE *ifp;
+read_byte(FILE *ifp)
 {
 	return ((Byte) getc(ifp));
 }
@@ -112,8 +110,7 @@ read_byte(ifp)
  * read a little-endian 2-byte halfword from the input stream.
  */
 Halfword
-read_halfword(ifp)
-	FILE *ifp;
+read_halfword(FILE *ifp)
 {
 	union
 	{
@@ -135,8 +132,7 @@ read_halfword(ifp)
  * read a little-endian 4-byte word from the input stream.
  */
 Word
-read_word(ifp)
-	FILE *ifp;
+read_word(FILE *ifp)
 {
 	union
 	{
@@ -160,9 +156,7 @@ read_word(ifp)
  * write a byte to the output stream.
  */
 void
-write_byte(ofp, byte)
-	FILE *ofp;
-	Byte byte;
+write_byte(FILE *ofp, Byte byte)
 {
 	if (writesize-- > 0)
 		putc((int) byte, ofp);
@@ -174,9 +168,7 @@ write_byte(ofp, byte)
  * write a little-endian 2-byte halfword to the output stream.
  */
 void
-write_halfword(ofp, halfword)
-	FILE *ofp;
-	Halfword halfword;
+write_halfword(FILE *ofp, Halfword halfword)
 {
 	union
 	{
@@ -199,9 +191,7 @@ write_halfword(ofp, halfword)
  * write a little-endian 4-byte word to the output stream.
  */
 void
-write_word(ofp, word)
-	FILE *ofp;
-	Word word;
+write_word(FILE *ofp, Word word)
 {
 	union
 	{
@@ -228,8 +218,7 @@ write_word(ofp, word)
  * read a compression-header from the file
  */
 Header *
-read_header(ifp)
-	FILE *ifp;
+read_header(FILE *ifp)
 {
 	static Header header;
 	register i;

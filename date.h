@@ -16,8 +16,8 @@
 
 #include "cproto.h"
 
-Date *makedate P__((Header *header));
-char *monthname P__((int month));
+Date *makedate(Header *header);
+char *monthname(int month);
 		     
 #endif /* __DATE_H */
 

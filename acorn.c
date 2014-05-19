@@ -18,8 +18,7 @@
  * return the length of a file
  */
 Word
-filesize(pathname)
-	char *pathname;
+filesize(char *pathname)
 {
 	int rc;
 	_kernel_osfile_block osblock;
@@ -38,8 +37,7 @@ filesize(pathname)
  * test for the existance of a file or directory
  */
 Ftype
-exist(pathname)
-	char *pathname;
+exist(char *pathname)
 {
 	int rc;
 	_kernel_osfile_block osblock;
@@ -60,8 +58,7 @@ exist(pathname)
  * make a directory
  */
 int
-makedir(pathname)
-	char *pathname;
+makedir(char *pathname)
 {
 	int rc;
 	_kernel_osfile_block osblock;
@@ -78,9 +75,7 @@ makedir(pathname)
  * stamp a file with date and time
  */
 int
-filestamp(header, filename)
-	Header *header;
-	char *filename;
+filestamp(Header *header, char *filename)
 {
 	int rc;
 	_kernel_osfile_block osblock;
@@ -102,10 +97,7 @@ filestamp(header, filename)
  * read byte from stream (only one line from stdin supported)
  */
 int
-read(fd, buffer, len)
-	int fd;
-	void *buffer;
-	int len;
+read(int fd, void *buffer, int len)
 {
 	_kernel_swi_regs regs;
 	int carry;

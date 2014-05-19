@@ -111,13 +111,9 @@ static arcfs_header header_ptr = NULL;
  */
 
 /* BB added extra prototype for Borland C/C++ */
-#ifdef __MSDOS__
-struct tm *rotm P__((Word load, Word exec));
-#endif							/* __MSDOS__ */
 
 struct tm *
-rotm(load, exec)
-	Word load, exec;
+rotm(Word load, Word exec)
 {
 	Word low, high;
 	time_t t;
@@ -135,13 +131,9 @@ rotm(load, exec)
  */
 
 /* BB added extra prototype for Borland C/C++ */
-#ifdef __MSDOS__
-void arcfs_fixtime P__((Header * hdr));
-#endif							/* __MSDOS__ */
 
 void
-arcfs_fixtime(hdr)
-	Header *hdr;
+arcfs_fixtime(Header *hdr)
 {
 	/* BB next line commented out, variable ti never used */
 	/* time_t ti; */
@@ -164,8 +156,7 @@ arcfs_fixtime(hdr)
  * Read ArcFS header
  */
 Header *
-arcfs_read_header(ifp)
-	FILE *ifp;
+arcfs_read_header(FILE *ifp)
 {
 	static Header null_header;
 	static Word data_start;

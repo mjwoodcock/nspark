@@ -100,8 +100,7 @@ static Word crctable[256] = {
 };
 
 void
-calccrc(byte)
-	Byte byte;
+calccrc(Byte byte)
 {
 	if (crcsize-- > 0)
 		/* BB added cast to next line to stop Borland compiler

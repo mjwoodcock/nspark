@@ -16,13 +16,9 @@
 
 #include "cproto.h"
 
-#ifdef ANSI_C
 #include <stdarg.h>
-#else
-#include <varargs.h>
-#endif
 
-void error P__((char *fmt, ...));
-void warning P__((char *fmt, ...));
+void error(char *fmt, ...);
+void warning(char *fmt, ...);
 
 #endif /* __ERROR_H */

@@ -33,9 +33,7 @@
 #include "nsparkio.h"
 
 Status
-unstore(header, ifp, ofp)
-	Header *header;
-	FILE *ifp, *ofp;
+unstore(Header *header, FILE *ifp, FILE *ofp)
 {
 	/* BB changed next line: complen is a long */
 	/* register len = header->complen; */

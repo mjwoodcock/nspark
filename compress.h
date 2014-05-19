@@ -13,6 +13,6 @@
 
 #include "cproto.h"
 
-Status uncompress P__((Header *header, FILE *ifp, FILE *ofp, CompType type));
+Status uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type);
 
 #endif /* __COMPRESS_H */

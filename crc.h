@@ -14,6 +14,6 @@
 #include "cproto.h"
 
 extern Word crc;
-void calccrc P__((Byte byte));
+void calccrc(Byte byte);
 
 #endif /* __CRC_H */

@@ -28,16 +28,16 @@
 
 #include "cproto.h"
 
-Ferror check_stream P__((FILE *fp));
-Byte read_byte P__((FILE *ifp));
-Halfword read_halfword P__((FILE *ifp));
-Word read_word P__((FILE *ifp));
-void write_byte P__((FILE *ofp, Byte byte));
+Ferror check_stream(FILE *fp);
+Byte read_byte(FILE *ifp);
+Halfword read_halfword(FILE *ifp);
+Word read_word(FILE *ifp);
+void write_byte(FILE *ofp, Byte byte);
 #ifdef notyet
-void write_halfword P__((FILE *ofp, Halfword halfword));
-void write_word P__((FILE *ofp, Word word));
+void write_halfword(FILE *ofp, Halfword halfword);
+void write_word(FILE *ofp, Word word);
 #endif /* notyet */
-Header *read_header P__((FILE *ifp));
+Header *read_header(FILE *ifp);
 
 /* BB changed next line */
 /* #endif */ /* __IO_H */

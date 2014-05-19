@@ -22,21 +22,21 @@
 
 #include "cproto.h"
 
-char *basename P__((char *s));
-char *name_dot_arc P__((char *s));
+char *basename(char *s);
+char *name_dot_arc(char *s);
 #ifndef RISCOS
-char *riscos_path P__((char *s));
+char *riscos_path(char *s);
 #else /* RISC OS */
 #define riscos_path(s) s
 #endif /* not RISC OS */
-char *uplevel P__((void));
-char *downlevel P__((char *filename));
-void print_details P__((Header *header));
-int inlist P__((char *filename));
-int append_type P__((Header *header, char *filename));
+char *uplevel(void);
+char *downlevel(char *filename);
+void print_details(Header *header);
+int inlist(char *filename);
+int append_type(Header *header, char *filename);
 
 #ifdef DEBUGGING
-void print_header P__((Header *header));
+void print_header(Header *header);
 #endif /* DEBUGGING */
 
 #endif /* __MISC_H */

@@ -22,8 +22,7 @@
  * return the length of a file
  */
 Word
-filesize(pathname)
-	char *pathname;
+filesize(char *pathname)
 {
 	struct stat statb;
 
@@ -37,8 +36,7 @@ filesize(pathname)
  * test for the existance of a file or directory
  */
 Ftype
-exist(pathname)
-	char *pathname;
+exist(char *pathname)
 {
 	struct stat statb;
 
@@ -55,8 +53,7 @@ exist(pathname)
  * make a directory
  */
 int
-makedir(pathname)
-	char *pathname;
+makedir(char *pathname)
 {
 	return mkdir(pathname);
 }
@@ -65,9 +62,7 @@ makedir(pathname)
  * stamp a file with date and time
  */
 int
-filestamp(header, filename)
-	Header *header;
-	char *filename;
+filestamp(Header *header, char *filename)
 {
 	Date *date;
 	struct tm tm;

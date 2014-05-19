@@ -100,8 +100,8 @@
 #include <string.h>				/* for strcpy */
 #endif							/* RISCOS || __MSDOS__ */
 
-char prompt_user P__((char *filename));
-char *get_newname P__((void));
+char prompt_user(char *filename);
+char *get_newname(void);
 
 
 int
@@ -581,8 +581,7 @@ do_unarc()
  * the file being extracted already exists, so ask user what to do...
  */
 char
-prompt_user(filename)
-	char *filename;
+prompt_user(char *filename)
 {
 	int c;
 	char buffer[80];
@@ -607,7 +606,7 @@ prompt_user(filename)
  * user wants to rename file, so get the leaf name of the new file...
  */
 char *
-get_newname()
+get_newname(void)
 {
 	int c;
 	static char buffer[80];

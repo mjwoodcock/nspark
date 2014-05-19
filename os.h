@@ -19,12 +19,12 @@
 
 #include "cproto.h"
 
-Word filesize P__((char *pathname));
-Ftype exist P__((char *pathname));
-int makedir P__((char *pathname));
-int filestamp P__((Header *header, char *filename));
+Word filesize(char *pathname);
+Ftype exist(char *pathname);
+int makedir(char *pathname);
+int filestamp(Header *header, char *filename);
 
 #ifdef RISCOS
-int read P__((int fd, void *buffer, int size)); 
+int read(int fd, void *buffer, int size); 
 #endif
 #endif /* __OS_H */

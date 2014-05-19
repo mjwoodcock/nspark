@@ -105,9 +105,7 @@ int do_unarc P__((void));
 int do_arc P__((void));
 
 int
-main(argc, argv)
-	int argc;
-	char **argv;
+main(int argc, char *argv[])
 {
 	register i;
 	

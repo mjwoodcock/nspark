@@ -13,6 +13,6 @@
 
 #include "cproto.h"
 
-int do_arc P__((void));
+int do_arc(void);
 
 #endif /* __ARC_H */

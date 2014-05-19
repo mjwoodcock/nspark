@@ -29,8 +29,7 @@ static char *monthnames[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
  * Build date structure from load and exec fields
  */
 Date *
-makedate(header)
-	Header *header;
+makedate(Header *header)
 {
 	static Date date;
 	register Halfword arcdate = header->date;
@@ -46,8 +45,7 @@ makedate(header)
 }
 
 char *
-monthname(month)
-	int month;
+monthname(int month)
 {
 	if (month > 0 && month < 13)
 		return (monthnames[month - 1]);

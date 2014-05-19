@@ -13,6 +13,6 @@
 
 #include "cproto.h"
 
-int do_unarc P__((void));
+int do_unarc(void);
 
 #endif /* __UNARC_H */

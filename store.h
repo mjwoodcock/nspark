@@ -13,6 +13,6 @@
 
 #include "cproto.h"
 
-Status unstore P__((Header *header, FILE *ifp, FILE *ofp));
+Status unstore(Header *header, FILE *ifp, FILE *ofp);
 
 #endif /* __STORE_H */

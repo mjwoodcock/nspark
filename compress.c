@@ -188,10 +188,7 @@ static code_int getcode P__((FILE * ifp));
 
 
 Status
-uncompress(header, ifp, ofp, type)
-	Header *header;
-	FILE *ifp, *ofp;
-	CompType type;
+uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 {
 	/* BB changed next line. stackp points to huge pointers. */
 	/* register char_type *stackp; */
@@ -448,8 +445,7 @@ uncompress(header, ifp, ofp, type)
  * Read one code from the input.  If EOF, return -1.
  */
 static code_int
-getcode(ifp)
-	FILE *ifp;
+getcode(FILE *ifp)
 {
 	register code_int code;
 	static char_type buf[COMPRESSBITS];

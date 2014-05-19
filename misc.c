@@ -77,8 +77,7 @@ extern char *realloc P__((char *ptr, unsigned len));
  * return last element in pathname
  */
 char *
-basename(s)
-	char *s;
+basename(char *s)
 {
 	/* BB changed next line to cope with null-pointers.
 	   (IRIX's strlen() produces a coredump when s == NULL). */
@@ -109,8 +108,7 @@ basename(s)
  * already exist, and return the new string.
  */
 char *
-name_dot_arc(s)
-	char *s;
+name_dot_arc(char *s)
 {
 	static char *newname = NULL;
 
@@ -139,8 +137,7 @@ name_dot_arc(s)
 
 #ifndef RISCOS
 char *
-riscos_path(s)
-	register char *s;
+riscos_path(register char *s)
 {
 	static char *riscosname = NULL;
 	register char *cptr;
@@ -202,8 +199,7 @@ uplevel()
 }
 
 char *
-downlevel(filename)
-	char *filename;
+downlevel(char *filename)
 {
 	register len, flen;
 
@@ -258,8 +254,7 @@ get_comp_desc(Byte comptype)
  * print archive file details (size, data and time)
  */
 void
-print_details(header)
-	Header *header;
+print_details(Header *header)
 {
 	Date *date;
 
@@ -327,8 +322,7 @@ print_details(header)
  * Returns non-zero if filename matches, or no "files list" exists.
  */
 int
-inlist(filename)
-	char *filename;
+inlist(char *filename)
 {
 	register len = strlen(filename);
 	register char **filelist = files;
@@ -356,9 +350,7 @@ inlist(filename)
 
 /* BB: For DOS, a comma is of no use. So changed that into a dot. */
 int
-append_type(header, filename)
-	Header *header;
-	char *filename;
+append_type(Header *header, char *filename)
 {
 	char append[sizeof(",xxx")];
 
@@ -393,8 +385,7 @@ append_type(header, filename)
  * print archive file header info
  */
 void
-print_header(header)
-	Header *header;
+print_header(Header *header)
 {
 	if (!header)
 		return;

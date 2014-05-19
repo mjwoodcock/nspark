@@ -52,9 +52,7 @@ putc_init()
  */
 
 void
-putc_ncr(ofp, byte)
-	FILE *ofp;
-	Byte byte;
+putc_ncr(FILE *ofp, Byte byte)
 {
 	static Byte prevbyte;
 
@@ -99,9 +97,7 @@ putc_ncr(ofp, byte)
 }
 
 Status
-unpack(header, ifp, ofp)
-	Header *header;
-	FILE *ifp, *ofp;
+unpack(Header *header, FILE *ifp, FILE *ofp)
 {
 	/* BB changed next line: complen is a long */
 	/* register len = header->complen; */
@@ -136,10 +132,7 @@ unpack(header, ifp, ofp)
 }
 
 void
-write_ncr(ofp, byte, bytecount)
-	FILE *ofp;
-	Byte byte;
-	int bytecount;
+write_ncr(FILE *ofp, Byte byte, int bytecount)
 {
 	int i;
 
@@ -173,9 +166,7 @@ write_ncr(ofp, byte, bytecount)
 }
 
 Status
-pack(header, ifp, ofp)
-	Header *header;
-	FILE *ifp, *ofp;
+pack(Header *header, FILE *ifp, FILE *ofp)
 {
 	/* BB changed next line: complen is a long */
 	/* register len = header->complen; */
