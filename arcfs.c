@@ -170,7 +170,7 @@ arcfs_read_header(FILE *ifp)
 	int i;
 	Byte info_byte, name[12];
 	Word length, load, exec, attr, complen, info_word;
-	arcfs_header header_prev;
+	arcfs_header header_prev = NULL;
 	int j;
 
 	/* Return next header from list */
