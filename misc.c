@@ -270,7 +270,7 @@ print_details(Header *header)
 			/* time stamp valid */
 			date = makedate(header);
 			printf("%8ld %02d-%s-%04d %02d:%02d:%02d  &%03X %s",
-				   header->origlen, date->day,
+				   (long)header->origlen, date->day,
 				   monthname(date->month), date->year + 1900,
 				   date->hour, date->minute, date->second,
 				   (header->load >> 8) & 0xfff,
@@ -287,7 +287,7 @@ print_details(Header *header)
 #else
 			printf("%8d &%08lX   &%08lX ---- %s", header->origlen,
 #endif							/* __MSDOS__ */
-				   header->load, header->exec,
+				   (long)header->load, (long)header->exec,
 				   get_comp_desc(header->comptype));
 		}
 	}
@@ -296,7 +296,7 @@ print_details(Header *header)
 		/* PC archive header */
 		date = makedate(header);
 		printf("%8ld %02d-%s-%02d %02d:%02d:%02d  ---- %s",
-			   header->origlen, date->day, monthname(date->month),
+			   (long)header->origlen, date->day, monthname(date->month),
 			   date->year + 1900, date->hour, date->minute, date->second,
 			   get_comp_desc(header->comptype));
 	}
