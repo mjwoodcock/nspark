@@ -42,28 +42,17 @@ clean:
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-main.obj: spark.h nsparkio.h cproto.h
+main.obj: spark.h nsparkio.h
 main.obj: error.h misc.h arc.h unarc.h
-arc.obj: spark.h error.h cproto.h 
-unarc.obj: spark.h store.h cproto.h
+arc.obj: spark.h error.h
+unarc.obj: spark.h store.h
 unarc.obj: pack.h compress.h main.h nsparkio.h misc.h os.h error.h
-store.obj: spark.h main.h crc.h cproto.h nsparkio.h
-pack.obj: spark.h main.h crc.h cproto.h nsparkio.h
-compress.obj: spark.h pack.h cproto.h main.h crc.h nsparkio.h
+store.obj: spark.h main.h crc.h nsparkio.h
+pack.obj: spark.h main.h crc.h nsparkio.h
+compress.obj: spark.h pack.h main.h crc.h nsparkio.h
 crc.obj: spark.h main.h
-io.obj: spark.h main.h nsparkio.h cproto.h error.h arcfs.h
-error.obj: error.h cproto.h 
-misc.obj: spark.h cproto.h main.h 
+io.obj: spark.h main.h nsparkio.h error.h arcfs.h
+error.obj: error.h
+misc.obj: spark.h main.h 
 misc.obj: date.h misc.h
 date.obj: spark.h
-arc.obj: cproto.h
-unarc.obj: cproto.h
-store.obj: cproto.h
-pack.obj: cproto.h
-compress.obj: cproto.h
-crc.obj: cproto.h
-io.obj: cproto.h
-error.obj: cproto.h 
-misc.obj: cproto.h
-date.obj: cproto.h
-os.obj: cproto.h
