@@ -431,14 +431,8 @@ do_unarc()
 					/* BB changed format in next line to long hex */
 					/* printf("  calculated CRC=0x%x", crc); */
 #ifdef __MSDOS__
-					/*  MU changed next line to capitilise hex output */
-
-/*			printf("  calculated CRC=0x%lx", crc); */
 					printf("  calculated CRC=0X%lX", crc);
 #else
-					/*  MU changed next line to capitilise hex output */
-
-/*		    printf("  calculated CRC=0x%x", crc); */
 					printf("  calculated CRC=0X%X", crc);
 #endif							/* __MSDOS__ */
 				}
@@ -494,8 +488,6 @@ do_unarc()
 					{
 						if (lfp)
 						{
-							//  MU changed next line //
-							//  fprintf(lfp, "SYS \"OS_File\", 1, \"%s\", &%lx, &%lx,, &%x\n", riscos_path(fullname), header->load, header->exec, header->attr);
 							fprintf(lfp,
 									"SYS \"OS_File\", 1, \"%s\", &%lX, &%lX,, &%X\n",
 									riscos_path(fullname), header->load,

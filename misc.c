@@ -269,12 +269,6 @@ print_details(Header *header)
 		{
 			/* time stamp valid */
 			date = makedate(header);
-			/*  MU changed next line to capitilise hex output */
-			/*  printf("%8ld %02d-%s-%02d %02d:%02d:%02d  &%03x",
-			   header->origlen, date->day,
-			   monthname(date->month), date->year,
-			   date->hour, date->minute, date->second,
-			   (header->load >> 8) & 0xfff); */
 			printf("%8ld %02d-%s-%04d %02d:%02d:%02d  &%03X %s",
 				   header->origlen, date->day,
 				   monthname(date->month), date->year + 1900,
@@ -288,14 +282,9 @@ print_details(Header *header)
 			/* load/exec only */
 			/* BB added long to first format in next line.
 			   Header.origlen is a Word (i.e. a long) */
-			/* printf("%8d &%08lx &%08lx ----", header->origlen, */
 #ifdef __MSDOS__
-			/*  MU changed next line to capitilise hex output */
-			/*  printf("%8ld &%08lx &%08lx ----", header->origlen, */
 			printf("%8ld &%08lX   &%08lX ---- %s", header->origlen,
 #else
-			/*  MU changed next line to capitilise hex output */
-			/*  printf("%8d &%08lx &%08lx ----", header->origlen, */
 			printf("%8d &%08lX   &%08lX ---- %s", header->origlen,
 #endif							/* __MSDOS__ */
 				   header->load, header->exec,
@@ -330,8 +319,6 @@ inlist(char *filename)
 		return (1);				/* no "files list" */
 
 	while (*filelist)
-		/* BB changed next line */
-		/* if (strncmp(filename, *filelist++, len) == 0) */
 #ifdef __MSDOS__
 		if (strnicmp(filename, *filelist++, len) == 0)
 #else
@@ -357,19 +344,9 @@ append_type(Header *header, char *filename)
 	if ((header->load & (Word) 0xfff00000l) == (Word) 0xfff00000l)
 	{
 		/* valid time-stamp */
-		/* BB changed next line */
-		/* sprintf(append, ",%03x", (header->load >> 8) & 0xfff); */
 #ifdef __MSDOS__
-
-/*  MU changed next line to capitilise hex output*/
-
-/*	sprintf(append, ".%03x", (header->load >> 8) & 0xfff); */
 		sprintf(append, ".%03X", (header->load >> 8) & 0xfff);
 #else
-
-/*  MU changed next line to capitilise hex output*/
-
-/*	sprintf(append, ",%03x", (header->load >> 8) & 0xfff); */
 		sprintf(append, ",%03X", (header->load >> 8) & 0xfff);
 #endif							/* __MSDOS__ */
 		strcat(filename, append);
@@ -389,15 +366,6 @@ print_header(Header *header)
 	if (!header)
 		return;
 
-	/*  MU changed next line to capitilise hex output */
-
-/*    printf("comptype=0x%x name=%s complen=%lu date=0x%x time=0x%x\n",
-	   header->comptype, header->name, header->complen, header->date,
-	   header->time);
-    printf("crc=0x%x origlen=%lu load=0x%lx exec=0x%lx attr=0x%lx\n",
-	   header->crc, header->origlen, header->load, header->exec,
-	   header->attr);
-*/
 	printf("comptype=0X%X name=%s complen=%lu date=0X%X time=0X%X\n",
 		   header->comptype, header->name, header->complen, header->date,
 		   header->time);
