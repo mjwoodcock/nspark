@@ -59,7 +59,7 @@
 #include "error.h"
 #include "arcfs.h"
 #ifdef UNIX
-#include "endian.h"
+#include "nsendian.h"
 #endif							/* UNIX */
 
 /* BB changed next line */
@@ -122,7 +122,7 @@ read_halfword(ifp)
 	}
 	ret;
 
-#if defined(LITTLE_ENDIAN)
+#if defined(NS_LITTLE_ENDIAN)
 	fread((char *) &ret.h, 1, sizeof(Halfword), ifp);
 #else
 	ret.b[HALFWORD0] = read_byte(ifp);
@@ -145,7 +145,7 @@ read_word(ifp)
 	}
 	ret;
 
-#if defined(LITTLE_ENDIAN)
+#if defined(NS_LITTLE_ENDIAN)
 	fread((char *) &ret.w, 1, sizeof(Word), ifp);
 #else
 	ret.b[WORD0] = read_byte(ifp);
@@ -187,7 +187,7 @@ write_halfword(ofp, halfword)
 
 	un.h = halfword;
 
-#if defined(LITTLE_ENDIAN)
+#if defined(NS_LITTLE_ENDIAN)
 	fwrite((char *) &un.h, 1, sizeof(Halfword), ofp);
 #else
 	write_byte(ofp, un.b[HALFWORD0]);
@@ -212,7 +212,7 @@ write_word(ofp, word)
 
 	un.w = word;
 
-#if defined(LITTLE_ENDIAN)
+#if defined(NS_LITTLE_ENDIAN)
 	fwrite((char *) &un.w, 1, sizeof(Word), ofp);
 #else
 	write_byte(ofp, un.b[WORD0]);

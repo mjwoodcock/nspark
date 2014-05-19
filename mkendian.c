@@ -40,14 +40,14 @@ main()
 	}
 
 	puts("/* endian.h:  local host specific byte-sex defines */");
-	puts("#ifndef __ENDIAN_H");
-	puts("#define __ENDIAN_H");
+	puts("#ifndef __NSENDIAN_H");
+	puts("#define __NSENDIAN_H");
 
 	x.l = 0x00010203;
 	if (x.c[0] == 3 && x.c[1] == 2 && x.c[2] == 1 && x.c[3] == 0)
-		puts("#define LITTLE_ENDIAN");
+		puts("#define NS_LITTLE_ENDIAN");
 	else
-		puts("#undef LITTLE_ENDIAN");
+		puts("#undef NS_LITTLE_ENDIAN");
 	for (i = 0; i < 4; i++)
 		printf("#define WORD%d\t%d\n", i, 3 - x.c[i]);
 

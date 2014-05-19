@@ -66,7 +66,7 @@ tags:	$(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
 
 clean:
-	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) mkendian endian.h
+	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) mkendian nsendian.h
 	rm -f a.out core *~
 
 backup:	clean
@@ -86,10 +86,10 @@ dist:	clean $(SRCS) $(HDRS)
 	(cd $(TMPDIR); tar cf - $(DISTLEAF) | compress > $(DISTLEAF).tar.Z)
 	(cd $(TMPDIR); rm -rf $(DISTLEAF))
 
-io.o:	endian.h
+io.o:	nsendian.h
 
-endian.h:	mkendian
-	./mkendian > endian.h
+nsendian.h:	mkendian
+	./mkendian > nsendian.h
 
 mkendian:	mkendian.c
 	$(CC) -o mkendian mkendian.c
