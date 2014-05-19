@@ -89,7 +89,7 @@
 #include "nsparkio.h"
 
 /* BB added next line */
-#ifdef __MSDOS__
+#if defined(__MSDOS__) || defined(_WIN32)
 #include <io.h>					/* for read() */
 #else
 #ifndef RISCOS

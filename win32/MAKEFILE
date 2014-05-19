@@ -1,5 +1,5 @@
 #
-# nspark makefile (Windows NT, Microsoft V8.0 C Compiler)
+# nspark makefile (Windows NT, Microsoft V9.0 C Compiler)
 #
 # SYSTYPE:	WINNT
 #
@@ -28,7 +28,7 @@ LIBS=
 all:	$(PROG)
 
 $(PROG): $(OBJS)
-	$(CC) -o $(PROG) $(OBJS)
+	$(CC) /Fe$(PROG) $(OBJS)
 
 install: $(PROG)
 	cp $(PROG) $(INSTALLDIR)
