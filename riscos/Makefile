@@ -84,14 +84,14 @@ mkendian:	mkendian.c
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-main.o: spark.h nsparkio.h cproto.h error.h misc.h arc.h unarc.h
-arc.o: spark.h error.h cproto.h 
-unarc.o: spark.h store.h cproto.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h
-store.o: spark.h main.h crc.h cproto.h nsparkio.h
-pack.o: spark.h main.h crc.h cproto.h nsparkio.h
-compress.o: spark.h pack.h cproto.h main.h crc.h nsparkio.h
+main.o: spark.h nsparkio.h error.h misc.h arc.h unarc.h
+arc.o: spark.h error.h
+unarc.o: spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h
+store.o: spark.h main.h crc.h nsparkio.h
+pack.o: spark.h main.h crc.h nsparkio.h
+compress.o: spark.h pack.h main.h crc.h nsparkio.h
 crc.o: spark.h main.h
-io.o: spark.h main.h error.h cproto.h arcfs.h
-error.o: error.h cproto.h 
-misc.o: spark.h cproto.h main.h date.h misc.h
+io.o: spark.h main.h error.h arcfs.h
+error.o: error.h
+misc.o: spark.h main.h date.h misc.h
 date.o: spark.h
