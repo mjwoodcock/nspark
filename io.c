@@ -224,7 +224,7 @@ Header *
 read_header(FILE *ifp)
 {
 	static Header header;
-	register i;
+	register int i;
 	register char *cptr;
 	Byte byte;
 

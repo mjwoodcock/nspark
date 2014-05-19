@@ -167,7 +167,7 @@ char *
 uplevel()
 {
 	register char *cptr;
-	register olen, nlen;
+	register int olen, nlen;
 
 	if (!pathname)
 		return (NULL);
@@ -200,7 +200,7 @@ uplevel()
 char *
 downlevel(char *filename)
 {
-	register len, flen;
+	register int len, flen;
 
 	if (!pathname)
 		len = 0;
@@ -312,7 +312,7 @@ print_details(Header *header)
 int
 inlist(char *filename)
 {
-	register len = strlen(filename);
+	register int len = strlen(filename);
 	register char **filelist = files;
 
 	if (!*filelist)
