@@ -53,23 +53,21 @@
  *
  */
 
+#ifdef BSD42
+#include <strings.h>
+#else							/* not 4.2BSD */
+#include <stdlib.h>
+#include <string.h>
+#endif							/* 4.2BSD */
+
 #include <stdio.h>
 #include "spark.h"
 #include "cproto.h"
 #include "main.h"
 
-#ifdef BSD42
-#include <strings.h>
-#else							/* not 4.2BSD */
-#include <string.h>
-#endif							/* 4.2BSD */
-
 #if defined(BSD42) || defined(SYSV2)
 extern char *malloc P__((unsigned len));
 extern char *realloc P__((char *ptr, unsigned len));
-#else							/* not 4.2BSD or SysV.2 */
-#include <string.h>
-#include <stdlib.h>
 #endif							/* 4.2BSD or SysV.2 */
 
 #include "date.h"
