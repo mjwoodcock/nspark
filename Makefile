@@ -22,7 +22,7 @@ BACKUPFILE = $${HOME}/tmp/nspark.zip
 CDEFINES = -I. -O
 CMISC = -DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
 # BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
-CFLAGS = $(CDEFINES) $(CMISC)
+CFLAGS = $(CDEFINES) $(CMISC) -Wall -Werror
 PROG = nspark
 TESTPACK = testprog/testpack
 SRCS = store.c pack.c compress.c crc.c \
