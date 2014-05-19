@@ -35,24 +35,15 @@
 #include <sys/types.h>
 #endif							/* UNIX */
 
-/* BB changed next line */
-
-/* #ifdef RISCOS */
 #if defined(RISCOS) || defined(__MSDOS__)
 #include <stdlib.h>
 #include <string.h>
-#endif	/* RISCOS */						/* || __MSDOS__ */
+#endif	/* RISCOS || __MSDOS__ */
 #include "arcfs.h"
 
-/* BB changed next line because of conflict with Borland's io.h. */
-
-/* #include "io.h" */
 #include "nsparkio.h"
 
-/* BB added next include for print_header(). */
-#ifdef __MSDOS__
 #include "misc.h"
-#endif							/* __MSDOS__ */
 
 #ifndef SEEK_SET
 #define SEEK_SET 0
