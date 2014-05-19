@@ -27,6 +27,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
+#ifndef BSD42
+#include <string.h>
+#endif
 #if !defined(BSD42) && !defined(SYSV2)
 #include <utime.h>
 #endif							/* not 4.2BSD and not SysVr2 */
