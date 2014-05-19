@@ -477,9 +477,9 @@ do_unarc()
 						header->exec = 0xFFFFFFFF;
 					}
 */
-							fprintf(lfp, "%s %lX %lX\n",
-									riscos_path(fullname), header->load,
-									header->exec);
+							fprintf(lfp, "%s %08lX %08lX\n",
+									riscos_path(fullname), (long)header->load,
+									(long)header->exec);
 							fclose(lfp);
 
 						}
@@ -490,9 +490,9 @@ do_unarc()
 						if (lfp)
 						{
 							fprintf(lfp,
-									"SYS \"OS_File\", 1, \"%s\", &%lX, &%lX,, &%X\n",
-									riscos_path(fullname), header->load,
-									header->exec, header->attr);
+									"SYS \"OS_File\", 1, \"%s\", &%08lX, &%08lX,, &%X\n",
+									riscos_path(fullname), (long)header->load,
+									(long)header->exec, header->attr);
 						}
 					}
 
@@ -564,7 +564,7 @@ do_unarc()
   unarc_exit:
 
 	if (verbose)
-		printf("total of %ld bytes in %d files\n", nbytes, nfiles);
+		printf("total of %ld bytes in %d files\n", (long)nbytes, nfiles);
 
 	if (ofp)
 		fclose(ofp);
