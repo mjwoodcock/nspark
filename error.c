@@ -15,10 +15,6 @@
 #include <stdio.h>
 #include "error.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: error.c 1.2 92/12/07 $";
-#endif							/* UNIX */
-
 extern char *ourname;			/* in main.c */
 
 void

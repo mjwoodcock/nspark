@@ -58,11 +58,6 @@
 #define SEEK_SET 0
 #endif
 
-#ifdef UNIX
-static char rcsid[] = "$Header: arcfs.c 1.5 95/08/01 $";
-#endif							/* UNIX */
-
-
 /*
  * Public flag to indicate whether the current archive is ArcFS format
  */

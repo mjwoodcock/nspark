@@ -18,10 +18,6 @@
 #include <string.h>				/* for memset */
 #include "os.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: msdos.c 1.0 95/07/21 $";
-#endif
-
 /*
  * return the length of a file
  */

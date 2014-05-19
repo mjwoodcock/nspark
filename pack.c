@@ -37,10 +37,6 @@
 #include "pack.h"
 #endif							/* __MSDOS__ */
 
-#ifdef UNIX
-static char rcsid[] = "$Header: pack.c 1.5 95/08/01 $";
-#endif							/* UNIX */
-
 static short running;
 static Word complen;
 

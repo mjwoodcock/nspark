@@ -21,9 +21,6 @@
 #include <stdio.h>
 #include "spark.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: date.c 1.4 92/12/07 $";
-#endif							/* UNIX */
 static char *monthnames[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };

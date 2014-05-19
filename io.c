@@ -80,10 +80,6 @@
 #endif							/* __MSDOS__ */
 
 
-#ifdef UNIX
-static char rcsid[] = "$Header: io.c 1.14 95/08/01 $";
-#endif							/* UNIX */
-
 /*
  * check for EOF or write/read errors on stream.
  */

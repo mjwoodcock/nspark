@@ -15,10 +15,6 @@
 #include "spark.h"
 #include "error.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: arc.c 1.2 92/12/07 $";
-#endif							/* UNIX */
-
 int
 do_arc()
 {

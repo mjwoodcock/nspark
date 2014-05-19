@@ -100,10 +100,6 @@
 #include <string.h>				/* for strcpy */
 #endif							/* RISCOS || __MSDOS__ */
 
-#ifdef UNIX
-static char rcsid[] = "$Header: unarc.c 1.22 99/03/17 $";
-#endif							/* UNIX */
-
 char prompt_user P__((char *filename));
 char *get_newname P__((void));
 

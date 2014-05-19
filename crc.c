@@ -31,10 +31,6 @@
 #include "main.h"
 #include "arcfs.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: crc.c 1.6 95/07/13 $";
-#endif							/* UNIX */
-
 Word crc;
 static Word crctable[256] = {
 	0x00000000, 0x0000c0c1, 0x0000c181, 0x00000140,

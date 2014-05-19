@@ -77,10 +77,6 @@
 #include <stdlib.h> /* for exit() */
 #endif /* __MSDOS__ */
 
-#ifdef UNIX
-static char rcsid[] = "$Header: compress.c 1.11 95/08/01 $";
-#endif /* UNIX */
-
 #define PBITS 16
 #define CRUNCHBITS 12
 #define SQUASHBITS 13

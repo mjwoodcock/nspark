@@ -34,8 +34,6 @@
 #include "spark.h"
 #include "date.h"
 
-static char rcsid[] = "$Header: unix.c 1.6 94/12/13 $";
-
 /*
  * return the length of a file
  */

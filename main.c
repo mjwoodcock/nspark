@@ -71,10 +71,6 @@
 #include <string.h>
 #endif	/* __MSDOS__ */
 	
-#ifdef UNIX
-static char rcsid[] = "$Header: main.c 1.11 95/08/01 $";
-
-#endif	/* UNIX */
 char *ourname;					/* program name */
 char *archive;					/* name of archive file */
 

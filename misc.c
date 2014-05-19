@@ -75,10 +75,6 @@ extern char *realloc P__((char *ptr, unsigned len));
 #include "date.h"
 #include "misc.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: misc.c 1.14 99/03/17 $";
-#endif							/* UNIX */
-
 /*
  * return last element in pathname
  */

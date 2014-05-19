@@ -32,10 +32,6 @@
 /* #include "io.h" */
 #include "nsparkio.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: store.c 1.5 95/08/01 $";
-#endif							/* UNIX */
-
 Status
 unstore(header, ifp, ofp)
 	Header *header;

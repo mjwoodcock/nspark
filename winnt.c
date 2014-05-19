@@ -16,10 +16,6 @@
 #include <time.h>
 #include <direct.h>
 
-#ifdef UNIX
-static char rcsid[] = "$Header: winnt.c 1.0 94/11/09 $";
-#endif
-
 /*
  * return the length of a file
  */

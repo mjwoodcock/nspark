@@ -14,10 +14,6 @@
 #include "kernel.h"
 #include "swis.h"
 
-#ifdef UNIX
-static char rcsid[] = "$Header: acorn.c 1.1 93/03/05 $";
-#endif
-
 /*
  * return the length of a file
  */
