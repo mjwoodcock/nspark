@@ -29,7 +29,11 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
+#ifndef BSD42
+#include <string.h>
+#endif
 #include "spark.h"
 #ifdef UNIX
 #include <sys/types.h>
