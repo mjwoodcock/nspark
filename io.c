@@ -54,6 +54,9 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#ifndef BSD42
+#include <string.h>
+#endif
 #include "spark.h"
 #include "main.h"
 #include "error.h"
