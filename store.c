@@ -40,7 +40,7 @@ unstore(Header *header, FILE *ifp, FILE *ofp)
 #ifdef __MSDOS__
 	register long len = header->complen;
 #else
-	register len = header->complen;
+	register int len = header->complen;
 #endif							/* __MSDOS__ */
 	register Byte byte;
 
