@@ -11,8 +11,6 @@
 #ifndef __COMPRESS_H
 #define __COMPRESS_H
 
-#include "cproto.h"
-
 Status uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type);
 
 #endif /* __COMPRESS_H */

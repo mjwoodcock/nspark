@@ -11,8 +11,6 @@
 #ifndef __CRC_H
 #define __CRC_H
 
-#include "cproto.h"
-
 extern Word crc;
 void calccrc(Byte byte);
 

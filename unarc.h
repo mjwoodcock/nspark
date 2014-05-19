@@ -11,8 +11,6 @@
 #ifndef __UNARC_H
 #define __UNARC_H
 
-#include "cproto.h"
-
 int do_unarc(void);
 
 #endif /* __UNARC_H */

@@ -11,8 +11,6 @@
 #ifndef __STORE_H
 #define __STORE_H
 
-#include "cproto.h"
-
 Status unstore(Header *header, FILE *ifp, FILE *ofp);
 
 #endif /* __STORE_H */

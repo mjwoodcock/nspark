@@ -17,8 +17,6 @@
 #ifndef __OS_H
 #define __OS_H
 
-#include "cproto.h"
-
 Word filesize(char *pathname);
 Ftype exist(char *pathname);
 int makedir(char *pathname);

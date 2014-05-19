@@ -101,9 +101,9 @@ unsigned char singlecase = 0;	/* -C */
 unsigned char debugging = 0;	/* -D */
 
 #endif	/* DEBUGGING */
-void usage P__((void));
-int do_unarc P__((void));
-int do_arc P__((void));
+void usage(void);
+int do_unarc(void);
+int do_arc(void);
 
 int
 main(int argc, char *argv[])

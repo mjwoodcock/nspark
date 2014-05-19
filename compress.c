@@ -184,7 +184,7 @@ static size_t offset, size;		/* from getcode() */
 static int offset, size;		/* from getcode() */
 #endif							/* __MSDOS__ */
 
-static code_int getcode P__((FILE * ifp));
+static code_int getcode(FILE * ifp);
 
 
 Status

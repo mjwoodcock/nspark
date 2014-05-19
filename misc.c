@@ -62,12 +62,11 @@
 
 #include <stdio.h>
 #include "spark.h"
-#include "cproto.h"
 #include "main.h"
 
 #if defined(BSD42) || defined(SYSV2)
-extern char *malloc P__((unsigned len));
-extern char *realloc P__((char *ptr, unsigned len));
+extern char *malloc(unsigned len);
+extern char *realloc(char *ptr, unsigned len);
 #endif							/* 4.2BSD or SysV.2 */
 
 #include "date.h"

@@ -6,8 +6,6 @@
 #ifndef __ARCFS_H
 #define __ARCFS_H
 
-#include "cproto.h"
-
 /*
  * Flag to indicate whether the current archive is ArcFS format
  */

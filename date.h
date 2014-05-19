@@ -14,8 +14,6 @@
 #ifndef __DATE_H
 #define __DATE_H
 
-#include "cproto.h"
-
 Date *makedate(Header *header);
 char *monthname(int month);
 		     

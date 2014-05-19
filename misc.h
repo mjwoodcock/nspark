@@ -20,8 +20,6 @@
 #ifndef __MISC_H
 #define __MISC_H
 
-#include "cproto.h"
-
 char *basename(char *s);
 char *name_dot_arc(char *s);
 #ifndef RISCOS

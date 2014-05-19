@@ -14,8 +14,6 @@
 #ifndef __ERROR_H
 #define __ERROR_H
 
-#include "cproto.h"
-
 #include <stdarg.h>
 
 void error(char *fmt, ...);

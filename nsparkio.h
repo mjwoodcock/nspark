@@ -26,8 +26,6 @@
 #ifndef __NSPARKIO_H
 #define __NSPARKIO_H
 
-#include "cproto.h"
-
 Ferror check_stream(FILE *fp);
 Byte read_byte(FILE *ifp);
 Halfword read_halfword(FILE *ifp);

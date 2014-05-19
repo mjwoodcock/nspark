@@ -11,8 +11,6 @@
 #ifndef __ARC_H
 #define __ARC_H
 
-#include "cproto.h"
-
 int do_arc(void);
 
 #endif /* __ARC_H */

@@ -14,8 +14,6 @@
 #ifndef __PACK_H
 #define __PACK_H
 
-#include "cproto.h"
-
 void putc_init(void);
 void putc_ncr(FILE *ofp, Byte byte);
 Status unpack(Header *header, FILE *ifp, FILE *ofp);
