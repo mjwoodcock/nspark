@@ -58,6 +58,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "spark.h"
 #include "pack.h"
 #include "main.h"
@@ -72,7 +73,6 @@
 
 #ifdef __MSDOS__
 #include <alloc.h>				/* for farcalloc() */
-#include <stdlib.h>				/* for exit() */
 #endif							/* __MSDOS__ */
 
 #define PBITS 16
