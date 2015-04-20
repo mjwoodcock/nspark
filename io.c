@@ -123,7 +123,9 @@ read_halfword(FILE *ifp)
 	ret;
 
 #if defined(NS_LITTLE_ENDIAN)
-	fread((char *) &ret.h, 1, sizeof(Halfword), ifp);
+	if (fread((char *) &ret.h, 1, sizeof(Halfword), ifp)!=sizeof(Halfword)) {
+		error("Read error!");
+	}
 #else
 	ret.b[HALFWORD0] = read_byte(ifp);
 	ret.b[HALFWORD1] = read_byte(ifp);
@@ -145,7 +147,9 @@ read_word(FILE *ifp)
 	ret;
 
 #if defined(NS_LITTLE_ENDIAN)
-	fread((char *) &ret.w, 1, sizeof(Word), ifp);
+	if (fread((char *) &ret.w, 1, sizeof(Word), ifp)!=sizeof(Word)) {
+		error("Read error!");
+	}
 #else
 	ret.b[WORD0] = read_byte(ifp);
 	ret.b[WORD1] = read_byte(ifp);
