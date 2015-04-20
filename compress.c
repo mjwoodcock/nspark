@@ -439,7 +439,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 			break;
 		}
 	if (!quiet)
-		printf(message);
+		printf("%s", message);
 	return (NOERR);
 }
 
