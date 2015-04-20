@@ -589,7 +589,10 @@ prompt_user(char *filename)
 		printf("\n\"%s\" exists, overwrite ? (Yes/No/All/Rename): ",
 			   filename);
 		fflush(stdout);
-		read(0, buffer, sizeof(buffer) - 1);
+		if (read(0, buffer, sizeof(buffer) - 1)<1) {
+			c = 'n';
+			break;
+		}
 		if (isupper(*buffer))
 			c = tolower(*buffer);
 		else
