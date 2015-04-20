@@ -63,7 +63,10 @@ main(int argc, char *argv[])
 	}
 	else
 	{
-		fread(&header, sizeof(header), 1, in);
+		if (fread(&header, sizeof(header), 1, in)!=sizeof(header)) {
+			perror("Read failed!");
+			exit(1);
+		}
 		printf("Original size = %d\n", header.origlen);
 		printf("Compressed size = %d\n", header.complen);
 		crcsize = writesize = header.origlen;
