@@ -25,7 +25,7 @@ main()
 	register i;
 	union
 	{
-#ifdef __alpha
+#if defined(__alpha) || defined(__x86_64__)
 		unsigned int l;
 #else
 		unsigned long l;
