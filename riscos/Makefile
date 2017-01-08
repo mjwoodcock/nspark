@@ -7,42 +7,54 @@
 #
 SYSTYPE= RISCOS2
 INSTALLDIR= $${HOME}/bin
-CC = cc
+CC = gcc
 
 # Under System V change "install" to "cp"
 INSTALL = install -s
 
 # --- You shouldn't need to edit below this line ---
 
-VERSION = 1.7.6
-MAINTAINER = arb@comp.lancs.ac.uk
+VERSION = 1.7.8b1
+MAINTAINER = james_woodcock@yahoo.co.uk
 BACKUPFILE = $${HOME}/tmp/nspark.zip
 
 CDEFINES = -I. -O
-CMISC = -DVERSION="\"$(VERSION)\"" -DMAINTAINER="\"$(MAINTAINER)\"" -D$(SYSTYPE)
-CFLAGS = $(CDEFINES) $(CMISC) -throwback
+CMISC = -DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
+CFLAGS = -mlibscl $(CDEFINES) $(CMISC) -Wall -Werror
 PROG = nspark
-SRCS = main.c arc.c unarc.c store.c pack.c compress.c crc.c \
-	io.c error.c misc.c date.c acorn.c arcfs.c
-HDRS = main.h arc.h unarc.h store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h
-OBJS = main.o arc.o unarc.o store.o pack.o compress.o crc.o \
-	io.o error.o misc.o date.o acorn.o arcfs.o
-LIBS =
+TESTPACK = testprog/testpack
+SRCS = store.c pack.c compress.c crc.c \
+	io.c error.c misc.c date.c acorn.c arcfs.c garble.c
+HDRS = store.h pack.h compress.h crc.h \
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
+OBJS = store.o pack.o compress.o crc.o \
+	io.o error.o misc.o date.o acorn.o arcfs.o garble.o
+
+NSPARKSRCS = main.c arc.c unarc.c
+NSPARKHDRS = main.h arc.h unarc.h
+NSPARKOBJS = main.o arc.o unarc.o
+
+TESTPACKSRCS = testprog/pack.c
+TESTPACKOBJS = testprog/pack.o
+
+LIBS = -mlibscl
 
 .DEFAULT:
 	co -S $<
 
-all:	$(PROG)
+all:	$(PROG) $(TESTPACK)
 
-$(PROG): $(OBJS)
-	$(CC) -o $(PROG) $(OBJS) $(LIBS)
+$(TESTPACK): $(OBJS) $(TESTPACKOBJS)
+	$(CC) -o $(TESTPACK) $(OBJS) $(TESTPACKOBJS) $(LIBS)
+
+$(PROG): $(OBJS) $(NSPARKOBJS)
+	$(CC) -o $(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
 
 install: $(PROG)
 	 $(INSTALL) $(PROG) $(INSTALLDIR)
 
-depend: $(SRCS) $(HDRS)
-	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS)
+depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS)
+	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS) $(NSPARKSRCS)
 	mv makefile makefile.old
 	sed -f nosysdep.sed < makefile.old > makefile
 	rm -f makefile.old makefile.bak
@@ -51,7 +63,7 @@ tags:	$(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
 
 clean:
-	rm -f $(PROG) $(OBJS) mkendian endian.h
+	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) mkendian nsendian.h
 	rm -f a.out core *~
 
 backup:	clean
@@ -71,16 +83,16 @@ dist:	clean $(SRCS) $(HDRS)
 	(cd $(TMPDIR); tar cf - $(DISTLEAF) | compress > $(DISTLEAF).tar.Z)
 	(cd $(TMPDIR); rm -rf $(DISTLEAF))
 
-io.o:	endian.h
+io.o:	nsendian.h
 
-endian.h:	mkendian
-	mkendian > h.endian
+nsendian.h:	mkendian
+	mkendian > h.nsendian
 
 mkendian:	mkendian.c
-	$(CC) -o mkendian mkendian.c
+	$(CC) -mlibscl -o mkendian mkendian.c
 
 .c.o:
-    $(CC) $(CFLAGS) -c $*.c
+	$(CC) $(CFLAGS) -c -o $*.o $*.c
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
