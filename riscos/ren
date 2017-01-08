@@ -1,3 +1,5 @@
+cdir c
+cdir h
 rename acorn/c c.acorn
 rename arc/c c.arc
 rename arc/h h.arc
@@ -5,13 +7,14 @@ rename arcfs/c c.arcfs
 rename arcfs/h h.arcfs
 rename compress/c c.compress
 rename compress/h h.compress
-rename cproto/h h.cproto
 rename crc/c c.crc
 rename crc/h h.crc
 rename date/c c.date
 rename date/h h.date
 rename error/c c.error
 rename error/h h.error
+rename garble/c c.garble
+rename garble/h h.garble
 rename io/c c.io
 rename nsparkio/h h.nsparkio
 rename main/c c.main
@@ -30,3 +33,5 @@ rename unarc/c c.unarc
 rename unarc/h h.unarc
 rename unix/c c.unix
 rename winnt/c c.winnt
+cdir testprog.c
+rename testprog.pack/c testprog.c.pack
