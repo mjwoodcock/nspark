@@ -254,7 +254,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 			readsize--;
 		}
 	}
-	maxmaxcode = 1 << maxbits;
+	maxmaxcode = MAXCODE(maxbits);
 
 	/*
 	 * As above, initialize the first 256 entries in the table.
