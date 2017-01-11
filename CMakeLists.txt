@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.4)
-project (nspark)
+project (nspark C)
 
 add_definitions (-DVERSION=\\"1.7.8B2\\")
 add_definitions (-DMAINTAINER=\\"james_woodcock@yahoo.co.uk\\")
