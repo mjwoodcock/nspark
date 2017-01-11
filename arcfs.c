@@ -198,11 +198,7 @@ arcfs_read_header(FILE *ifp)
 
 	/* Header list not constructed yet, so read all headers from file */
 	arcfs_initialised = 1;
-#ifdef BSD
-	bzero((char *) &null_header, sizeof(null_header));
-#else							/* not BSD */
 	memset((char *) &null_header, '\0', sizeof(null_header));
-#endif							/* BSD */
 	null_header.comptype = 0;
 	header_length = read_word(ifp);
 	data_start = read_word(ifp);
