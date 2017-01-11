@@ -37,7 +37,6 @@
  */
 #if defined(RISCOS2) || defined(RISCOS3)
 #define RISCOS
-#define NS_LITTLE_ENDIAN
 #endif
 /* BB changed next line */
 /* #if defined(MSDOS2) || defined(MSDOS3) || defined(MSDOS4) || defined(MSDOS5) || defined(WINNT) */
@@ -45,7 +44,6 @@
     defined(MSDOS5) || defined(MSDOS6) || defined(MSDOS7) || \
     defined(WINNT)
 #define MSDOS
-#define NS_LITTLE_ENDIAN
 #endif
 
 /*

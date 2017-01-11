@@ -59,9 +59,6 @@
 #include "main.h"
 #include "error.h"
 #include "arcfs.h"
-#ifdef POSIX
-#include "nsendian.h"
-#endif							/* POSIX */
 
 /* BB changed next line */
 
@@ -117,15 +114,17 @@ read_halfword(FILE *ifp)
 	}
 	ret;
 
-#if defined(NS_LITTLE_ENDIAN)
 	if (fread((char *) &ret.h, 1, sizeof(Halfword), ifp)!=sizeof(Halfword)) {
 		error("Read error!");
 	}
-#else
-	ret.b[HALFWORD0] = read_byte(ifp);
-	ret.b[HALFWORD1] = read_byte(ifp);
-#endif
+#if defined(__MSDOS__)
+	/* MSDOS reads bytes in the correct order.  Save a bit of time
+	 * by returning the value */
 	return (ret.h);
+#else
+	/* Ensure the data is in the correct order */
+	return (ret.b[0] | ret.b[1] << 8);
+#endif
 }
 
 /*
@@ -141,17 +140,17 @@ read_word(FILE *ifp)
 	}
 	ret;
 
-#if defined(NS_LITTLE_ENDIAN)
 	if (fread((char *) &ret.w, 1, sizeof(Word), ifp)!=sizeof(Word)) {
 		error("Read error!");
 	}
-#else
-	ret.b[WORD0] = read_byte(ifp);
-	ret.b[WORD1] = read_byte(ifp);
-	ret.b[WORD2] = read_byte(ifp);
-	ret.b[WORD3] = read_byte(ifp);
-#endif
+#if defined(__MSDOS__)
+	/* MSDOS reads bytes in the correct order.  Save a bit of time
+	 * by returning the value */
 	return (ret.w);
+#else
+	/* Ensure the data is in the correct order */
+	return (ret.b[0] | (ret.b[1] << 8) | (ret.b[2] << 16) | (ret.b[3] << 24));
+#endif
 }
 
 /*
@@ -172,21 +171,8 @@ write_byte(FILE *ofp, Byte byte)
 void
 write_halfword(FILE *ofp, Halfword halfword)
 {
-	union
-	{
-		Halfword h;
-		Byte b[sizeof(Halfword)];
-	}
-	un;
-
-	un.h = halfword;
-
-#if defined(NS_LITTLE_ENDIAN)
-	fwrite((char *) &un.h, 1, sizeof(Halfword), ofp);
-#else
-	write_byte(ofp, un.b[HALFWORD0]);
-	write_byte(ofp, un.b[HALFWORD1]);
-#endif
+	write_byte(ofp, halfword & 0xff);
+	write_byte(ofp, (halfword >> 8) & 0xff);
 }
 
 /*
@@ -195,23 +181,10 @@ write_halfword(FILE *ofp, Halfword halfword)
 void
 write_word(FILE *ofp, Word word)
 {
-	union
-	{
-		Word w;
-		Byte b[sizeof(Word)];
-	}
-	un;
-
-	un.w = word;
-
-#if defined(NS_LITTLE_ENDIAN)
-	fwrite((char *) &un.w, 1, sizeof(Word), ofp);
-#else
-	write_byte(ofp, un.b[WORD0]);
-	write_byte(ofp, un.b[WORD1]);
-	write_byte(ofp, un.b[WORD2]);
-	write_byte(ofp, un.b[WORD3]);
-#endif
+	write_byte(ofp, word & 0xff);
+	write_byte(ofp, (word >> 8) & 0xff);
+	write_byte(ofp, (word >> 16) & 0xff);
+	write_byte(ofp, (word >> 24) & 0xff);
 }
 
 #endif							/* notyet */
