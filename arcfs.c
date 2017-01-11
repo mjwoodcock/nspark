@@ -125,7 +125,9 @@ rotm(Word load, Word exec)
 	high = (load & 0xff) - 0x33l;
 	low = exec - 0x6e996a00l;
 	/* BB changed constant in next line to long */
-	t = (time_t) (high * 42949673L + low / 100L);
+	/* cast to Word, then time_t as date stamps will all be 32 bits and time_t
+	 * might be 64 bits */
+	t = (time_t)(Word)(high * 42949673L + low / 100L);
 	return (localtime(&t));
 }
 
