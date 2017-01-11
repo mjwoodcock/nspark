@@ -98,11 +98,7 @@ filestamp(Header *header, char *filename)
 	tm.tm_mday = date->day;
 	tm.tm_mon = date->month - 1;
 	tm.tm_year = date->year;
-#if defined(sun) && defined(BSD)	/* SunOS 4 */
-	filetime = timelocal(&tm);
-#else							/* not SunOS */
 	filetime = mktime(&tm);
-#endif							/* SunOS */
 
 	utimbuf.actime = filetime;
 	utimbuf.modtime = filetime;
