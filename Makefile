@@ -65,7 +65,7 @@ tags:	$(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
 
 clean:
-	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) mkendian nsendian.h
+	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS)
 	rm -f a.out core *~
 
 backup:	clean
@@ -84,14 +84,6 @@ dist:	clean $(SRCS) $(HDRS)
 	cp mkfiles/* $(DISTDIR)/mkfiles
 	(cd $(TMPDIR); tar cf - $(DISTLEAF) | compress > $(DISTLEAF).tar.Z)
 	(cd $(TMPDIR); rm -rf $(DISTLEAF))
-
-io.o:	nsendian.h
-
-nsendian.h:	mkendian
-	./mkendian > nsendian.h
-
-mkendian:	mkendian.c
-	$(CC) -o mkendian mkendian.c
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
