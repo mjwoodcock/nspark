@@ -27,12 +27,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
-#ifndef BSD42
 #include <string.h>
-#endif
-#if !defined(BSD42) && !defined(SYSV2)
 #include <utime.h>
-#endif							/* not 4.2BSD and not SysVr2 */
 #include <stdio.h>
 #include "spark.h"
 #include "date.h"
@@ -83,9 +79,6 @@ makedir(char *pathname)
 int
 filestamp(Header *header, char *filename)
 {
-#if defined(BSD42) || defined(SYSV2)
-	return (0);					/* not by supported 4.2BSD or SysV2 */
-#else							/* not 4.2BSD or SysV */
 	Date *date;
 	struct tm tm;
 	struct utimbuf utimbuf;
@@ -118,5 +111,4 @@ filestamp(Header *header, char *filename)
 	utimbuf.actime = filetime;
 	utimbuf.modtime = filetime;
 	return (utime(filename, &utimbuf));
-#endif							/* not 4.2BSD and not SysV2 */
 }

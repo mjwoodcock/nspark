@@ -35,13 +35,9 @@
 /*
  * globalise system-type defines...
  */
-#if defined(BSD42) || defined(BSD43) || defined(BSD44)
+#if defined(POSIX)
 #define UNIX
 #define BSD
-#endif
-#if defined(SYSV2) || defined(SYSV3) || defined (SYSV4)
-#define UNIX
-#define SYSV
 #endif
 #if defined(RISCOS2) || defined(RISCOS3)
 #define RISCOS
@@ -103,13 +99,9 @@ typedef unsigned char	Byte;
 /*
  * define maximum filename and pathname length
  */
-#if defined(BSD) || defined(SYSV4)
+#if defined(POSIX)
 #define FILENAMELEN	256
 #define PATHNAMELEN	1024
-#endif
-#if defined(SYSV) && !defined(SYSV4)
-#define FILENAMELEN	14
-#define PATHNAMELEN	256
 #endif
 #if defined (RISCOS)
 #define FILENAMELEN	10

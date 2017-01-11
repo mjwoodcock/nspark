@@ -23,11 +23,7 @@ error(char *fmt, ...)
 	va_list ap;
 
 	va_start(ap, fmt);
-#ifdef BSD42
-	_doprnt(fmt, ap, stderr);
-#else
 	vfprintf(stderr, fmt, ap);
-#endif
 	putc('\n', stderr);
 	va_end(ap);
 
@@ -40,11 +36,7 @@ warning(char *fmt, ...)
 
 	va_start(ap, fmt);
 	fprintf(stderr, "%s warning: ", ourname);
-#ifdef BSD42
-	_doprnt(fmt, ap, stderr);
-#else
 	vfprintf(stderr, fmt, ap);
-#endif							/* BSD42 */
 	putc('\n', stderr);
 	va_end(ap);
 }

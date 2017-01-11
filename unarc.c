@@ -72,11 +72,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#ifdef BSD42
-#include <strings.h>
-#else
 #include <string.h>
-#endif
 #include "spark.h"
 #include "store.h"
 #include "pack.h"
