@@ -35,13 +35,7 @@
 Status
 unstore(Header *header, FILE *ifp, FILE *ofp)
 {
-	/* BB changed next line: complen is a long */
-	/* register len = header->complen; */
-#ifdef __MSDOS__
-	register long len = header->complen;
-#else
-	register int len = header->complen;
-#endif							/* __MSDOS__ */
+	register Word len = header->complen;
 	register Byte byte;
 
     init_garble();

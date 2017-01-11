@@ -32,10 +32,7 @@
 /* #include "io.h" */
 #include "nsparkio.h"
 
-/* BB added next include for prototypes for Borland C/C++ */
-#ifdef __MSDOS__
 #include "pack.h"
-#endif							/* __MSDOS__ */
 
 static short running;
 static Word complen;
@@ -99,13 +96,7 @@ putc_ncr(FILE *ofp, Byte byte)
 Status
 unpack(Header *header, FILE *ifp, FILE *ofp)
 {
-	/* BB changed next line: complen is a long */
-	/* register len = header->complen; */
-#ifdef __MSDOS__
-	register long len = header->complen;
-#else
-	register int len = header->complen;
-#endif							/* __MSDOS__ */
+	register Word len = header->complen;
 
     init_garble();
 
@@ -168,13 +159,7 @@ write_ncr(FILE *ofp, Byte byte, int bytecount)
 Status
 pack(Header *header, FILE *ifp, FILE *ofp)
 {
-	/* BB changed next line: complen is a long */
-	/* register len = header->complen; */
-#ifdef __MSDOS__
-	register long len = header->origlen;
-#else
-	register int len = header->origlen;
-#endif							/* __MSDOS__ */
+	register Word len = header->origlen;
 	Byte prevbyte = '\0', byte;
 	int bytecount = 0;
 
