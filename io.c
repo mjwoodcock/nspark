@@ -59,9 +59,9 @@
 #include "main.h"
 #include "error.h"
 #include "arcfs.h"
-#ifdef UNIX
+#ifdef POSIX
 #include "nsendian.h"
-#endif							/* UNIX */
+#endif							/* POSIX */
 
 /* BB changed next line */
 

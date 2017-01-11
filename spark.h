@@ -35,10 +35,6 @@
 /*
  * globalise system-type defines...
  */
-#if defined(POSIX)
-#define UNIX
-#define BSD
-#endif
 #if defined(RISCOS2) || defined(RISCOS3)
 #define RISCOS
 #define NS_LITTLE_ENDIAN
@@ -70,7 +66,7 @@ typedef unsigned char	Byte;
 /*
  * define the path seperator character, and file open mode string.
  */
-#if defined(UNIX)
+#if defined(POSIX)
 #define PATHSEP	'/'
 #define PATHSEPSTR	"/"
 #define W_OPENMODE	"w"
