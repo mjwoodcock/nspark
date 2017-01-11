@@ -33,9 +33,9 @@
 #include <time.h>
 #include <string.h>
 #include "spark.h"
-#ifdef UNIX
+#ifdef POSIX
 #include <sys/types.h>
-#endif							/* UNIX */
+#endif							/* POSIX */
 
 #if defined(RISCOS) || defined(__MSDOS__)
 #include <stdlib.h>
