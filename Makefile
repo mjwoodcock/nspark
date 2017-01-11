@@ -3,10 +3,9 @@
 #
 # $Header: makefile 1.30 92/12/23 $
 #
-# SYSTYPE:	BSD42, BSD43, BSD44,
-#		SYSV2, SYSV3, SYSV4,
+# SYSTYPE:	POSIX
 #
-SYSTYPE= BSD44
+SYSTYPE= POSIX
 INSTALLDIR= $${HOME}/bin
 CC = cc
 
