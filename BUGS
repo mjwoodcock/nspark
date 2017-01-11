@@ -1,14 +1,5 @@
 	These are bugs I know about but haven't fixed yet.
 
-	* Filestamping is not supported under 4.2BSD or SysV2 (as no mktime(3)
-	  or timelocal(3) functions exist under these systems).  To correct
-	  this I could write my own or port the one from 386BSD (save that for
-	  a rainy day).
-
-	* If compiled with GCC 1.42 it core dumps when trying to test
-	  (or unarchive ?) a corrupt archive file.  This doesn't happen
-	  when compiled with the UNIX pcc.
-
 	* The DOS version (and the Windows NT version for that matter)
 	  do not time/date stamp directories. (But neither do any other
 	  unpackers.)
