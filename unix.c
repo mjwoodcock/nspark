@@ -87,11 +87,7 @@ filestamp(Header *header, char *filename)
 	if ((header->load & (Word) 0xfff00000) != (Word) 0xfff00000)
 		return (0);				/* not a timestamp */
 
-#ifdef BSD
-	bzero((char *) &tm, sizeof(tm));
-#else							/* not BSD */
 	memset((char *) &tm, '\0', sizeof(tm));
-#endif							/* BSD */
 
 	if (!(date = makedate(header)))
 		return (-1);

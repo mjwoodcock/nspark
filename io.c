@@ -227,11 +227,7 @@ read_header(FILE *ifp)
 	register char *cptr;
 	Byte byte;
 
-#ifdef BSD
-	bzero((char *) &header, sizeof(header));
-#else							/* not BSD */
 	memset((char *) &header, '\0', sizeof(header));
-#endif							/* BSD */
 
 	if (arcfs)
 		return (arcfs_read_header(ifp));
