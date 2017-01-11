@@ -298,13 +298,11 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 
 		while (code >= 256)
 		{
-#ifndef __MSDOS__
-			if ((char *)(stackp+1) > (char *)(&htab[0] + HSIZE))
+			if ((char NSHUGE *)(stackp+1) > (char NSHUGE *)(&htab[0] + HSIZE))
 			{
 				fprintf(stderr, "%s: uncompress: corrupt or garbled archive file\n", ourname);
 				exit(1);
 			}
-#endif
 			*stackp++ = tab_suffixof(code);
 			code = tab_prefixof(code);
 		}
