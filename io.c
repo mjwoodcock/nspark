@@ -77,10 +77,7 @@
 #define isascii(x) 1
 #endif							/* RISCOS */
 
-/* BB added next include for prototypes for Borland C/C++ */
-#ifdef __MSDOS__
 #include "nsparkio.h"
-#endif							/* __MSDOS__ */
 
 
 /*

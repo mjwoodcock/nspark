@@ -131,9 +131,11 @@
 
 /* typedef int count_int; */
 #ifdef __MSDOS__
+#define NSHUGE huge
 typedef long code_int;
 typedef long count_int;
 #else
+#define NSHUGE
 typedef int count_int;
 typedef int code_int;
 #endif							/* __MSDOS__ */
@@ -157,11 +159,11 @@ static code_int maxmaxcode;		/* should NEVER generate this code */
 /* For those that do want to use static arrays:
    define BB_HUGE_STATIC_ARRAYS. */
 #ifdef BB_HUGE_STATIC_ARRAYS
-static count_int huge htab[HSIZE];
-static unsigned short huge codetab[HSIZE];
+static count_int NSHUGE htab[HSIZE];
+static unsigned short NSHUGE codetab[HSIZE];
 #else							/* BB_HUGE_STATIC_ARRAYS */
-static count_int huge *htab = NULL;
-static unsigned short huge *codetab = NULL;
+static count_int NSHUGE *htab = NULL;
+static unsigned short NSHUGE *codetab = NULL;
 #endif							/* BB_HUGE_STATIC_ARRAYS */
 #else							/* __MSDOS__ */
 static count_int htab[HSIZE];
@@ -173,16 +175,8 @@ static code_int free_ent;		/* first unused entry */
 static int clear_flg;
 static long readsize;			/* number of bytes left to read */
 
-/* BB changed next line. readsize and other ``ints'' are (32bits) longs
-   so the next two should be longs too. Or rather size_t because that
-   is the return type of fread(). */
-
-								/* static int offset, size; *//* from getcode() */
-#ifdef __MSDOS__
-static size_t offset, size;		/* from getcode() */
-#else
-static int offset, size;		/* from getcode() */
-#endif							/* __MSDOS__ */
+static code_int offset;		/* from getcode() */
+static size_t size;
 
 static code_int getcode(FILE * ifp);
 
@@ -191,21 +185,8 @@ Status
 uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 {
 	/* BB changed next line. stackp points to huge pointers. */
-	/* register char_type *stackp; */
-#ifdef __MSDOS__
-	register char_type huge *stackp;
-#else
-	register char_type *stackp;
-#endif							/* __MSDOS__ */
-	/* BB changed next line. Since code_ints should be longs on
-	   16bits machines and this int gets assigned from and to
-	   code_ints, it should be a long as well. */
-	/* register int finchar; */
-#ifdef __MSDOS__
-	register long finchar;
-#else
-	register int finchar;
-#endif							/* __MSDOS__ */
+	register char_type NSHUGE *stackp;
+	register code_int finchar;
 	register code_int code, oldcode, incode;
 	char *message;
 
@@ -213,10 +194,10 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 
 #if defined(__MSDOS__) && !defined(BB_HUGE_STATIC_ARRAYS)
 	if (!htab)
-		htab = (count_int huge *) farcalloc(HSIZE, sizeof(count_int));
+		htab = (count_int NSHUGE *) farcalloc(HSIZE, sizeof(count_int));
 	if (!codetab)
 		codetab =
-			(unsigned short huge *) farcalloc(HSIZE,
+			(unsigned short NSHUGE *) farcalloc(HSIZE,
 											  sizeof(unsigned short));
 	if (!htab || !codetab)
 	{
@@ -276,29 +257,14 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 	{
 		putc_init();
 		/* BB changed next line for Borland C/C++ 4 */
-		/* putc_ncr(ofp, finchar); */
-#ifdef __MSDOS__
 		putc_ncr(ofp, (Byte) finchar);
-#else
-		putc_ncr(ofp, finchar);
-#endif							/* __MSDOS__ */
 	}
 	else
 	{
 		/* BB changed next three lines for Borland C/C++ 4 */
-		/* if (!testing) */
-		/*     write_byte(ofp, finchar); */
-		/* calccrc(finchar); */
-		/* (Could be neater) */
-#ifdef __MSDOS__
 		if (!testing)
 			write_byte(ofp, (Byte) finchar);
 		calccrc((Byte) finchar);
-#else
-		if (!testing)
-			write_byte(ofp, finchar);
-		calccrc(finchar);
-#endif							/* __MSDOS__ */
 	}
 
 	stackp = de_stack;
@@ -323,12 +289,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 		if (code >= free_ent)
 		{
 			/* BB changed next line for Borland C/C++ 4 */
-			/* *stackp++ = finchar; */
-#ifdef __MSDOS__
 			*stackp++ = (char_type) finchar;
-#else
-			*stackp++ = finchar;
-#endif
 			code = oldcode;
 		}
 		/*
@@ -383,15 +344,8 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 		if ((code = free_ent) < maxmaxcode)
 		{
 			/* BB changed next two lines for Borland C/C++ 4 */
-			/* tab_prefixof(code) = oldcode; */
-			/* tab_suffixof(code) = finchar; */
-#ifdef __MSDOS__
 			tab_prefixof(code) = (unsigned short) oldcode;
 			tab_suffixof(code) = (char_type) finchar;
-#else
-			tab_prefixof(code) = oldcode;
-			tab_suffixof(code) = finchar;
-#endif							/* __MSDOS__ */
 			free_ent = code + 1;
 		}
 		/*
@@ -456,12 +410,7 @@ getcode(FILE *ifp)
 	/* BB changed next line. We are doing pointer-artithmatics
 	   and that can be dangerous if other than normalized (huge)
 	   pointers are being used. */
-	/* register char_type *bp = buf; */
-#ifdef __MSDOS__
-	register char_type huge *bp = buf;
-#else
-	register char_type *bp = buf;
-#endif							/* __MSDOS__ */
+	register char_type NSHUGE *bp = buf;
 
 	if (clear_flg > 0 || offset >= size || free_ent > maxcode)
 	{
@@ -483,12 +432,7 @@ getcode(FILE *ifp)
 		if (readsize == 0)
 			return (-1);
 		/* BB added cast to next line */
-		/* size = readsize < n_bits ? readsize : n_bits; */
-#ifdef __MSDOS__
 		size = readsize < n_bits ? (size_t) readsize : n_bits;
-#else
-		size = readsize < n_bits ? readsize : n_bits;
-#endif							/* __MSDOS__ */
 		size = fread(buf, 1, size, ifp);
 		if (size <= 0)
 			return (-1);		/* end of file */
@@ -501,7 +445,7 @@ getcode(FILE *ifp)
 		/* Round size down to integral number of codes */
 		size = (size << 3) - (n_bits - 1);
 	}
-	r_off = offset;
+	r_off = (int)offset;
 	bits = n_bits;
 
 	/*
