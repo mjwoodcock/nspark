@@ -1,0 +1,35 @@
+Build with makefiles on Unix, Windows and RISCOS
+===================================================
+
+Copy the appropriate makefile from the unix, win32 or riscos directory and
+run the appropriate make tool.
+
+Build with cmake on Windows
+==============================
+
+To compile with Microsoft Visual Studo:
+  Open a Microsoft Visual Studio command prompt
+  cmake -G "NMake Makefiles" .
+  nmake
+
+Or to compile with MinGW:
+  cmake -G "MinGW Makefiles" .
+  mingw32-make
+
+If you are using another compiler suite then get cmake to generate the correct
+makefiles
+
+Build with cmake on Unix
+===========================
+
+Run:
+  cmake -G "Unix Makefiles" .
+  make
+
+Build on MSDOS
+=================
+
+Tested with Borland C 3.1
+copy nspark\msdos\nspark.prj to nspark then, from the nspark directory, run:
+  bc31 /b nspark.prj
+
