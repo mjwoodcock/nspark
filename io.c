@@ -249,3 +249,34 @@ read_header(FILE *ifp)
 		return (NULL);
 	return (&header);
 }
+
+#ifndef __MSDOS__
+Status
+read_sqsh_header(FILE *fp, SqshHeader *header)
+{
+	if (fread(header->magic, 1, 4, fp) != 4)
+	{
+		return RERR;
+	}
+	if (strncmp(header->magic, "SQSH", 4) != 0)
+	{
+		error("Not a RISC OS squash file");
+		return RERR;
+	}
+	header->origlen = read_word(fp);
+	header->load = read_word(fp);
+	header->exec = read_word(fp);
+	header->reserved = read_word(fp);
+
+	return NOERR;
+}
+
+void
+sqsh_header_to_header(SqshHeader *sqsh_header, Header *header)
+{
+	header->load = sqsh_header->load;
+	header->exec = sqsh_header->exec;
+	header->origlen = sqsh_header->origlen;
+	arcfs_fixtime(header);
+}
+#endif
