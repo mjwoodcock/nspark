@@ -15,6 +15,7 @@
 #include <sys/utime.h>
 #include <time.h>
 #include <direct.h>
+#include <string.h>
 
 /*
  * return the length of a file
