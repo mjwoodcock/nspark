@@ -16,6 +16,10 @@ if (WIN32)
 	SET(NSPARK_OS_SOURCE winnt.c)
 endif (WIN32)
 
+if (CMAKE_COMPILER_IS_GNUCC)
+	set(CMAKE_C_FLAGS "-Wall")
+endif ()
+
 add_executable (nspark arc.c main.c unarc.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
 add_executable (sqsh sqshmain.c unarc.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
 
