@@ -21,7 +21,6 @@ rename main/c c.main
 rename main/h h.main
 rename misc/c c.misc
 rename misc/h h.misc
-rename mkendian/c c.mkendian
 rename msdos/c c.msdos
 rename os/h h.os
 rename pack/c c.pack
