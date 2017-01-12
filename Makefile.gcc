@@ -1,13 +1,13 @@
 #
-# nspark makefile (UNIX)
+# nspark makefile
 #
 # $Header: makefile 1.30 92/12/23 $
 #
-# SYSTYPE:	POSIX
+# SYSTYPE:	POSIX, RISCOS, WINNT
 #
 SYSTYPE= POSIX
 INSTALLDIR= $${HOME}/bin
-CC = cc
+CC = gcc
 
 # Under System V change "install" to "cp"
 INSTALL = install -s
@@ -18,29 +18,55 @@ BACKUPFILE = $${HOME}/tmp/nspark.zip
 
 CDEFINES = -I. -O
 CMISC = -D$(SYSTYPE)
-# BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
 CFLAGS = $(CDEFINES) $(CMISC) -Wall -Werror
-PROG = nspark
-TESTPACK = testprog/testpack
+LIBS =
+PROG = nspark$(EXE)
+TESTPACK = testprog/testpack$(EXE)
 SRCS = store.c pack.c compress.c crc.c \
-	io.c error.c misc.c date.c unix.c arcfs.c garble.c
+	io.c error.c misc.c date.c arcfs.c garble.c
 HDRS = store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
-OBJS = store.o pack.o compress.o crc.o \
-	io.o error.o misc.o date.o unix.o arcfs.o garble.o
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
+OBJS = store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
+	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) garble$(OBJ)
 
 NSPARKSRCS = main.c arc.c unarc.c
 NSPARKHDRS = main.h arc.h unarc.h
-NSPARKOBJS = main.o arc.o unarc.o
+NSPARKOBJS = main$(OBJ) arc$(OBJ) unarc$(OBJ)
 
 TESTPACKSRCS = testprog/pack.c
-TESTPACKOBJS = testprog/pack.o
+TESTPACKOBJS = testprog/pack$(OBJ)
 
+OBJ = .o
+
+ifeq (${SYSTYPE},RISCOS)
+EXE =
+OBJ = .o
+SRCS += acorn.c
+OBJS += acorn$(OBJ)
+CFLAGS += -mlibscl
+LIBS += -mlibscl
+endif
+
+ifeq (${SYSTYPE},POSIX)
+EXE =
+OBJ = .o
+SRCS += unix.c
+OBJS += unix$(OBJ)
+# BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
+CFLAGS +=
 # BB: For SGI systems use LIBS -lc_s -s.
-LIBS =
+LIBS +=
+endif
+
+ifeq (${SYSTYPE},WINNT)
+EXE = .exe
+OBJ = .obj
+SRCS += winnt.c
+OBJS += winnt$(OBJ)
+endif
 
 .DEFAULT:
-	cc -c $<
+	$(CC) -c $<
 
 all:	$(PROG) $(TESTPACK)
 
@@ -83,17 +109,25 @@ dist:	clean $(SRCS) $(HDRS)
 	(cd $(TMPDIR); tar cf - $(DISTLEAF) | compress > $(DISTLEAF).tar.Z)
 	(cd $(TMPDIR); rm -rf $(DISTLEAF))
 
+%$(OBJ): %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-main.o: spark.h nsparkio.h error.h misc.h arc.h unarc.h version.h
-arc.o: spark.h error.h 
-unarc.o: spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h
-store.o: spark.h main.h crc.h nsparkio.h
-pack.o: spark.h main.h crc.h nsparkio.h
-compress.o: spark.h pack.h main.h crc.h nsparkio.h
-crc.o: spark.h main.h
-io.o: spark.h main.h error.h arcfs.h
-error.o: error.h 
-misc.o: spark.h main.h date.h misc.h
-date.o: spark.h
-unix.o: spark.h date.h
+main$(OBJ): spark.h nsparkio.h error.h misc.h arc.h unarc.h garble.h version.h
+arc$(OBJ): spark.h error.h
+unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h arcfs.h
+store$(OBJ): spark.h main.h crc.h garble.h nsparkio.h
+pack$(OBJ): spark.h main.h crc.h garble.h nsparkio.h pack.h
+compress$(OBJ): spark.h pack.h main.h crc.h garble.h nsparkio.h arcfs.h
+arcfs$(OBJ): spark.h arcfs.h nsparkio.h misc.h
+garble$(OBJ): garble.h
+crc$(OBJ): spark.h main.h arcfs.h
+io$(OBJ): spark.h main.h error.h arcfs.h nsparkio.h
+error$(OBJ): error.h
+misc$(OBJ): spark.h main.h date.h misc.h
+date$(OBJ): spark.h
+unix$(OBJ): spark.h date.h
+acorn$(OBJ): spark.h date.h
+msdos$(OBJ): spark.h date.h os.h
+winnt$(OBJ): spark.h date.h
