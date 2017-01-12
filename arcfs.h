@@ -30,5 +30,7 @@ extern long crcsize;
  */
 Header *arcfs_read_header(FILE *ifp);
 
+void arcfs_fixtime(Header *hdr);
+
 
 #endif /* __ARCFS_H */

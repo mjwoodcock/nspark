@@ -142,6 +142,14 @@ typedef struct {
 	Word attr;		/* file attributes */
 } Header;
 
+typedef struct {
+	char magic[4];		/* Should be SQSH */
+	Word origlen;		/* Original length */
+	Word load;			/* load address */
+	Word exec;			/* exec address */
+	Word reserved;		/* For future use */
+} SqshHeader;
+
 /*
  * universal date structure
  */

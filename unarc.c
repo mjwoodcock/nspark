@@ -92,6 +92,7 @@
 #include <unistd.h>
 #endif
 #endif							/* __MSDOS__ */
+#include <stdlib.h>
 #include "misc.h"
 #include "os.h"
 #include "error.h"
@@ -105,6 +106,132 @@
 char prompt_user(char *filename);
 char *get_newname(void);
 
+
+#ifndef __MSDOS__
+int
+do_unsquash(int to_stdout)
+{
+	SqshHeader sqsh_header;
+	Header header;
+	FILE *ifp, *ofp;
+	Status r;
+	long offset;
+	long datastart;
+	char *ofname = NULL;
+	char *p;
+
+	ifp = fopen(archive, "rb");
+	if (!ifp)
+	{
+		error("Can not open %s for reading\n", archive);
+		return 1;
+	}
+
+	if (!to_stdout)
+	{
+		ofname = calloc(1, strlen(archive) + sizeof(",xxx"));
+		/* Output filename is the same as the input filename with
+		 * the correct filetype appended */
+		strcpy(ofname, archive);
+		/* Strip RISCOS filetype from output filename */
+		p = ofname + (strlen(ofname) - 4);
+		if (*p == ',' || *p == '.')
+		{
+			*p = '\0';
+		}
+	}
+
+	r = read_sqsh_header(ifp, &sqsh_header);
+	if (r != NOERR)
+	{
+		error("Invalid squash file");
+		return 1;
+	}
+
+	memset(&header, 0, sizeof(header));
+	datastart = ftell(ifp);
+	fseek(ifp, 0, SEEK_END);
+	offset = ftell(ifp);
+
+	/* The uncompress code uses Spark entry header structures.
+	 * Use the squash header and other info to set up the Spark header
+	 * with needed info. */
+	header.complen = (Word)(offset - datastart);
+	sqsh_header_to_header(&sqsh_header, &header);
+	fseek(ifp, datastart, SEEK_SET);
+
+	crcsize = 0;
+	writesize = header.origlen;
+
+	if (!to_stdout)
+	{
+		/* Append the correct filetype to the output filename */
+		append_type(&header, ofname);
+	}
+
+	if (!force && !to_stdout)
+	{
+		ofp = fopen(ofname, "rb");
+		if (ofp)
+		{
+			char c;
+			char *newname;
+
+			fclose(ofp);
+			c = prompt_user(ofname);
+			switch (c)
+			{
+				case 'n':
+					exit(1);
+				case 'r':
+					newname = get_newname();
+					free(ofname);
+					ofname = strdup(newname);
+					break;
+				case 'a':
+				case 'y':
+					/* overwrite file */
+					break;
+			}
+		}
+	}
+
+	if (to_stdout)
+	{
+		ofp = stdout;
+	}
+	else
+	{
+		ofp = fopen(ofname, "wb");
+		if (!ofp)
+		{
+			error("Can not open %s for writing\n", ofname);
+			return 1;
+		}
+	}
+
+	r = uncompress(&header, ifp, ofp, UNIX_COMPRESS);
+	fclose(ifp);
+	if (!to_stdout)
+	{
+		fclose(ofp);
+	}
+	if (r == NOERR)
+	{
+		if (stamp && !to_stdout)
+		{
+			filestamp(&header, ofname);
+		}
+	}
+	else
+	{
+		error("Failed to decompress file");
+		return 1;
+	}
+
+	return 0;
+}
+#endif
 
 int
 do_unarc()

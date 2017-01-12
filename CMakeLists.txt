@@ -17,6 +17,7 @@ if (WIN32)
 endif (WIN32)
 
 add_executable (nspark arc.c main.c unarc.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
+add_executable (sqsh sqshmain.c unarc.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
 
 if (UNIX)
 	add_executable (testprog/testpack testprog/pack.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
