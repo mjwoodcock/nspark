@@ -3,6 +3,10 @@ if (CMAKE_VERSION GREATER "2.4")
 	cmake_policy(SET CMP0005 OLD)
 endif (CMAKE_VERSION GREATER "2.4")
 
+if (CMAKE_VERSION GREATER "3.1")
+	cmake_policy(SET CMP0054 OLD)
+endif (CMAKE_VERSION GREATER "3.1")
+
 project (nspark C)
 
 add_definitions (-DVERSION=\\"1.7.8B2\\")
@@ -17,6 +21,7 @@ endif (UNIX)
 
 if (WIN32)
 	add_definitions (-DWINNT)
+	add_definitions (-D_CRT_SECURE_NO_WARNINGS)
 	SET(NSPARK_OS_SOURCE winnt.c)
 endif (WIN32)
 
