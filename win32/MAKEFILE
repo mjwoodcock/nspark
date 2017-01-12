@@ -9,18 +9,15 @@ CC=	cl
 
 # --- You shouldn't need to edit below this line ---
 
-VERSION= 1.7.8b1
-MAINTAINER= james_woodcock@yahoo.co.uk
-
 CDEFINES= -I. #-DDEBUGGING # -Ox -Gs
-CMISC=	-DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
+CMISC= -D$(SYSTYPE)
 CFLAGS=	$(CDEFINES) $(CMISC) /O2
 LDFLAGS= 
 PROG=	nspark.exe
 SRCS=	main.c arc.c unarc.c store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c arcfs.c garble.c
 HDRS=	main.h arc.h unarc.h store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
 OBJS=	main.obj arc.obj unarc.obj store.obj pack.obj compress.obj crc.obj \
 	io.obj error.obj misc.obj date.obj arcfs.obj winnt.obj garble.obj
 LIBS=	
@@ -43,7 +40,7 @@ clean:
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
 main.obj: spark.h nsparkio.h
-main.obj: error.h misc.h arc.h unarc.h
+main.obj: error.h misc.h arc.h unarc.h version.h
 arc.obj: spark.h error.h
 unarc.obj: spark.h store.h
 unarc.obj: pack.h compress.h main.h nsparkio.h misc.h os.h error.h

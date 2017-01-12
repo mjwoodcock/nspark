@@ -14,12 +14,10 @@ INSTALL = install -s
 
 # --- You shouldn't need to edit below this line ---
 
-VERSION = 1.7.8b1
-MAINTAINER = james_woodcock@yahoo.co.uk
 BACKUPFILE = $${HOME}/tmp/nspark.zip
 
 CDEFINES = -I. -O
-CMISC = -DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
+CMISC = -D$(SYSTYPE)
 # BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
 CFLAGS = $(CDEFINES) $(CMISC) -Wall -Werror
 PROG = nspark
@@ -27,7 +25,7 @@ TESTPACK = testprog/testpack
 SRCS = store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c unix.c arcfs.c garble.c
 HDRS = store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
 OBJS = store.o pack.o compress.o crc.o \
 	io.o error.o misc.o date.o unix.o arcfs.o garble.o
 
@@ -87,7 +85,7 @@ dist:	clean $(SRCS) $(HDRS)
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-main.o: spark.h nsparkio.h error.h misc.h arc.h unarc.h
+main.o: spark.h nsparkio.h error.h misc.h arc.h unarc.h version.h
 arc.o: spark.h error.h 
 unarc.o: spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h
 store.o: spark.h main.h crc.h nsparkio.h

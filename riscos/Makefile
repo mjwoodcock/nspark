@@ -14,19 +14,17 @@ INSTALL = install -s
 
 # --- You shouldn't need to edit below this line ---
 
-VERSION = 1.7.8b1
-MAINTAINER = james_woodcock@yahoo.co.uk
 BACKUPFILE = $${HOME}/tmp/nspark.zip
 
 CDEFINES = -I. -O
-CMISC = -DVERSION=\"$(VERSION)\" -DMAINTAINER=\"$(MAINTAINER)\" -D$(SYSTYPE)
+CMISC = -D$(SYSTYPE)
 CFLAGS = -mlibscl $(CDEFINES) $(CMISC) -Wall -Werror
 PROG = nspark
 TESTPACK = testprog/testpack
 SRCS = store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c acorn.c arcfs.c garble.c
 HDRS = store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
 OBJS = store.o pack.o compress.o crc.o \
 	io.o error.o misc.o date.o acorn.o arcfs.o garble.o
 
@@ -96,7 +94,7 @@ mkendian:	mkendian.c
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-main.o: spark.h nsparkio.h error.h misc.h arc.h unarc.h
+main.o: spark.h nsparkio.h error.h misc.h arc.h unarc.h version.h
 arc.o: spark.h error.h
 unarc.o: spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h
 store.o: spark.h main.h crc.h nsparkio.h
