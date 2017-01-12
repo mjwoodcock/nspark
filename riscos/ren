@@ -21,7 +21,6 @@ rename main/c c.main
 rename main/h h.main
 rename misc/c c.misc
 rename misc/h h.misc
-rename mkendian/c c.mkendian
 rename msdos/c c.msdos
 rename os/h h.os
 rename pack/c c.pack
@@ -32,6 +31,7 @@ rename store/h h.store
 rename unarc/c c.unarc
 rename unarc/h h.unarc
 rename unix/c c.unix
+rename version/h h.version
 rename winnt/c c.winnt
 cdir testprog.c
 rename testprog.pack/c testprog.c.pack
