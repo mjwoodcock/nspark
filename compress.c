@@ -362,6 +362,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 		switch (type)
 		{
 		case COMPRESS:
+		case UNIX_COMPRESS:
 			message = "OK (compressed)";
 			break;
 		case CRUNCH:
@@ -378,6 +379,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 		switch (type)
 		{
 		case COMPRESS:
+		case UNIX_COMPRESS:
 			message = "uncompressed";
 			break;
 		case CRUNCH:

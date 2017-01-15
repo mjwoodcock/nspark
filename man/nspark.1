@@ -13,7 +13,7 @@ archive
 .SH DESCRIPTION
 The current version of
 .B nspark
-is 1.7.5
+is 1.7.7
 
 .B Nspark
 can unpack the specified Archimedes-format
@@ -77,6 +77,8 @@ this and all others that already exist.
 No filestamp. Does not set the timestamp when extracting files.
 .IP "-v" 10
 Verbose.  Gives full details when listing or extracting archives.
+.IP "-p<pass>" 10
+Password.  Specifies the password used to garble the archive.
 .IP "-R" 10
 Retry if archive is corrupt.  If a bad header is found then nspark will
 search the archive until another header if found, rather than giving up.
@@ -90,20 +92,14 @@ Text files (filetype &FFF) have ,fff appended when extracted.
 Create lowercase filenames.  Useful on machines where the case of filenames
 is significant (eg. UNIX), this option forces all extracted filenames to be
 lowercase.
+.IP "-V" 10
+Display version number.
 .SH BUGS
-Filestamping is not supported under 4.2BSD or SysV2 (as no mktime(3) or
-timelocal(3) functions exist under these systems).  To correct this I could
-write my own or port the one from 386BSD (save that for a rainy day).
-
-Doesn't support MSDOS yet.  Working on that.
-
-If compiled with GCC (v1.42) it core dumps when trying to test (or
-unarchive ?) a corrupt archive file.  This doesn't happen when compiled with
-the UNIX pcc.
+The DOS version does not time/date stamp directories.
 .SH NOTES
 .B Nspark
 is in the public domain.
-It is currently being maintained by arb (arb@comp.lancs.ac.uk).
+It is currently being maintained by James Woodcock (james_woodcock@yahoo.co.uk).
 .SH SEE ALSO
 arcfs(5), spark(5).
 .SH AUTHOR
@@ -116,3 +112,5 @@ Manual pages originally supplied by Duncan (m91dps@ecs.oxford.ac.uk).
 Suggestions for improvement by Tom Tromey (tromey@busco.lanl.gov).
 
 Windows NT support by Alun Jones (auj@aber.ac.uk).
+
+Previously maintained by arb (arb@comp.lancs.ac.uk).
