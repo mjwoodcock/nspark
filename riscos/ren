@@ -26,6 +26,7 @@ rename os/h h.os
 rename pack/c c.pack
 rename pack/h h.pack
 rename spark/h h.spark
+rename sqshmain/c c.sqshmain
 rename store/c c.store
 rename store/h h.store
 rename unarc/c c.unarc

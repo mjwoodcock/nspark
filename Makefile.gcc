@@ -21,17 +21,22 @@ CMISC = -D$(SYSTYPE)
 CFLAGS = $(CDEFINES) $(CMISC) -Wall -Werror
 LIBS =
 PROG = nspark$(EXE)
+SQSH = sqsh$(EXE)
 TESTPACK = testprog/testpack$(EXE)
 SRCS = store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c arcfs.c garble.c
 HDRS = store.h pack.h compress.h crc.h \
-	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
 OBJS = store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
 	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) garble$(OBJ)
 
 NSPARKSRCS = main.c arc.c unarc.c
 NSPARKHDRS = main.h arc.h unarc.h
 NSPARKOBJS = main$(OBJ) arc$(OBJ) unarc$(OBJ)
+
+SQSHSRCS = sqshmain.c unarc.c
+SQSHHDRS = unarc.h
+SQSHOBJS = sqshmain$(OBJ) unarc$(OBJ)
 
 TESTPACKSRCS = testprog/pack.c
 TESTPACKOBJS = testprog/pack$(OBJ)
@@ -68,7 +73,7 @@ endif
 .DEFAULT:
 	$(CC) -c $<
 
-all:	$(PROG) $(TESTPACK)
+all:	$(PROG) $(TESTPACK) $(SQSH)
 
 $(TESTPACK): $(OBJS) $(TESTPACKOBJS)
 	$(CC) -o $(TESTPACK) $(OBJS) $(TESTPACKOBJS) $(LIBS)
@@ -76,11 +81,15 @@ $(TESTPACK): $(OBJS) $(TESTPACKOBJS)
 $(PROG): $(OBJS) $(NSPARKOBJS)
 	$(CC) -o $(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
 
-install: $(PROG)
-	 $(INSTALL) $(PROG) $(INSTALLDIR)
+$(SQSH): $(OBJS) $(SQSHOBJS)
+	$(CC) -o $(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
 
-depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS)
-	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS) $(NSPARKSRCS)
+install: $(PROG) $(SQSH)
+	 $(INSTALL) $(PROG) $(INSTALLDIR)
+	 $(INSTALL) $(SQSH) $(INSTALLDIR)
+
+depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS) $(SQSHSRCS) $(SQSHHDRS)
+	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS) $(NSPARKSRCS) $(SQSHSRCS)
 	mv makefile makefile.old
 	sed -f nosysdep.sed < makefile.old > makefile
 	rm -f makefile.old makefile.bak
@@ -89,7 +98,7 @@ tags:	$(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
 
 clean:
-	rm -f $(PROG) $(TESTPACK) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS)
+	rm -f $(PROG) $(TESTPACK) $(SQSH) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) $(SQSHOBJS)
 	rm -f a.out core *~
 
 backup:	clean
@@ -117,6 +126,7 @@ dist:	clean $(SRCS) $(HDRS)
 main$(OBJ): spark.h nsparkio.h error.h misc.h arc.h unarc.h garble.h version.h
 arc$(OBJ): spark.h error.h
 unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h arcfs.h
+sqshmain$(OBJ): spark.h arcfs.h unarc.h
 store$(OBJ): spark.h main.h crc.h garble.h nsparkio.h
 pack$(OBJ): spark.h main.h crc.h garble.h nsparkio.h pack.h
 compress$(OBJ): spark.h pack.h main.h crc.h garble.h nsparkio.h arcfs.h

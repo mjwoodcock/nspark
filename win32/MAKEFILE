@@ -12,29 +12,44 @@ CC=	cl
 CDEFINES= -I. #-DDEBUGGING # -Ox -Gs
 CMISC= -D$(SYSTYPE)
 CFLAGS=	$(CDEFINES) $(CMISC) /O2
+LIBS=
 LDFLAGS= 
 PROG=	nspark$(EXE)
-SRCS=	main.c arc.c unarc.c store.c pack.c compress.c crc.c \
+SQSH=	sqsh$(EXE)
+SRCS=	store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c arcfs.c garble.c
-HDRS=	main.h arc.h unarc.h store.h pack.h compress.h crc.h \
+HDRS=	store.h pack.h compress.h crc.h \
 	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
-OBJS=	main$(OBJ) arc$(OBJ) unarc$(OBJ) store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
-	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) winnt$(OBJ) garble$(OBJ)
-LIBS=	
+OBJS=	store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
+	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) garble$(OBJ)
+
+NSPARKSRCS = main.c arc.c unarc.c
+NSPARKHDRS = main.h arc.h unarc.h
+NSPARKOBJS = main$(OBJ) arc$(OBJ) unarc$(OBJ)
+
+SQSHSRCS = sqshmain.c unarc.c
+SQSHHDRS = unarc.h
+SQSHOBJS = sqshmain$(OBJ) unarc$(OBJ)
 
 EXE = .exe
 OBJ = .obj
+SRCS = $(SRCS) winnt.c
+OBJS = $(OBJS) winnt$(OBJ)
 
-all:	$(PROG)
+all:	$(PROG) $(SQSH)
 
-$(PROG): $(OBJS)
-	$(CC) /Fe$(PROG) $(OBJS)
+$(PROG): $(OBJS) $(NSPARKOBJS)
+	$(CC) /Fe$(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
 
-install: $(PROG)
+$(SQSH): $(OBJS) $(SQSHOBJS)
+	$(CC) /Fe$(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
+
+install: $(PROG) $(SQSH)
 	cp $(PROG) $(INSTALLDIR)
+	cp $(SQSH) $(INSTALLDIR)
 
 clean:
-	rm $(PROG)
+	rm *$(EXE)
 	rm *$(OBJ)
 	rm *.bak
 	rm *.map
@@ -45,6 +60,7 @@ clean:
 main$(OBJ): spark.h nsparkio.h error.h misc.h arc.h unarc.h garble.h version.h
 arc$(OBJ): spark.h error.h
 unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h arcfs.h
+sqshmain$(OBJ): spark.h arcfs.h unarc.h
 store$(OBJ): spark.h main.h crc.h garble.h nsparkio.h
 pack$(OBJ): spark.h main.h crc.h garble.h nsparkio.h pack.h
 compress$(OBJ): spark.h pack.h main.h crc.h garble.h nsparkio.h arcfs.h
