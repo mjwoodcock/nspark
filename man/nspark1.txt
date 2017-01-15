@@ -9,7 +9,7 @@ SSYYNNOOPPSSIISS
        nnssppaarrkk [ ooppttiioonnss ] archive [ ffiillee ......  ]
 
 DDEESSCCRRIIPPTTIIOONN
-       The current version of nnssppaarrkk is 1.7.7
+       The current version of nnssppaarrkk is 1.7.8
 
        NNssppaarrkk  can  unpack  the  specified Archimedes-format aarrcchhiivvee,, list its
        contents or tests its integrity.
