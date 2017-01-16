@@ -58,6 +58,7 @@
 #include "arc.h"
 #include "unarc.h"
 #include "garble.h"
+#include "version.h"
 
 /* BB changed next line */ 
 

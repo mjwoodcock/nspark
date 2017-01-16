@@ -25,7 +25,7 @@ usage()
 {
 	printf("sqsh: un-squashes RISC OS squashed files\n");
 	printf("Usage: sqsh [options] <filename>\n");
-	printf("	where optios are:\n");
+	printf("	where options are:\n");
 	exit(1);
 }
 

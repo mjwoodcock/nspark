@@ -1,0 +1,24 @@
+*.o
+*.obj
+*.exe
+/nspark
+/testprog/testpack
+
+# CMake temp files
+/CMakeCache.txt
+/CMakeFiles/
+/cmake_install.cmake
+Makefile
+
+# MSVC project files
+/win32/Debug
+/win32/Release
+/Debug
+/Release
+/nspark.dir/
+/nspark.*sdf
+/nspark.sln
+*.vcxproj*
+*.suo
+*.ilk
+/*.pdb

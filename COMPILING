@@ -1,8 +1,18 @@
-Build with makefiles on Unix, Windows and RISCOS
+Build with makefiles on Unix, Windows and RISC OS
 ===================================================
 
-Copy the appropriate makefile from the unix, win32 or riscos directory and
-run the appropriate make tool.
+To compile on Windows with Microsoft Visual Studio:
+  Open a Microsoft Visual Studio command prompt
+  nmake -f win32\makefile
+
+To compile on Windows with MinGW:
+  mingw32-make -f makefile.gcc SYSTYPE=WINNT
+
+To compile on Unix:
+  make -f makefile.gcc
+
+To compile on RISC OS:
+  make -f makefile.gcc SYSTYPE=RISCOS
 
 Build with cmake on Windows
 ==============================

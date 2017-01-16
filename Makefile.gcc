@@ -1,0 +1,143 @@
+#
+# nspark makefile
+#
+# $Header: makefile 1.30 92/12/23 $
+#
+# SYSTYPE:	POSIX, RISCOS, WINNT
+#
+SYSTYPE= POSIX
+INSTALLDIR= $${HOME}/bin
+CC = gcc
+
+# Under System V change "install" to "cp"
+INSTALL = install -s
+
+# --- You shouldn't need to edit below this line ---
+
+BACKUPFILE = $${HOME}/tmp/nspark.zip
+
+CDEFINES = -I. -O
+CMISC = -D$(SYSTYPE)
+CFLAGS = $(CDEFINES) $(CMISC) -Wall -Werror
+LIBS =
+PROG = nspark$(EXE)
+SQSH = sqsh$(EXE)
+TESTPACK = testprog/testpack$(EXE)
+SRCS = store.c pack.c compress.c crc.c \
+	io.c error.c misc.c date.c arcfs.c garble.c
+HDRS = store.h pack.h compress.h crc.h \
+	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
+OBJS = store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
+	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) garble$(OBJ)
+
+NSPARKSRCS = main.c arc.c unarc.c
+NSPARKHDRS = main.h arc.h unarc.h
+NSPARKOBJS = main$(OBJ) arc$(OBJ) unarc$(OBJ)
+
+SQSHSRCS = sqshmain.c unarc.c
+SQSHHDRS = unarc.h
+SQSHOBJS = sqshmain$(OBJ) unarc$(OBJ)
+
+TESTPACKSRCS = testprog/pack.c
+TESTPACKOBJS = testprog/pack$(OBJ)
+
+OBJ = .o
+
+ifeq (${SYSTYPE},RISCOS)
+EXE =
+OBJ = .o
+SRCS += acorn.c
+OBJS += acorn$(OBJ)
+CFLAGS += -mlibscl
+LIBS += -mlibscl
+endif
+
+ifeq (${SYSTYPE},POSIX)
+EXE =
+OBJ = .o
+SRCS += unix.c
+OBJS += unix$(OBJ)
+# BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
+CFLAGS +=
+# BB: For SGI systems use LIBS -lc_s -s.
+LIBS +=
+endif
+
+ifeq (${SYSTYPE},WINNT)
+EXE = .exe
+OBJ = .obj
+SRCS += winnt.c
+OBJS += winnt$(OBJ)
+endif
+
+.DEFAULT:
+	$(CC) -c $<
+
+all:	$(PROG) $(TESTPACK) $(SQSH)
+
+$(TESTPACK): $(OBJS) $(TESTPACKOBJS)
+	$(CC) -o $(TESTPACK) $(OBJS) $(TESTPACKOBJS) $(LIBS)
+
+$(PROG): $(OBJS) $(NSPARKOBJS)
+	$(CC) -o $(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
+
+$(SQSH): $(OBJS) $(SQSHOBJS)
+	$(CC) -o $(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
+
+install: $(PROG) $(SQSH)
+	 $(INSTALL) $(PROG) $(INSTALLDIR)
+	 $(INSTALL) $(SQSH) $(INSTALLDIR)
+
+depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS) $(SQSHSRCS) $(SQSHHDRS)
+	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS) $(NSPARKSRCS) $(SQSHSRCS)
+	mv makefile makefile.old
+	sed -f nosysdep.sed < makefile.old > makefile
+	rm -f makefile.old makefile.bak
+
+tags:	$(SRCS) $(HDRS)
+	ctags $(SRCS) $(HDRS)
+
+clean:
+	rm -f $(PROG) $(TESTPACK) $(SQSH) $(OBJS) $(NSPARKOBJS) $(TESTPACKOBJS) $(SQSHOBJS)
+	rm -f a.out core *~
+
+backup:	clean
+	(cd ..; zip -r9y $(BACKUPFILE) nspark)
+
+TMPDIR = $$HOME/tmp
+DISTLEAF = nspark-$(VERSION)
+DISTDIR = $(TMPDIR)/$(DISTLEAF)
+dist:	clean $(SRCS) $(HDRS)
+	rm -f RCS/rel-$(VERSION)
+	makerel makefile *.c *.h > RCS/rel-$(VERSION)
+	chmod 444 RCS/rel-$(VERSION)
+	mkdir $(DISTDIR)
+	cp *.c *.h nosysdep.sed README BUGS CHANGES makefile $(DISTDIR)
+	mkdir $(DISTDIR)/mkfiles
+	cp mkfiles/* $(DISTDIR)/mkfiles
+	(cd $(TMPDIR); tar cf - $(DISTLEAF) | compress > $(DISTLEAF).tar.Z)
+	(cd $(TMPDIR); rm -rf $(DISTLEAF))
+
+%$(OBJ): %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+main$(OBJ): spark.h nsparkio.h error.h misc.h arc.h unarc.h garble.h version.h
+arc$(OBJ): spark.h error.h
+unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h arcfs.h
+sqshmain$(OBJ): spark.h arcfs.h unarc.h
+store$(OBJ): spark.h main.h crc.h garble.h nsparkio.h
+pack$(OBJ): spark.h main.h crc.h garble.h nsparkio.h pack.h
+compress$(OBJ): spark.h pack.h main.h crc.h garble.h nsparkio.h arcfs.h
+arcfs$(OBJ): spark.h arcfs.h nsparkio.h misc.h
+garble$(OBJ): garble.h
+crc$(OBJ): spark.h main.h arcfs.h
+io$(OBJ): spark.h main.h error.h arcfs.h nsparkio.h
+error$(OBJ): error.h
+misc$(OBJ): spark.h main.h date.h misc.h
+date$(OBJ): spark.h
+unix$(OBJ): spark.h date.h
+acorn$(OBJ): spark.h date.h
+msdos$(OBJ): spark.h date.h os.h
+winnt$(OBJ): spark.h date.h
