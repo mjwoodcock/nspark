@@ -26,10 +26,13 @@ if (CMAKE_COMPILER_IS_GNUCC)
 	set(CMAKE_C_FLAGS "-Wall")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
-add_executable (nspark arc.c main.c unarc.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
-add_executable (sqsh sqshmain.c unarc.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
+add_library (nsparklib ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
+add_executable (nspark arc.c main.c unarc.c)
+target_link_libraries (nspark LINK_PUBLIC nsparklib)
+add_executable (sqsh sqshmain.c unarc.c)
+target_link_libraries (sqsh LINK_PUBLIC nsparklib)
 
 if (UNIX)
-	add_executable (testprog/testpack testprog/pack.c ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
+	add_subdirectory (testprog)
 endif (UNIX)
 
