@@ -158,7 +158,7 @@ arcfs_fixtime(Header *hdr)
 	hdr->date |= (tim->tm_mday);
 	hdr->time = (tim->tm_hour) << 11;
 	hdr->time |= (tim->tm_min) << 5;
-	hdr->time |= (tim->tm_sec);
+	hdr->time |= tim->tm_sec / 2;
 }
 
 
