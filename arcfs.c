@@ -46,6 +46,7 @@
 #include "nsparkio.h"
 
 #include "misc.h"
+#include "error.h"
 
 #ifndef SEEK_SET
 #define SEEK_SET 0
@@ -192,7 +193,7 @@ arcfs_read_header(FILE *ifp)
 		if ((!header_ptr->is_dir)
 			&& (fseek(ifp, (long) header_ptr->seek, SEEK_SET)))
 		{
-			printf("Cannot seek compressed data in this file\n");
+			error("Cannot seek compressed data in this file");
 			return (&null_header);
 		}
 		/* Set up number of compression bits */
@@ -214,15 +215,15 @@ arcfs_read_header(FILE *ifp)
 		   This saves linking the floating point routines under DOS
 		   which yields quite a reduction in executable size.
 		   And it removes the need to have the FPE present under RISC OS. */
-		/* printf("Archive created by a newer version of ArcFS (%.2f)\n",((float)version)/100); */
-		printf("Archive created by a newer version of ArcFS (%d.%02d)\n",
+		/* error("Archive created by a newer version of ArcFS (%.2f)",((float)version)/100); */
+		error("Archive created by a newer version of ArcFS (%d.%02d)",
 			   version / 100, version % 100);
 		return (&null_header);
 	}
 	read_word(ifp);				/* read/write version */
 	if ((version = read_word(ifp)) > 0)
 	{
-		printf("Archive format %d not understood\n", version);
+		error("Archive format %d not understood", version);
 		return (&null_header);
 	}
 	for (i = 0; i < 17; i++)
@@ -236,7 +237,7 @@ arcfs_read_header(FILE *ifp)
 		header_ptr = (arcfs_header) malloc(sizeof(struct arcfs_header_s));
 		if ((header == NULL) || (header_ptr == NULL))
 		{
-			printf("Out of memory\n");
+			error("Out of memory");
 			return (&null_header);
 		}
 
@@ -333,7 +334,7 @@ arcfs_read_header(FILE *ifp)
 	if ((!header_ptr->is_dir)
 		&& (fseek(ifp, (long) header_ptr->seek, SEEK_SET)))
 	{
-		printf("Cannot seek compressed data in this file\n");
+		error("Cannot seek compressed data in this file");
 		return (&null_header);
 	}
 	/* Set up number of compression bits */

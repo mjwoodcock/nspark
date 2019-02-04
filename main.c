@@ -125,17 +125,17 @@ main(int argc, char *argv[])
 		 */ 
 		if (sizeof(Word) != 4)
 	{
-		puts("Word size != 4");
+		error("Word size != 4");
 		exit(1);
 	}
 	if (sizeof(Halfword) != 2)
 	{
-		puts("Halfword size != 2");
+		error("Halfword size != 2");
 		exit(1);
 	}
 	if (sizeof(Byte) != 1)
 	{
-		puts("Byte size != 1");
+		error("Byte size != 1");
 		exit(1);
 	}
 	
@@ -233,7 +233,7 @@ main(int argc, char *argv[])
 					retry = 1;
 					break;
 				case 'V':
-					printf("%s v%s - maintained by %s - PUBLIC DOMAIN\n",
+					fprintf(stderr, "%s v%s - maintained by %s - PUBLIC DOMAIN\n",
 							ourname, VERSION, MAINTAINER);
 					break;
 				case 'T':

@@ -64,6 +64,7 @@
 #include "main.h"
 #include "crc.h"
 #include "garble.h"
+#include "error.h"
 
 /* BB changed next line because of conflict with Borland's io.h */
 
@@ -201,7 +202,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 											  sizeof(unsigned short));
 	if (!htab || !codetab)
 	{
-		fprintf(stderr, "%s: uncompress: out of memory\n", ourname);
+		error("%s: uncompress: out of memory", ourname);
 		exit(1);
 	}
 #endif							/* __MSDOS__ && ! BB_HUGE_STATIC_ARRAYS */
@@ -300,7 +301,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 		{
 			if ((char NSHUGE *)(stackp+1) > (char NSHUGE *)(&htab[0] + HSIZE))
 			{
-				fprintf(stderr, "%s: uncompress: corrupt or garbled archive file\n", ourname);
+				error("%s: uncompress: corrupt or garbled archive file", ourname);
 				exit(1);
 			}
 			*stackp++ = tab_suffixof(code);
@@ -314,7 +315,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 #else
 		if ((char *)(stackp+1) > (char *)(&htab[0] + HSIZE))
 		{
-			fprintf(stderr, "%s: uncompress: corrupt or garbled archive file\n", ourname);
+			error("%s: uncompress: corrupt or garbled archive file", ourname);
 			exit(1);
 		}
 		*stackp++ = finchar = tab_suffixof(code);
@@ -393,7 +394,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 			break;
 		}
 	if (!quiet)
-		printf("%s", message);
+		msg("%s", message);
 	return (NOERR);
 }
 

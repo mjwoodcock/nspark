@@ -62,6 +62,7 @@
 
 #include "date.h"
 #include "misc.h"
+#include "error.h"
 
 /*
  * return last element in pathname
@@ -260,7 +261,7 @@ print_details(Header *header)
 		{
 			/* time stamp valid */
 			date = makedate(header);
-			printf("%8ld %02d-%s-%04d %02d:%02d:%02d  &%03X %s",
+			msg("%8ld %02d-%s-%04d %02d:%02d:%02d  &%03X %s",
 				   (long)header->origlen, date->day,
 				   monthname(date->month), date->year + 1900,
 				   date->hour, date->minute, date->second,
@@ -274,9 +275,9 @@ print_details(Header *header)
 			/* BB added long to first format in next line.
 			   Header.origlen is a Word (i.e. a long) */
 #ifdef __MSDOS__
-			printf("%8ld &%08lX   &%08lX ---- %s", header->origlen,
+			msg("%8ld &%08lX   &%08lX ---- %s", header->origlen,
 #else
-			printf("%8d &%08lX   &%08lX ---- %s", header->origlen,
+			msg("%8d &%08lX   &%08lX ---- %s", header->origlen,
 #endif							/* __MSDOS__ */
 				   (long)header->load, (long)header->exec,
 				   get_comp_desc(header->comptype));
@@ -286,7 +287,7 @@ print_details(Header *header)
 	{
 		/* PC archive header */
 		date = makedate(header);
-		printf("%8ld %02d-%s-%02d %02d:%02d:%02d  ---- %s",
+		msg("%8ld %02d-%s-%02d %02d:%02d:%02d  ---- %s",
 			   (long)header->origlen, date->day, monthname(date->month),
 			   date->year + 1900, date->hour, date->minute, date->second,
 			   get_comp_desc(header->comptype));
@@ -357,10 +358,10 @@ print_header(Header *header)
 	if (!header)
 		return;
 
-	printf("comptype=0X%X name=%s complen=%lu date=0X%X time=0X%X\n",
+	debug("comptype=0X%X name=%s complen=%lu date=0X%X time=0X%X\n",
 		   header->comptype, header->name, header->complen, header->date,
 		   header->time);
-	printf("crc=0X%X origlen=%lu load=0X%lX exec=0X%lX attr=0x%lX\n",
+	debug("crc=0X%X origlen=%lu load=0X%lX exec=0X%lX attr=0x%lX\n",
 		   header->crc, header->origlen, header->load, header->exec,
 		   header->attr);
 

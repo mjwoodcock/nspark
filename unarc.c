@@ -280,8 +280,8 @@ do_unarc()
 
 	if (!quiet && verbose)
 	{
-		puts("filename                          size load/date   exec/time type storage");
-		puts("--------                          ---- ----------- --------- ---- -------");
+		msg("filename                          size load/date   exec/time type storage");
+		msg("--------                          ---- ----------- --------- ---- -------");
 	}
 
 	/*
@@ -303,10 +303,7 @@ do_unarc()
 				(read_byte(ifp) == 'v') &&
 				(read_byte(ifp) == 'e') && (read_byte(ifp) == '\0'))
 			{
-#ifdef DEBUGGING
-				if (debugging)
-					printf("ArcFS format archive\n");
-#endif							/* DEBUGGING */
+				debug("ArcFS format archive\n");
 				arcfs = 1;
 			}
 			else
@@ -316,12 +313,9 @@ do_unarc()
 		header = read_header(ifp);
 		comptype = header->comptype & 0x7f;
 #ifdef DEBUGGING
-		if (debugging)
-		{
-			printf("archive file length = %ld  level = %d\n", arcsize,
-				   level);
-			print_header(header);
-		}
+		debug("archive file length = %ld  level = %d\n", arcsize,
+			   level);
+		print_header(header);
 #endif							/* DEBUGGING */
 
 		/*
@@ -334,10 +328,7 @@ do_unarc()
 		{
 			if (header->complen > arcsize)
 			{
-#ifdef DEBUGGING
-				if (debugging)
-					puts("compressed len > archive file len");
-#endif							/* DEBUGGING */
+				debug("compressed len > archive file len");
 				header = NULL;
 				break;
 			}
@@ -356,7 +347,7 @@ do_unarc()
 			 */
 			if (!testing && !listing && stamp && inlist(pathname))
 				if (filestamp(&dirheader, pathname) < 0 && !quiet)
-					printf("error stamping %s\n", pathname);
+					error("error stamping %s", pathname);
 			pathname = uplevel();
 			continue;
 		}
@@ -381,7 +372,7 @@ do_unarc()
 				case NOEXIST:
 					if (makedir(pathname) < 0 && !quiet)
 					{
-						printf("error making %s... aborting", pathname);
+						msg("error making %s... aborting", pathname);
 						ret = 4;
 						break;
 					}
@@ -389,7 +380,7 @@ do_unarc()
 
 				case ISFILE:
 					if (!quiet)
-						printf("%s exists as a file... aborting",
+						msg("%s exists as a file... aborting",
 							   pathname);
 					ret = 4;
 					goto unarc_exit;
@@ -417,7 +408,7 @@ do_unarc()
 			 */
 			if (!quiet)
 			{
-				printf("%-30s", fullname);
+				msg("%-30s", fullname);
 				if (verbose)
 					print_details(header);
 			}
@@ -430,12 +421,12 @@ do_unarc()
 			{
 				/* if listing, nothing more to do */
 				if (!quiet)
-					putchar('\n');
+					putc('\n', stderr);
 				fseek(ifp, (long) header->complen, 1);
 				continue;
 			}
 			else if (!quiet)
-				putchar(' ');
+				putc(' ', stderr);
 
 			/*
 			 * append the filetype to the name
@@ -477,7 +468,7 @@ do_unarc()
 					break;
 				case ISDIR:
 					if (!quiet)
-						puts("exists as a directory... skipping");
+						msg("exists as a directory... skipping");
 					continue;
 				case NOEXIST:
 				default:
@@ -487,7 +478,7 @@ do_unarc()
 				if (!ofp)
 				{
 					if (!quiet)
-						printf("unable to create");
+						msg("unable to create");
 					continue;
 				}
 			}
@@ -515,7 +506,7 @@ do_unarc()
 				status = uncompress(header, ifp, ofp, COMPRESS);
 				break;
 			default:
-				printf("unsupported archive type %d\n", comptype);
+				error("unsupported archive type %d", comptype);
 				if (retrying)
 					goto do_retry;
 				fseek(ifp, (long) header->complen, 1);
@@ -544,29 +535,25 @@ do_unarc()
 			{
 			case WERR:
 				if (!quiet)
-					printf("error writing file");
+					msg("error writing file");
 				break;
 			case CRCERR:
 				if (!quiet)
-					printf("failed CRC check");
-#ifdef DEBUGGING
-				if (debugging)
-				{
-					/* BB changed format in next line to long hex */
-					/* printf("  calculated CRC=0x%x", crc); */
+					msg("failed CRC check");
+
+				/* BB changed format in next line to long hex */
+				/* debug("  calculated CRC=0x%x", crc); */
 #ifdef __MSDOS__
-					printf("  calculated CRC=0X%lX", crc);
+				debug("  calculated CRC=0X%lX", crc);
 #else
-					printf("  calculated CRC=0X%X", crc);
+				debug("  calculated CRC=0X%X", crc);
 #endif							/* __MSDOS__ */
-				}
-#endif							/* DEBUGGING */
 				break;
 			case NOERR:
 				if (!testing && stamp)
 				{
 					if (filestamp(header, fullname) < 0 && !quiet)
-						printf("\nerror stamping %s", fullname);
+						msg("\nerror stamping %s", fullname);
 				}
 				/* 
 				 * XXX: if the filename has had it's filetype appended to
@@ -626,7 +613,7 @@ do_unarc()
 			}
 
 			if (!quiet)
-				putchar('\n');
+				putc('\n', stderr);
 			if (ret)
 				break;
 		}
@@ -640,10 +627,10 @@ do_unarc()
 		{
 		case FNOERR:
 			if (!quiet)
-				printf("bad archive header");
+				msg("bad archive header");
 			if (retry && !listing)
 			{
-				puts("... retrying");
+				msg("... retrying");
 			  do_retry:
 				retrying++;
 				while (check_stream(ifp) == FNOERR)
@@ -670,13 +657,13 @@ do_unarc()
 			{
 				retrying = 0;
 				if (!quiet)
-					putchar('\n');
+					putc('\n', stderr);
 			}
 			ret = 2;
 			break;
 		case FRWERR:
 			if (!quiet)
-				puts("error reading archive");
+				msg("error reading archive");
 			ret = 3;
 			break;
 		case FEND:
@@ -687,7 +674,7 @@ do_unarc()
   unarc_exit:
 
 	if (verbose)
-		printf("total of %ld bytes in %d files\n", (long)nbytes, nfiles);
+		msg("total of %ld bytes in %d files\n", (long)nbytes, nfiles);
 
 	if (ofp)
 		fclose(ofp);
@@ -709,9 +696,9 @@ prompt_user(char *filename)
 
 	while (1)
 	{
-		printf("\n\"%s\" exists, overwrite ? (Yes/No/All/Rename): ",
+		fprintf(stderr, "\n\"%s\" exists, overwrite ? (Yes/No/All/Rename): ",
 			   filename);
-		fflush(stdout);
+		fflush(stderr);
 		if (read(0, buffer, sizeof(buffer) - 1)<1) {
 			c = 'n';
 			break;
@@ -737,8 +724,8 @@ get_newname(void)
 
 	while (1)
 	{
-		printf("enter new filename: ");
-		fflush(stdout);
+		fprintf(stderr, "enter new filename: ");
+		fflush(stderr);
 		c = read(0, buffer, sizeof(buffer) - 1);
 		buffer[c ? c - 1 : 0] = '\0';
 		if (!*buffer)
@@ -746,7 +733,7 @@ get_newname(void)
 		for (c = 0; buffer[c]; c++)
 			if (buffer[c] == PATHSEP)
 			{
-				puts("*** new file must extract into this directory ***");
+				msg("*** new file must extract into this directory ***");
 				continue;
 			}
 		return (buffer);

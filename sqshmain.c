@@ -4,6 +4,7 @@
 #include "spark.h"
 #include "arcfs.h"
 #include "unarc.h"
+#include "error.h"
 
 char *ourname;
 unsigned char apptype = 0;
@@ -23,9 +24,9 @@ char *logfile = NULL;
 void
 usage()
 {
-	printf("sqsh: un-squashes RISC OS squashed files\n");
-	printf("Usage: sqsh [options] <filename>\n");
-	printf("	where options are:\n");
+	fprintf(stderr, "sqsh: un-squashes RISC OS squashed files\n");
+	fprintf(stderr, "Usage: sqsh [options] <filename>\n");
+	fprintf(stderr, "	where options are:\n");
 	exit(1);
 }
 
@@ -74,7 +75,7 @@ main(int argc, char *argv[])
 	r = do_unsquash(to_stdout);
 	if (r != 0 || writesize > 0)
 	{
-		printf("Error unsquashing file\n");
+		error("Error unsquashing file");
 	}
 
 	return r;

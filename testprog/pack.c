@@ -8,6 +8,7 @@
 #include "../pack.h"
 #include "../arcfs.h"
 #include "../garble.h"
+#include "../error.h"
 
 char **files = NULL;
 char *archive = NULL;
@@ -30,21 +31,21 @@ main(int argc, char *argv[])
 
 	if (argc != 4)
 	{
-		printf("usage: %s <-p|u> <infile> <outfile>\n", argv[0]);
+		fprintf(stderr, "usage: %s <-p|u> <infile> <outfile>\n", argv[0]);
 		exit(1);
 	}
 
 	in = fopen(argv[2], "r");
 	if (!in)
 	{
-		printf("Failed to open %s for reading\n", argv[2]);
+		error("Failed to open %s for reading", argv[2]);
 		exit(1);
 	}
 
 	out = fopen(argv[3], "w");
 	if (!out)
 	{
-		printf("Failed to open %s for writing\n", argv[3]);
+		error("Failed to open %s for writing", argv[3]);
 	}
 
 	if (strcmp(argv[1], "-p") == 0)
@@ -56,10 +57,10 @@ main(int argc, char *argv[])
 		crcsize = header.origlen;
 		pack(&header, in, out);
 		fseek(out, 0, SEEK_SET);
-		printf("\n");
+		msg("\n");
 		fwrite(&header, sizeof(header), 1, out);
-		printf("Original size = %d\n", header.origlen);
-		printf("Compressed size = %d\n", header.complen);
+		msg("Original size = %d\n", header.origlen);
+		msg("Compressed size = %d\n", header.complen);
 	}
 	else
 	{
@@ -67,15 +68,15 @@ main(int argc, char *argv[])
 			perror("Read failed!");
 			exit(1);
 		}
-		printf("Original size = %d\n", header.origlen);
-		printf("Compressed size = %d\n", header.complen);
+		msg("Original size = %d\n", header.origlen);
+		msg("Compressed size = %d\n", header.complen);
 		crcsize = writesize = header.origlen;
 		r = unpack(&header, in, out);
 		if (r != NOERR)
 		{
-			printf("Failed %d\n", r);
+			error("Failed %d", r);
 		}
-		printf("\n");
+		msg("\n");
 	}
 
 	fclose(in);
