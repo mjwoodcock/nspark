@@ -109,7 +109,7 @@ char *get_newname(void);
 
 #ifndef __MSDOS__
 int
-do_unsquash(int to_stdout)
+do_unsquash()
 {
 	SqshHeader sqsh_header;
 	Header header;
@@ -345,7 +345,7 @@ do_unarc()
 			 * stamp directory now that all files have
 			 * been written into it
 			 */
-			if (!testing && !listing && stamp && inlist(pathname))
+			if (!testing && !listing && !to_stdout && stamp && inlist(pathname))
 				if (filestamp(&dirheader, pathname) < 0 && !quiet)
 					error("error stamping %s", pathname);
 			pathname = uplevel();
@@ -366,7 +366,7 @@ do_unarc()
 			/*
 			 * create directory
 			 */
-			if (!testing && !listing && inlist(pathname))
+			if (!testing && !listing && !to_stdout && inlist(pathname))
 				switch (exist(pathname))
 				{
 				case NOEXIST:
@@ -431,13 +431,13 @@ do_unarc()
 			/*
 			 * append the filetype to the name
 			 */
-			if (apptype)
+			if (apptype && !to_stdout)
 				append_type(header, fullname);
 
 			/*
 			 * if actually unarchiving then check if the file already exists
 			 */
-			if (!testing)
+			if (!testing && !to_stdout)
 			{
 			  test_exist:
 				switch (exist(fullname))
@@ -482,6 +482,10 @@ do_unarc()
 					continue;
 				}
 			}
+			else if (!testing)
+			{
+				ofp = stdout;
+			}
 
 			/*
 			 * do the unpacking
@@ -513,7 +517,7 @@ do_unarc()
 				continue;
 			}
 
-			if (!testing && ofp)
+			if (!testing && !to_stdout && ofp)
 			{
 				fclose(ofp);
 				ofp = NULL;
@@ -550,7 +554,7 @@ do_unarc()
 #endif							/* __MSDOS__ */
 				break;
 			case NOERR:
-				if (!testing && stamp)
+				if (!testing && !to_stdout && stamp)
 				{
 					if (filestamp(header, fullname) < 0 && !quiet)
 						msg("\nerror stamping %s", fullname);
@@ -676,7 +680,7 @@ do_unarc()
 	if (verbose)
 		msg("total of %ld bytes in %d files\n", (long)nbytes, nfiles);
 
-	if (ofp)
+	if (ofp && !to_stdout)
 		fclose(ofp);
 	if (lfp)
 		fclose(lfp);

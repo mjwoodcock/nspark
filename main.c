@@ -94,6 +94,7 @@ unsigned char testing = 0;		/* -t */
 unsigned char listing = 0;		/* -l */
 unsigned char force = 0;		/* -f */
 unsigned char stamp = 1;		/* -s */
+unsigned char to_stdout = 0;		/* -c */
 unsigned char retry = 0;		/* -R */
 unsigned char apptype = 0;		/* -T */
 unsigned char singlecase = 0;	/* -C */
@@ -223,6 +224,8 @@ main(int argc, char *argv[])
 				case 'v':
 					verbose = 1;
 					break;
+				case 'c':
+					to_stdout = 1;
 				case 'f':
 					force = 1;
 					break;
@@ -347,5 +350,6 @@ usage()
 	
 		/* MU added instuctions for the -I option */ 
 	fprintf(stderr, "       -I unarchive with .inf files -p<password> set password\n");
+	fprintf(stderr, "       -c extract files to stdout\n");
 	exit(1);
 } 

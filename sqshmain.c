@@ -16,6 +16,7 @@ unsigned char quiet = 1;
 unsigned char retry = 0;
 unsigned char singlecase = 0;
 unsigned char stamp = 1;
+unsigned char to_stdout = 0;
 unsigned char verbose = 0;
 char *archive = NULL;
 char **files = NULL;
@@ -35,7 +36,6 @@ main(int argc, char *argv[])
 {
 	int r;
 	int i;
-	int to_stdout = 0;
 
 	if (argc < 2)
 	{
@@ -72,7 +72,7 @@ main(int argc, char *argv[])
 	}
 	archive = argv[i];
 
-	r = do_unsquash(to_stdout);
+	r = do_unsquash();
 	if (r != 0 || writesize > 0)
 	{
 		error("Error unsquashing file");
