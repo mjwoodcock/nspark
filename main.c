@@ -46,6 +46,7 @@
 	
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 #include "spark.h"
 
@@ -60,19 +61,6 @@
 #include "garble.h"
 #include "version.h"
 
-/* BB changed next line */ 
-
-/* #ifdef RISCOS */ 
-#if defined(RISCOS) || defined(__MSDOS__)
-#include <stdlib.h>
-#endif	/* RISCOS || __MSDOS__ */
-
-/* BB added next includes */ 
-#ifdef __MSDOS__
-#include <ctype.h>
-#include <string.h>
-#endif	/* __MSDOS__ */
-	
 char *ourname;					/* program name */
 char *archive;					/* name of archive file */
 
