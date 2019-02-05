@@ -1,12 +1,4 @@
 cmake_minimum_required (VERSION 2.4)
-if (CMAKE_VERSION GREATER "2.4")
-	cmake_policy(SET CMP0005 OLD)
-endif (CMAKE_VERSION GREATER "2.4")
-
-if (CMAKE_VERSION GREATER "3.1")
-	cmake_policy(SET CMP0054 OLD)
-endif (CMAKE_VERSION GREATER "3.1")
-
 project (nspark C)
 
 SET(NSPARK_LIB_SOURCE arcfs.c compress.c crc.c date.c error.c garble.c io.c misc.c pack.c store.c)
