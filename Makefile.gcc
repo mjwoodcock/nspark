@@ -70,6 +70,9 @@ SRCS += winnt.c
 OBJS += winnt$(OBJ)
 endif
 
+ALL_SRCS = $(SRCS) $(NSPARKSRCS) $(SQSHSRCS) $(TESTPACKSRCS) posix.c acorn.c msdos.c winnt.c
+ALL_HDRS = $(HDRS) $(NSPARKHDRS) $(SQSHHDRS)
+
 .DEFAULT:
 	$(CC) -c $<
 
@@ -89,10 +92,11 @@ install: $(PROG) $(SQSH)
 	 $(INSTALL) $(SQSH) $(INSTALLDIR)
 
 depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS) $(SQSHSRCS) $(SQSHHDRS)
-	makedepend -w200 $(CDEFINES) -D$(SYSTYPE)  -- $(SRCS) $(NSPARKSRCS) $(SQSHSRCS)
-	mv makefile makefile.old
-	sed -f nosysdep.sed < makefile.old > makefile
-	rm -f makefile.old makefile.bak
+	makedepend -w200 -f Makefile.gcc -o '$$(OBJ)' $(CDEFINES) -D$(SYSTYPE)  -- $(ALL_SRCS)
+	sed -f nosysdep.sed -i Makefile.gcc
+	makedepend -w200 -f win32/MAKEFILE -o '$$(OBJ)' $(CDEFINES) -DWINNT  -- $(ALL_SRCS)
+	sed -f nosysdep.sed -i win32/MAKEFILE
+	rm -f Makefile.gcc.bak win32/MAKEFILE.bak
 
 tags:	$(SRCS) $(HDRS)
 	ctags $(SRCS) $(HDRS)
@@ -123,21 +127,30 @@ dist:	clean $(SRCS) $(HDRS)
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-main$(OBJ): spark.h nsparkio.h error.h misc.h arc.h unarc.h garble.h version.h
-arc$(OBJ): spark.h error.h
-unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h misc.h os.h error.h crc.h arcfs.h
-sqshmain$(OBJ): spark.h arcfs.h unarc.h
-store$(OBJ): spark.h main.h crc.h garble.h nsparkio.h
-pack$(OBJ): spark.h main.h crc.h garble.h nsparkio.h pack.h
-compress$(OBJ): spark.h pack.h main.h crc.h garble.h nsparkio.h arcfs.h
-arcfs$(OBJ): spark.h arcfs.h nsparkio.h misc.h
-garble$(OBJ): garble.h
+store$(OBJ): spark.h main.h crc.h garble.h
+store$(OBJ): nsparkio.h
+pack$(OBJ): spark.h main.h crc.h garble.h
+pack$(OBJ): nsparkio.h pack.h
+compress$(OBJ): spark.h pack.h
+compress$(OBJ): main.h crc.h garble.h nsparkio.h arcfs.h
 crc$(OBJ): spark.h main.h arcfs.h
 io$(OBJ): spark.h main.h error.h arcfs.h nsparkio.h
 error$(OBJ): error.h
 misc$(OBJ): spark.h main.h date.h misc.h
 date$(OBJ): spark.h
-unix$(OBJ): spark.h date.h
+arcfs$(OBJ): spark.h arcfs.h nsparkio.h misc.h
+garble$(OBJ): garble.h spark.h
+main$(OBJ): spark.h nsparkio.h error.h misc.h arc.h unarc.h garble.h version.h
+arc$(OBJ): spark.h error.h
+unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h 
+unarc$(OBJ): misc.h os.h error.h
+unarc$(OBJ): crc.h arcfs.h
+sqshmain$(OBJ): spark.h arcfs.h unarc.h
+unarc$(OBJ): spark.h store.h pack.h compress.h main.h nsparkio.h 
+unarc$(OBJ): misc.h os.h error.h
+unarc$(OBJ): crc.h arcfs.h
+testprog/pack$(OBJ): spark.h crc.h nsparkio.h pack.h arcfs.h garble.h spark.h
 acorn$(OBJ): spark.h date.h
-msdos$(OBJ): spark.h date.h os.h
-winnt$(OBJ): spark.h date.h
+msdos$(OBJ): spark.h date.h 
+msdos$(OBJ): os.h
+winnt$(OBJ): spark.h date.h 
