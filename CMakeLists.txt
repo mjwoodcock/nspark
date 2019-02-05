@@ -27,12 +27,19 @@ if (CMAKE_COMPILER_IS_GNUCC)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 add_library (nsparklib ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
+
 add_executable (nspark arc.c main.c unarc.c)
 target_link_libraries (nspark LINK_PUBLIC nsparklib)
+install (TARGETS nspark DESTINATION bin)
+
 add_executable (sqsh sqshmain.c unarc.c)
 target_link_libraries (sqsh LINK_PUBLIC nsparklib)
+install (TARGETS sqsh DESTINATION bin)
 
 if (UNIX)
 	add_subdirectory (testprog)
 endif (UNIX)
 
+install(FILES ${CMAKE_SOURCE_DIR}/man/nspark.1 DESTINATION share/man/man1)
+install(FILES ${CMAKE_SOURCE_DIR}/man/arcfs.5 DESTINATION share/man/man5)
+install(FILES ${CMAKE_SOURCE_DIR}/man/spark.5 DESTINATION share/man/man5)

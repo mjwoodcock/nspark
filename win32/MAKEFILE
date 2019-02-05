@@ -4,7 +4,7 @@
 # SYSTYPE:	WINNT
 #
 SYSTYPE= WINNT
-INSTALLDIR= c:\msvc\bin
+INSTALLDIR= c:\msvc
 CC=	cl
 
 # --- You shouldn't need to edit below this line ---
@@ -45,8 +45,9 @@ $(SQSH): $(OBJS) $(SQSHOBJS)
 	$(CC) /Fe$(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
 
 install: $(PROG) $(SQSH)
-	cp $(PROG) $(INSTALLDIR)
-	cp $(SQSH) $(INSTALLDIR)
+	-mkdir $(INSTALLDIR)\bin
+	copy $(PROG) $(INSTALLDIR)\bin
+	copy $(SQSH) $(INSTALLDIR)\bin
 
 clean:
 	rm *$(EXE)

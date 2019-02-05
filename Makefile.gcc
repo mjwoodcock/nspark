@@ -6,11 +6,16 @@
 # SYSTYPE:	POSIX, RISCOS, WINNT
 #
 SYSTYPE= POSIX
-INSTALLDIR= $${HOME}/bin
+INSTALLDIR= /usr/local
 CC = gcc
 
-# Under System V change "install" to "cp"
-INSTALL = install -s
+INSTALL = install -c -m 0644
+INSTALL_S = install -c -s -m 0755
+INSTALL_D = install -d
+# Under System V uncomment the following lines
+# INSTALL = cp
+# INSTALL_S = strip
+# INSTALL_D = mkdir
 
 # --- You shouldn't need to edit below this line ---
 
@@ -88,8 +93,14 @@ $(SQSH): $(OBJS) $(SQSHOBJS)
 	$(CC) -o $(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
 
 install: $(PROG) $(SQSH)
-	 $(INSTALL) $(PROG) $(INSTALLDIR)
-	 $(INSTALL) $(SQSH) $(INSTALLDIR)
+	 $(INSTALL_D) "$(INSTALLDIR)/bin"
+	 $(INSTALL_S) $(PROG) $(INSTALLDIR)/bin
+	 $(INSTALL_S) $(SQSH) $(INSTALLDIR)/bin
+	 $(INSTALL_D) "$(INSTALLDIR)/share/man/man1"
+	 $(INSTALL) man/nspark.1 $(INSTALLDIR)/share/man/man1
+	 $(INSTALL_D) "$(INSTALLDIR)/share/man/man5"
+	 $(INSTALL) man/arcfs.5 $(INSTALLDIR)/share/man/man5
+	 $(INSTALL) man/spark.5 $(INSTALLDIR)/share/man/man5
 
 depend: $(SRCS) $(HDRS) $(NSPARKSRCS) $(NSPARKHDRS) $(SQSHSRCS) $(SQSHHDRS)
 	makedepend -w200 -f Makefile.gcc -o '$$(OBJ)' $(CDEFINES) -D$(SYSTYPE)  -- $(ALL_SRCS)
