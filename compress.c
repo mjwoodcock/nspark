@@ -406,7 +406,7 @@ getcode(FILE *ifp)
 	register code_int code;
 	static char_type buf[COMPRESSBITS];
 	register int r_off, bits;
-	int i;
+	size_t i;
 	/* BB changed next line. We are doing pointer-artithmatics
 	   and that can be dangerous if other than normalized (huge)
 	   pointers are being used. */
@@ -434,7 +434,7 @@ getcode(FILE *ifp)
 		/* BB added cast to next line */
 		size = readsize < n_bits ? (size_t) readsize : n_bits;
 		size = fread(buf, 1, size, ifp);
-		if (size <= 0)
+		if (size == 0)
 			return (-1);		/* end of file */
 		for (i = 0; i < size; i++)
 		{

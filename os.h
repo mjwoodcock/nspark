@@ -25,4 +25,8 @@ int filestamp(Header *header, char *filename);
 #ifdef RISCOS
 int read(int fd, void *buffer, int size); 
 #endif
+#ifdef _MSC_VER
+#define read _read
+#define strdup _strdup
+#endif
 #endif /* __OS_H */
