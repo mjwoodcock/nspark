@@ -32,36 +32,26 @@ SRCS = store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c arcfs.c garble.c
 HDRS = store.h pack.h compress.h crc.h \
 	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
-OBJS = store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
-	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) garble$(OBJ)
 
 NSPARKSRCS = main.c arc.c unarc.c
 NSPARKHDRS = main.h arc.h unarc.h
-NSPARKOBJS = main$(OBJ) arc$(OBJ) unarc$(OBJ)
 
 SQSHSRCS = sqshmain.c unarc.c
 SQSHHDRS = unarc.h
-SQSHOBJS = sqshmain$(OBJ) unarc$(OBJ)
 
 TESTPACKSRCS = testprog/pack.c
-TESTPACKOBJS = testprog/pack$(OBJ)
 
+EXE =
 OBJ = .o
 
 ifeq (${SYSTYPE},RISCOS)
-EXE =
-OBJ = .o
-SRCS += acorn.c
-OBJS += acorn$(OBJ)
+OS_SRCS = acorn.c
 CFLAGS += -mlibscl
 LIBS += -mlibscl
 endif
 
 ifeq (${SYSTYPE},POSIX)
-EXE =
-OBJ = .o
-SRCS += unix.c
-OBJS += unix$(OBJ)
+OS_SRCS = unix.c
 # BB: For SGI systems fitted with a MIPS R4000 or better, add -mips2 to CFLAGS.
 CFLAGS +=
 # BB: For SGI systems use LIBS -lc_s -s.
@@ -71,9 +61,14 @@ endif
 ifeq (${SYSTYPE},WINNT)
 EXE = .exe
 OBJ = .obj
-SRCS += winnt.c
-OBJS += winnt$(OBJ)
+OS_SRCS = winnt.c
 endif
+
+OBJS = $(SRCS:.c=$(OBJ))
+NSPARKOBJS = $(NSPARKSRCS:.c=$(OBJ))
+SQSHOBJS = $(SQSHSRCS:.c=$(OBJ))
+TESTPACKOBJS = $(TESTPACKSRCS:.c=$(OBJ))
+OS_OBJS = $(OS_SRCS:.c=$(OBJ))
 
 ALL_SRCS = $(SRCS) $(NSPARKSRCS) $(SQSHSRCS) $(TESTPACKSRCS) posix.c acorn.c msdos.c winnt.c
 ALL_HDRS = $(HDRS) $(NSPARKHDRS) $(SQSHHDRS)
@@ -83,14 +78,14 @@ ALL_HDRS = $(HDRS) $(NSPARKHDRS) $(SQSHHDRS)
 
 all:	$(PROG) $(TESTPACK) $(SQSH)
 
-$(TESTPACK): $(OBJS) $(TESTPACKOBJS)
-	$(CC) -o $(TESTPACK) $(OBJS) $(TESTPACKOBJS) $(LIBS)
+$(TESTPACK): $(OBJS) $(OS_OBJS) $(TESTPACKOBJS)
+	$(CC) -o $@ $^ $(LIBS)
 
-$(PROG): $(OBJS) $(NSPARKOBJS)
-	$(CC) -o $(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
+$(PROG): $(OBJS) $(OS_OBJS) $(NSPARKOBJS)
+	$(CC) -o $@ $^ $(LIBS)
 
-$(SQSH): $(OBJS) $(SQSHOBJS)
-	$(CC) -o $(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
+$(SQSH): $(OBJS) $(OS_OBJS) $(SQSHOBJS)
+	$(CC) -o $@ $^ $(LIBS)
 
 install: $(PROG) $(SQSH)
 	 $(INSTALL_D) "$(INSTALLDIR)/bin"

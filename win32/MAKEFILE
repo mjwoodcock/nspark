@@ -20,29 +20,29 @@ SRCS=	store.c pack.c compress.c crc.c \
 	io.c error.c misc.c date.c arcfs.c garble.c
 HDRS=	store.h pack.h compress.h crc.h \
 	nsparkio.h error.h misc.h date.h os.h spark.h arcfs.h garble.h version.h
-OBJS=	store$(OBJ) pack$(OBJ) compress$(OBJ) crc$(OBJ) \
-	io$(OBJ) error$(OBJ) misc$(OBJ) date$(OBJ) arcfs$(OBJ) garble$(OBJ)
 
 NSPARKSRCS = main.c arc.c unarc.c
 NSPARKHDRS = main.h arc.h unarc.h
-NSPARKOBJS = main$(OBJ) arc$(OBJ) unarc$(OBJ)
 
 SQSHSRCS = sqshmain.c unarc.c
 SQSHHDRS = unarc.h
-SQSHOBJS = sqshmain$(OBJ) unarc$(OBJ)
 
 EXE = .exe
 OBJ = .obj
-SRCS = $(SRCS) winnt.c
-OBJS = $(OBJS) winnt$(OBJ)
+OS_SRCS = winnt.c
+
+OBJS = $(SRCS:.c=.obj)
+NSPARKOBJS = $(NSPARKSRCS:.c=.obj)
+SQSHOBJS = $(SQSHSRCS:.c=.obj)
+OS_OBJS = $(OS_SRCS:.c=.obj)
 
 all:	$(PROG) $(SQSH)
 
-$(PROG): $(OBJS) $(NSPARKOBJS)
-	$(CC) /Fe$(PROG) $(OBJS) $(NSPARKOBJS) $(LIBS)
+$(PROG): $(OBJS) $(OS_OBJS) $(NSPARKOBJS)
+	$(CC) /Fe$@ $** $(LIBS)
 
-$(SQSH): $(OBJS) $(SQSHOBJS)
-	$(CC) /Fe$(SQSH) $(OBJS) $(SQSHOBJS) $(LIBS)
+$(SQSH): $(OBJS) $(OS_OBJS) $(SQSHOBJS)
+	$(CC) /Fe$@ $** $(LIBS)
 
 install: $(PROG) $(SQSH)
 	-mkdir $(INSTALLDIR)\bin
