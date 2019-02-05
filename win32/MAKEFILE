@@ -50,11 +50,11 @@ install: $(PROG) $(SQSH)
 	copy $(SQSH) $(INSTALLDIR)\bin
 
 clean:
-	rm *$(EXE)
-	rm *$(OBJ)
-	rm *.bak
-	rm *.map
-	rm mklog
+	del *$(EXE)
+	del *$(OBJ)
+	del *.bak
+	del *.map
+	del mklog
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
