@@ -250,7 +250,6 @@ read_header(FILE *ifp)
 	return (&header);
 }
 
-#ifndef __MSDOS__
 Status
 read_sqsh_header(FILE *fp, SqshHeader *header)
 {
@@ -279,4 +278,3 @@ sqsh_header_to_header(SqshHeader *sqsh_header, Header *header)
 	header->origlen = sqsh_header->origlen;
 	arcfs_fixtime(header);
 }
-#endif

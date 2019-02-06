@@ -36,10 +36,8 @@ void write_halfword(FILE *ofp, Halfword halfword);
 void write_word(FILE *ofp, Word word);
 #endif /* notyet */
 Header *read_header(FILE *ifp);
-#ifndef __MSDOS__
 Status read_sqsh_header(FILE *ifp, SqshHeader *sqsh_header);
 void sqsh_header_to_header(SqshHeader *sqsh_header, Header *Header);
-#endif
 
 /* BB changed next line */
 /* #endif */ /* __IO_H */

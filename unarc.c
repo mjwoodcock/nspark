@@ -107,7 +107,6 @@ char prompt_user(char *filename);
 char *get_newname(void);
 
 
-#ifndef __MSDOS__
 int
 do_unsquash(int to_stdout)
 {
@@ -231,7 +230,6 @@ do_unsquash(int to_stdout)
 
 	return 0;
 }
-#endif
 
 int
 do_unarc()
