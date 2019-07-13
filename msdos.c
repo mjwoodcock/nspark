@@ -12,7 +12,11 @@
 #include "spark.h"
 #include "date.h"
 #include <sys\stat.h>
+#ifdef __WATCOMC__
+#include <direct.h>
+#else
 #include <dir.h>
+#endif
 #include <time.h>
 #include <utime.h>
 #include <string.h>				/* for memset */

@@ -72,8 +72,15 @@
 #include "nsparkio.h"
 #include "arcfs.h"
 
-#ifdef __MSDOS__
+#if defined(__MSDOS__) && !defined(MSDOS32)
+#ifdef __WATCOMC__
+#include <malloc.h>
+#define farcalloc halloc
+#else
 #include <alloc.h>				/* for farcalloc() */
+#endif
+#else
+#define farcalloc calloc
 #endif							/* __MSDOS__ */
 
 #define PBITS 16
@@ -104,7 +111,7 @@
 /* #define tab_suffixof(i)	((char_type *)(htab))[i] */
 
 /* #define de_stack ((char_type *)&tab_suffixof(1<<COMPRESSBITS)) */
-#ifdef __MSDOS__
+#if defined(__MSDOS__) && !defined(MSDOS32)
 #define MAXCODE(n_bits)	((long)(1L << (n_bits)) - 1L)
 #define htabof(i) htab[(long)(i)]
 #define codetabof(i) codetab[(long)(i)]
@@ -131,7 +138,7 @@
 /* typedef int code_int; */
 
 /* typedef int count_int; */
-#ifdef __MSDOS__
+#if defined(__MSDOS__) && !defined(MSDOS32)
 #define NSHUGE huge
 typedef long code_int;
 typedef long count_int;
@@ -155,10 +162,13 @@ static code_int maxmaxcode;		/* should NEVER generate this code */
 /* static count_int htab[HSIZE]; */
 
 /* static unsigned short codetab[HSIZE]; */
-#ifdef __MSDOS__
-
+#if !defined(__MSDOS__) || defined(MSDOS32)
+#define BB_HUGE_STATIC_ARRAYS
+#else
 /* For those that do want to use static arrays:
    define BB_HUGE_STATIC_ARRAYS. */
+#endif
+
 #ifdef BB_HUGE_STATIC_ARRAYS
 static count_int NSHUGE htab[HSIZE];
 static unsigned short NSHUGE codetab[HSIZE];
@@ -166,10 +176,7 @@ static unsigned short NSHUGE codetab[HSIZE];
 static count_int NSHUGE *htab = NULL;
 static unsigned short NSHUGE *codetab = NULL;
 #endif							/* BB_HUGE_STATIC_ARRAYS */
-#else							/* __MSDOS__ */
-static count_int htab[HSIZE];
-static unsigned short codetab[HSIZE];
-#endif							/* __MSDOS__ */
+
 static char_type rmask[9] =
 	{ 0x00, 0x01, 0x03, 0x07, 0x0f, 0x1f, 0x3f, 0x7f, 0xff };
 static code_int free_ent;		/* first unused entry */
@@ -193,7 +200,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 
 	init_garble();
 
-#if defined(__MSDOS__) && !defined(BB_HUGE_STATIC_ARRAYS)
+#if !defined(BB_HUGE_STATIC_ARRAYS)
 	if (!htab)
 		htab = (count_int NSHUGE *) farcalloc(HSIZE, sizeof(count_int));
 	if (!codetab)
@@ -205,7 +212,7 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 		error("%s: uncompress: out of memory", ourname);
 		exit(1);
 	}
-#endif							/* __MSDOS__ && ! BB_HUGE_STATIC_ARRAYS */
+#endif							/* ! BB_HUGE_STATIC_ARRAYS */
 
 	crc = 0;
 	clear_flg = 0;
@@ -307,19 +314,15 @@ uncompress(Header *header, FILE *ifp, FILE *ofp, CompType type)
 			*stackp++ = tab_suffixof(code);
 			code = tab_prefixof(code);
 		}
-		/* BB changed next line for Borland C/C++ 4 */
-		/* *stackp++ = finchar = tab_suffixof(code); */
-#ifdef __MSDOS__
-		finchar = tab_suffixof(code);
-		*stackp++ = (char_type) finchar;
-#else
-		if ((char *)(stackp+1) > (char *)(&htab[0] + HSIZE))
+		if ((char NSHUGE *)(stackp+1) > (char NSHUGE *)(&htab[0] + HSIZE))
 		{
 			error("%s: uncompress: corrupt or garbled archive file", ourname);
 			exit(1);
 		}
-		*stackp++ = finchar = tab_suffixof(code);
-#endif
+		/* BB changed next line for Borland C/C++ 4 */
+		/* *stackp++ = finchar = tab_suffixof(code); */
+		finchar = tab_suffixof(code);
+		*stackp++ = (char_type) finchar;
 
 		/*
 		 * And put them out in forward order

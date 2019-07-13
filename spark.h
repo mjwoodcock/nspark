@@ -42,7 +42,7 @@
 /* #if defined(MSDOS2) || defined(MSDOS3) || defined(MSDOS4) || defined(MSDOS5) || defined(WINNT) */
 #if defined(MSDOS2) || defined(MSDOS3) || defined(MSDOS4) || \
     defined(MSDOS5) || defined(MSDOS6) || defined(MSDOS7) || \
-    defined(WINNT)
+    defined(MSDOS32) || defined(WINNT)
 #define MSDOS
 #endif
 
@@ -51,7 +51,7 @@
  * "Halfword" must be a 2-byte type.
  * "Byte" must be a 1-byte type.
  */
-#if defined (MSDOS) && !defined(WINNT)
+#if defined (MSDOS) && !defined(WINNT) && !defined(MSDOS32)
 typedef unsigned long	Word;
 typedef	unsigned int	Halfword;
 typedef unsigned char	Byte;
