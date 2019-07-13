@@ -12,6 +12,6 @@
 #define __UNARC_H
 
 int do_unarc(void);
-int do_unsquash(int to_stdout);
+int do_unsquash(void);
 
 #endif /* __UNARC_H */

@@ -41,6 +41,7 @@ extern unsigned char stamp;
 extern unsigned char retry;
 extern unsigned char apptype;
 extern unsigned char singlecase;
+extern unsigned char to_stdout;
 #ifdef DEBUGGING
 extern unsigned char debugging;
 #endif /* DEBUGGING */

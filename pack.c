@@ -26,6 +26,7 @@
 #include "main.h"
 #include "crc.h"
 #include "garble.h"
+#include "error.h"
 
 /* BB changed next line because of conflict with Borland's io.h */
 
@@ -116,9 +117,9 @@ unpack(Header *header, FILE *ifp, FILE *ofp)
 	if ((Halfword) crc != header->crc)
 		return (CRCERR);
 	if (testing)
-		printf("OK (packed)");
+		msg("OK (packed)");
 	else
-		printf("unpacked");
+		msg("unpacked");
 	return (NOERR);
 }
 
@@ -198,9 +199,9 @@ pack(Header *header, FILE *ifp, FILE *ofp)
 	if (!testing && check_stream(ofp) == FRWERR)
 		return (WERR);
 	if (testing)
-		printf("OK (packed)");
+		msg("OK (packed)");
 	else
-		printf("packed");
+		msg("packed");
 
 	header->crc = (Halfword) crc;
 	header->complen = complen;

@@ -26,6 +26,7 @@
 #include "main.h"
 #include "crc.h"
 #include "garble.h"
+#include "error.h"
 
 /* BB changed next line because of conflict with Borland's io.h */
 
@@ -61,9 +62,9 @@ unstore(Header *header, FILE *ifp, FILE *ofp)
 	if (testing)
 	{
 		if (!quiet)
-			printf("OK (stored)");
+			msg("OK (stored)");
 	}
 	else if (!quiet)
-		printf("unstored");
+		msg("unstored");
 	return (NOERR);
 }

@@ -16,6 +16,8 @@
 
 #include <stdarg.h>
 
+void msg(char *fmt, ...);
+void debug(char *fmt, ...);
 void error(char *fmt, ...);
 void warning(char *fmt, ...);
 

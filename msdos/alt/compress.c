@@ -71,6 +71,7 @@
 #include "io.h"
 #endif /* __MSDOS__ */
 #include "arcfs.h"
+#include "error.h"
 
 #ifdef __MSDOS__
 #include <alloc.h> /* for farcalloc() */
@@ -226,7 +227,7 @@ static void allocatetables() {
           if (isascii(*cp) && isupper(*cp)) *cp = tolower(*cp);
       }
     }
-    fprintf(stderr,"%s: not enough memory\n", name);
+    error("%s: not enough memory", name);
     exit (1);
   }
 }
@@ -271,15 +272,14 @@ uncompress(header, ifp, ofp, type)
     if ( ! codetab )
       codetab = (unsigned short huge *) farcalloc(HSIZE,sizeof(unsigned short));
     if ( ! htab || ! codetab ) {
-      fprintf(stderr,"%s: compress: out of memory\n",ourname);
+      error("%s: compress: out of memory",ourname);
       exit (1);
     }
 #else  /* !__BORLANDC__ && !__TURBOC__ && !BB_HAS_PRAGMA_STARTUP */
 /* Check allocation when we're debugging (should never get here!) */
 #ifdef DEBUGGING
     if (!htab || !codetab) {
-      fprintf(stderr,
-              "%s: compress: Something went wrong allocating memory\n",
+      error("%s: compress: Something went wrong allocating memory",
               ourname);
       exit(1);
     }
@@ -463,7 +463,7 @@ compress_exit:
 	    message = "internal error";
 	    break;
 	}
-    if (!quiet) printf(message);
+    if (!quiet) msg(message);
     return (NOERR);
 }
 

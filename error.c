@@ -14,8 +14,35 @@
 
 #include <stdio.h>
 #include "error.h"
+#include "main.h"
 
 extern char *ourname;			/* in main.c */
+
+void
+msg(char *fmt, ...)
+{
+	va_list ap;
+
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+
+}
+
+void
+debug(char *fmt, ...)
+{
+#ifdef DEBUGGING
+	va_list ap;
+
+	if (!debugging)
+		return;
+
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+#endif	/* DEBUGGING */
+}
 
 void
 error(char *fmt, ...)
