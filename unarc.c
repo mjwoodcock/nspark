@@ -99,10 +99,6 @@
 #include "crc.h"
 #include "arcfs.h"
 
-#if defined(RISCOS) || defined(__MSDOS__)
-#include <string.h>				/* for strcpy */
-#endif							/* RISCOS || __MSDOS__ */
-
 char prompt_user(char *filename);
 char *get_newname(void);
 

@@ -37,10 +37,6 @@
 #include <sys/types.h>
 #endif							/* POSIX */
 
-#if defined(RISCOS) || defined(__MSDOS__)
-#include <stdlib.h>
-#include <string.h>
-#endif	/* RISCOS || __MSDOS__ */
 #include "arcfs.h"
 
 #include "nsparkio.h"

@@ -60,14 +60,6 @@
 #include "error.h"
 #include "arcfs.h"
 
-/* BB changed next line */
-
-/* #ifdef RISCOS */
-#if defined(RISCOS) || defined(__MSDOS__)
-#include <string.h>				/* for memset */
-
-/* BB added next two lines */
-#endif							/* RISCOS || __MSDOS__ */
 #ifdef RISCOS					/* next line RISC OS only */
 #define isascii(x) 1
 #endif							/* RISCOS */
