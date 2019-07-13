@@ -214,6 +214,7 @@ main(int argc, char *argv[])
 					break;
 				case 'c':
 					to_stdout = 1;
+					break;
 				case 'f':
 					force = 1;
 					break;
