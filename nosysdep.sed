@@ -1,6 +1,6 @@
 # Remove dependancies on system include files
-/[^ 	]*\.o:/s,/usr/include/[^ 	]*[ 	]*,,g
-/[^ 	]*\.o:/s,/usr/include/[^ 	]*$,,
-/[^ 	]*\.o:/s,/usr/local/lib/[^ 	]*[ 	]*,,g
-/[^ 	]*\.o:/s,/usr/local/lib/[^ 	]*$,,
-/[^	]*\.o:[ 	]*$/d
+/[^ 	]*$(OBJ)/s,/usr/include/[^ 	]*[ 	]*,,g
+/[^ 	]*$(OBJ)/s,/usr/include/[^ 	]*$,,
+/[^ 	]*$(OBJ):/s,/usr/local/lib/[^ 	]*[ 	]*,,g
+/[^ 	]*$(OBJ):/s,/usr/local/lib/[^ 	]*$,,
+/[^	]*$(OBJ):[ 	]*$/d
