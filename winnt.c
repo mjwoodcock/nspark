@@ -53,7 +53,7 @@ exist(char *pathname)
 int
 makedir(char *pathname)
 {
-	return mkdir(pathname);
+	return _mkdir(pathname);
 }
 
 /*

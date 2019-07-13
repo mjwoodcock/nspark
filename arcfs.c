@@ -174,7 +174,7 @@ arcfs_read_header(FILE *ifp)
 	Word header_length = 0;
 	Header *header;
 	Word version;
-	int i;
+	Word i;
 	Byte info_byte, name[12];
 	Word length, load, exec, attr, complen, info_word;
 	arcfs_header header_prev = NULL;
