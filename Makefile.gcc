@@ -93,6 +93,7 @@ install: $(PROG) $(SQSH)
 	 $(INSTALL_S) $(SQSH) $(INSTALLDIR)/bin
 	 $(INSTALL_D) "$(INSTALLDIR)/share/man/man1"
 	 $(INSTALL) man/nspark.1 $(INSTALLDIR)/share/man/man1
+	 $(INSTALL) man/sqsh.1 $(INSTALLDIR)/share/man/man1
 	 $(INSTALL_D) "$(INSTALLDIR)/share/man/man5"
 	 $(INSTALL) man/arcfs.5 $(INSTALLDIR)/share/man/man5
 	 $(INSTALL) man/spark.5 $(INSTALLDIR)/share/man/man5

@@ -37,5 +37,6 @@ if (UNIX)
 endif (UNIX)
 
 install(FILES ${CMAKE_SOURCE_DIR}/man/nspark.1 DESTINATION share/man/man1)
+install(FILES ${CMAKE_SOURCE_DIR}/man/sqsh.1 DESTINATION share/man/man1)
 install(FILES ${CMAKE_SOURCE_DIR}/man/arcfs.5 DESTINATION share/man/man5)
 install(FILES ${CMAKE_SOURCE_DIR}/man/spark.5 DESTINATION share/man/man5)
