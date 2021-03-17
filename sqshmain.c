@@ -28,6 +28,9 @@ usage()
 	fprintf(stderr, "sqsh: un-squashes RISC OS squashed files\n");
 	fprintf(stderr, "Usage: sqsh [options] <filename>\n");
 	fprintf(stderr, "	where options are:\n");
+	fprintf(stderr, "       -c output to stdout\n");
+	fprintf(stderr, "       -f force file overwrite\n");
+	fprintf(stderr, "       -s do not set timestamp of decompressed file\n");
 	exit(1);
 }
 

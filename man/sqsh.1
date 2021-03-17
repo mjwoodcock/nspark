@@ -1,0 +1,26 @@
+.TH SQSH 1 "2021-03-05" "USER COMMANDS"
+.SH NAME
+sqsh \- decompress RISC OS Squash files
+.SH SYNOPSIS
+.B sqsh
+.RI [ options ]
+file
+
+.SH DESCRIPTION
+
+.B sqsh
+can unpack files created by the RISC OS Squash utility.
+
+.SH OPTIONS
+.IP "-c" 10
+Decompress to stdout.
+.IP "-f" 10
+Force file overwrite if a file already exists with the same name as the one
+being extracted. If not using -f then you are prompted whether you want to
+overwrite the original, skip this file, give it a different name, or overwrite
+this and all others that already exist.
+.IP "-s" 10
+No filestamp. Does not set the timestamp when extracting files.
+
+.SH SEE ALSO
+.BR nspark(1)
