@@ -27,7 +27,7 @@ jobs:
         cc: [ 'gcc-10']
     name: Run static analyzer ${{ matrix.cc }}
     env:
-      CFLAGS: '-Wall -Wextra -Werror -fanalyzer'
+      CFLAGS: '-Wall -Wextra -fanalyzer'
       CC: ${{ matrix.cc }}
     steps:
       - run: sudo apt update
