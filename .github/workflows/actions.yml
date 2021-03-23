@@ -7,7 +7,7 @@ jobs:
       matrix:
         os: ['ubuntu-latest', 'macos-latest', 'ubuntu-16.04', 'ubuntu-18.04']
         cc: [ 'gcc', 'clang' ]
-    name: Compile on ${{ matrix.cc }}
+    name: Compile on ${{ matrix.os }} using ${{ matrix.cc }}
     env:
       CFLAGS: '-Wall -Wextra -Werror'
       CC: ${{ matrix.cc }}
@@ -24,12 +24,14 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-20.04']
-        cc: [ 'gcc']
-    name: Compile on ${{ matrix.cc }}
+        cc: [ 'gcc-10']
+    name: Run static analyzer ${{ matrix.cc }}
     env:
       CFLAGS: '-Wall -Wextra -Werror -fanalyzer'
       CC: ${{ matrix.cc }}
     steps:
+      - run: sudo apt update
+      - run: sudo apt install gcc-10
       - uses: actions/checkout@v2
       - run: mkdir build
       - run: cmake ..
