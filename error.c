@@ -41,6 +41,8 @@ debug(char *fmt, ...)
 	va_start(ap, fmt);
 	vfprintf(stderr, fmt, ap);
 	va_end(ap);
+#else
+	(void)(fmt);
 #endif	/* DEBUGGING */
 }
 
