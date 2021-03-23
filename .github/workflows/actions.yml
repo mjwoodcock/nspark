@@ -1,0 +1,38 @@
+on: [push, pull_request]
+
+jobs:
+  linuxbuild:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest', 'ubuntu-16.04', 'ubuntu-18.04']
+        cc: [ 'gcc', 'clang' ]
+    name: Compile on ${{ matrix.cc }}
+    env:
+      CFLAGS: '-Wall -Wextra -Werror'
+      CC: ${{ matrix.cc }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir build
+      - run: cmake ..
+        working-directory: ./build
+      - run: cmake --build .
+        working-directory: ./build
+
+  analyzer:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-20.04']
+        cc: [ 'gcc']
+    name: Compile on ${{ matrix.cc }}
+    env:
+      CFLAGS: '-Wall -Wextra -Werror -fanalyzer'
+      CC: ${{ matrix.cc }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir build
+      - run: cmake ..
+        working-directory: ./build
+      - run: cmake --build .
+        working-directory: ./build
