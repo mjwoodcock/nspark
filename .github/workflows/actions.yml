@@ -30,8 +30,6 @@ jobs:
       CFLAGS: '-Wall -Wextra -fanalyzer'
       CC: ${{ matrix.cc }}
     steps:
-      - run: sudo apt update
-      - run: sudo apt install gcc-10
       - uses: actions/checkout@v2
       - run: mkdir build
       - run: cmake ..
