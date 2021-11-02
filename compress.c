@@ -59,6 +59,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "spark.h"
 #include "pack.h"
 #include "main.h"
@@ -416,8 +417,11 @@ getcode(FILE *ifp)
 	   pointers are being used. */
 	register char_type NSHUGE *bp = buf;
 
-	if (clear_flg > 0 || offset >= size || free_ent > maxcode)
+	assert(offset >= 0);
+
+	if (clear_flg > 0 || (size_t) offset >= size || free_ent > maxcode)
 	{
+		int tmp_size;
 		/*
 		 * If the next entry will be too big for the current code
 		 * size, then we must increase the size.  This implies
@@ -435,9 +439,9 @@ getcode(FILE *ifp)
 		}
 		if (readsize == 0)
 			return (-1);
-		/* BB added cast to next line */
-		size = readsize < n_bits ? (size_t) readsize : n_bits;
-		size = fread(buf, 1, size, ifp);
+		tmp_size = readsize < n_bits ? readsize : n_bits;
+		assert(tmp_size >= 0);
+		size = fread(buf, 1, tmp_size, ifp);
 		if (size == 0)
 			return (-1);		/* end of file */
 		for (i = 0; i < size; i++)

@@ -19,7 +19,7 @@ elseif (UNIX)
 endif ()
 
 if (CMAKE_COMPILER_IS_GNUCC)
-	set(CMAKE_C_FLAGS "-Wall")
+	add_compile_options("-Wall")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 add_library (nsparklib ${NSPARK_LIB_SOURCE} ${NSPARK_OS_SOURCE})
