@@ -11,7 +11,7 @@ NAME
 
 CONVENTIONS
      Strings are given in ASCII with  C-style  escapes.  No  ter-
-     minating   is present if not explicitily included.
+     minating   is present if not explicitly included.
 
      Words are 32 bit little-endian numbers.
 
