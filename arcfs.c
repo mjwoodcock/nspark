@@ -100,6 +100,7 @@ typedef struct arcfs_header_s *arcfs_header;
 static int arcfs_initialised = 0;
 static arcfs_header header_list = NULL;
 static arcfs_header header_ptr = NULL;
+static Header null_header;
 
 
 /*
@@ -165,8 +166,7 @@ arcfs_fixtime(Header *hdr)
 Header *
 arcfs_read_header(FILE *ifp)
 {
-	static Header null_header;
-	static Word data_start;
+	Word data_start;
 	Word header_length = 0;
 	Header *header;
 	Word version;
@@ -313,10 +313,10 @@ arcfs_read_header(FILE *ifp)
 		/* Add list item to list */
 		/* Doing it here ensures that deleted items are not added */
 		header_ptr->header = header;
-		if (header_list == NULL)
-			header_list = header_ptr;
-		else
+		if (header_prev)
 			header_prev->next = header_ptr;
+		else
+			header_list = header_ptr;
 		header_prev = header_ptr;
 #ifdef DEBUGGING
 		print_header(header);
