@@ -103,6 +103,9 @@ name_dot_arc(char *s)
 {
 	static char *newname = NULL;
 
+	if (!s)
+		s = "";
+
 	/*
 	 * check that there's room for the extension
 	 */
