@@ -114,17 +114,25 @@ do_unsquash()
 	long datastart;
 	char *ofname = NULL;
 	char *p;
+	int result = 0;
 
 	ifp = fopen(archive, "rb");
 	if (!ifp)
 	{
 		error("Can not open %s for reading\n", archive);
-		return 1;
+		result = 1;
+		goto error;
 	}
 
 	if (!to_stdout)
 	{
 		ofname = calloc(1, strlen(archive) + sizeof(",xxx"));
+		if (!ofname)
+		{
+			error("Out of memory\n");
+			result = 1;
+			goto close_file;
+		}
 		/* Output filename is the same as the input filename with
 		 * the correct filetype appended */
 		strcpy(ofname, archive);
@@ -201,16 +209,12 @@ do_unsquash()
 		if (!ofp)
 		{
 			error("Can not open %s for writing\n", ofname);
-			return 1;
+			result = 1;
+			goto close_file;
 		}
 	}
 
 	r = uncompress(&header, ifp, ofp, UNIX_COMPRESS);
-	fclose(ifp);
-	if (!to_stdout)
-	{
-		fclose(ofp);
-	}
 	if (r == NOERR)
 	{
 		if (stamp && !to_stdout)
@@ -221,10 +225,19 @@ do_unsquash()
 	else
 	{
 		error("Failed to decompress file");
-		return 1;
+		result = 1;
+		goto close_file;
 	}
 
-	return 0;
+close_file:
+	fclose(ifp);
+	if (!to_stdout)
+	{
+		fclose(ofp);
+	}
+error:
+
+	return result;
 }
 
 int
