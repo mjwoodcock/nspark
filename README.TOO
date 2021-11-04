@@ -2,6 +2,8 @@ Changes since version 1.7.7
 ===========================
 Nspark now handles garbled archives.
 
+A new binary, sqsh, will decompress files created by Squash on RISC OS.
+
 Version 1.7.7
 =============
 
