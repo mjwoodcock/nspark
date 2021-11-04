@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.4)
+cmake_minimum_required (VERSION 2.8)
 project (nspark C)
 
 SET(NSPARK_LIB_SOURCE arcfs.c compress.c crc.c date.c error.c garble.c io.c misc.c pack.c store.c)
@@ -10,7 +10,6 @@ if (WIN32)
 elseif (RISCOS)
 	add_definitions (-DRISCOS)
 	SET(NSPARK_OS_SOURCE acorn.c)
-	# FIXME: The following command requires CMake 2.8.12, while our current minimum is 2.4
 	add_compile_options(-mlibscl)
 	SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mlibscl")
 elseif (UNIX)
