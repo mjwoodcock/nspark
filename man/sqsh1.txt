@@ -1,0 +1,27 @@
+SQSH(1)                     General Commands Manual                    SQSH(1)
+
+NAME
+       sqsh - decompress RISC OS Squash files
+
+SYNOPSIS
+       sqsh [options] file
+
+DESCRIPTION
+       sqsh can unpack files created by the RISC OS Squash utility.
+
+OPTIONS
+       -c        Decompress to stdout.
+
+       -f        Force  file  overwrite if a file already exists with the same
+                 name as the one being extracted. If not using -f then you are
+                 prompted  whether  you  want  to overwrite the original, skip
+                 this file, give it a different name, or  overwrite  this  and
+                 all others that already exist.
+
+       -s        No  filestamp.  Does  not  set  the timestamp when extracting
+                 files.
+
+SEE ALSO
+       nspark(1)
+
+USER COMMANDS                     2021-03-05                           SQSH(1)
