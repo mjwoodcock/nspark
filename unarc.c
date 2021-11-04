@@ -108,7 +108,7 @@ do_unsquash()
 {
 	SqshHeader sqsh_header;
 	Header header;
-	FILE *ifp, *ofp;
+	FILE *ifp = NULL, *ofp = NULL;
 	Status r;
 	long offset;
 	long datastart;
@@ -231,7 +231,7 @@ do_unsquash()
 
 close_file:
 	fclose(ifp);
-	if (!to_stdout)
+	if (!to_stdout && ofp)
 	{
 		fclose(ofp);
 	}
