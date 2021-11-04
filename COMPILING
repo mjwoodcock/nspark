@@ -30,6 +30,12 @@ To compile on Windows with MinGW:
   cmake -G "MinGW Makefiles" ..
   cmake --build .
 
+To cross compile a Windows binary from Linux (tested on Ubuntu 20.04):
+  mkdir -p build
+  cd build
+  cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/mingw-cross.cmake ..
+  cmake --build .
+
 To compile on Unix:
   mkdir -p build
   cd build
