@@ -46,6 +46,7 @@ main(int argc, char *argv[])
 	if (!out)
 	{
 		error("Failed to open %s for writing", argv[3]);
+		exit(1);
 	}
 
 	if (strcmp(argv[1], "-p") == 0)
