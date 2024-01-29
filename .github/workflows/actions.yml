@@ -5,7 +5,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ['ubuntu-latest', 'macos-latest', 'ubuntu-18.04']
+        os: ['ubuntu-latest', 'macos-latest', 'ubuntu-20.04']
         cc: [ 'gcc', 'clang' ]
     name: Compile on ${{ matrix.os }} using ${{ matrix.cc }}
     env:
@@ -23,8 +23,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ['ubuntu-20.04']
-        cc: [ 'gcc-10']
+        os: ['ubuntu-22.04']
+        cc: [ 'gcc-12']
     name: Run static analyzer ${{ matrix.cc }}
     env:
       CFLAGS: '-Wall -Wextra -Werror -fanalyzer'
