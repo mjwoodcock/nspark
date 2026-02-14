@@ -19,6 +19,20 @@ jobs:
       - run: cmake --build .
         working-directory: ./build
 
+  windowsbuild:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['windows-latest']
+    name: Compile on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir build
+      - run: cmake ..
+        working-directory: ./build
+      - run: cmake --build .
+        working-directory: ./build
+
   analyzer:
     runs-on: ${{ matrix.os }}
     strategy:
