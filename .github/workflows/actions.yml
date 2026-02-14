@@ -35,4 +35,4 @@ jobs:
         working-directory: ./build
       - run: cmake --build .
         working-directory: ./build
-        continue-on-error: true
+        continue-on-error: false
