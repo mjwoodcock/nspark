@@ -230,9 +230,16 @@ arcfs_read_header(FILE *ifp)
 	{
 		/* Create list item */
 		header = (Header *) malloc(sizeof(Header));
-		header_ptr = (arcfs_header) malloc(sizeof(struct arcfs_header_s));
-		if ((header == NULL) || (header_ptr == NULL))
+		if (header == NULL)
 		{
+			error("Out of memory");
+			return (&null_header);
+		}
+
+		header_ptr = (arcfs_header) malloc(sizeof(struct arcfs_header_s));
+		if (header_ptr == NULL)
+		{
+			free(header);
 			error("Out of memory");
 			return (&null_header);
 		}
