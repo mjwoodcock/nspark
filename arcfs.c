@@ -272,9 +272,13 @@ arcfs_read_header(FILE *ifp)
 		/* BB changed next line for Borland C/C++ 4 */
 		/* header_ptr->is_dir = (info_word >> 31); */
 #ifdef __MSDOS__
-		header_ptr->is_dir = (Halfword) (info_word >> 31);
+		header_ptr->is_dir = (Halfword) (info_word >> 31)
+			&& complen == 0xffffffff
+			&& length == 0xffffffff;
 #else
-		header_ptr->is_dir = (info_word >> 31);
+		header_ptr->is_dir = (info_word >> 31)
+			&& complen == 0xffffffff
+			&& length == 0xffffffff;
 #endif
 		header_ptr->info_byte = info_byte;
 		header_ptr->info_word = info_word;
